@@ -126,6 +126,17 @@ public final class KiaAccountActivity extends Activity {
             state.setText(response.optString("error"));
             return;
         }
+        var vehicles = response.optJSONArray("vehicles");
+        if (vehicles != null) {
+            String[] labels = new String[vehicles.length()];
+            for (int i = 0; i < labels.length; i++) labels[i] = vehicles.optString(i);
+            new AlertDialog.Builder(this).setTitle("Kies een Kia")
+                .setItems(labels, (dialog, position) -> run("Auto koppelen…", () -> KiaCloud.linkResponse(this,
+                    KiaCloud.module(this).callAttr("select_vehicle", position))))
+                .setNegativeButton("Annuleren", null)
+                .show();
+            return;
+        }
         ArrayList<String> labels = new ArrayList<>();
         ArrayList<String> channels = new ArrayList<>();
         if (response.optBoolean("email")) {

@@ -11,6 +11,7 @@ from hyundai_kia_connect_api.utils import get_child_value
 
 logging.disable(logging.CRITICAL)
 _pending = None
+_selection = None
 
 
 def _result(**values):
@@ -18,21 +19,43 @@ def _result(**values):
 
 
 def _link_result(manager):
-    global _pending
+    global _pending, _selection
     _pending = None
-    cars = [car for car in manager.vehicles.values() if "niro" in (car.model or "").lower()]
-    if len(cars) != 1:
-        return _result(error="Kies voor dit account één e-Niro in Kia Connect.")
-    car = cars[0]
-    return _result(model=car.model, session={
+    cars = list(manager.vehicles.values())
+    if not cars:
+        return _result(error="Dit Kia-account heeft geen gekoppelde auto.")
+    if len(cars) == 1:
+        return _linked_vehicle(manager, cars[0])
+    _selection = manager, cars
+    labels = []
+    for index, car in enumerate(cars, 1):
+        label = car.model or car.name or "Kia"
+        suffix = str(car.VIN or "")[-4:]
+        labels.append(f"{index}. {label} · VIN …{suffix}" if suffix else f"{index}. {label}")
+    return _result(vehicles=labels)
+
+
+def _linked_vehicle(manager, car):
+    return _result(model=car.model or car.name or "Kia", session={
         "token": manager.token.to_dict(),
         "vehicle": car.id,
     })
 
 
+def select_vehicle(index):
+    global _selection
+    if _selection is None:
+        return _result(error="De voertuigkeuze is verlopen. Meld je opnieuw aan.")
+    manager, cars = _selection
+    _selection = None
+    if not 0 <= index < len(cars):
+        return _result(error="Ongeldige voertuigkeuze. Meld je opnieuw aan.")
+    return _linked_vehicle(manager, cars[index])
+
+
 def login(username, password, pin):
     global _pending
-    _pending = None
+    clear_login()
     manager = VehicleManager(1, 1, username, password, pin, language="nl")
     response = manager.login()
     if response is True:
@@ -53,8 +76,9 @@ def verify_code(code):
 
 
 def clear_login():
-    global _pending
+    global _pending, _selection
     _pending = None
+    _selection = None
 
 
 def prepare_start(saved):

@@ -20,6 +20,12 @@ final class KiaCloud {
         JSONObject response = new JSONObject(value.toString());
         JSONObject session = response.optJSONObject("session");
         if (session != null) {
+            if (linked(context)) {
+                JSONObject current = new JSONObject(KiaSessionStore.read(context));
+                if (!current.getString("vehicle").equals(session.getString("vehicle"))) {
+                    return new JSONObject().put("error", "Koppel de huidige auto eerst los in Instellingen om van auto te wisselen.");
+                }
+            }
             KiaSessionStore.save(context, session.toString());
             Planner.prefs(context).edit().putString("kiaModel", response.getString("model"))
                 .remove("cloudNeedsLink").commit();

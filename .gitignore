@@ -1,0 +1,14 @@
+.gradle/
+build/
+local.properties
+*.class
+
+# Local credentials, signing files and build outputs.
+.env
+.env.*
+*.jks
+*.keystore
+*.apk
+*.aab
+__pycache__/
+kia-connect/uitslag.json

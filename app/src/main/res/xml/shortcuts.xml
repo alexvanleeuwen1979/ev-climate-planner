@@ -1,0 +1,9 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="manual_climate"
+        android:icon="@drawable/ic_ui_snow"
+        android:shortcutShortLabel="@string/shortcut_manual">
+        <intent android:action="nl.axlproductions.kiaklimaatplanner.MANUAL_SHORTCUT"
+            android:targetPackage="nl.axlproductions.kiaklimaatplanner"
+            android:targetClass="nl.axlproductions.kiaklimaatplanner.MainActivity" />
+    </shortcut>
+</shortcuts>

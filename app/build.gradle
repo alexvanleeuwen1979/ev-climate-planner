@@ -1,0 +1,50 @@
+plugins {
+    id 'com.android.application' version '9.3.1'
+    id 'com.chaquo.python' version '17.2.0'
+}
+
+android {
+    namespace 'nl.axlproductions.kiaklimaatplanner'
+    compileSdk 36
+    defaultConfig {
+        applicationId 'nl.axlproductions.kiaklimaatplanner'
+        minSdk 26
+        testInstrumentationRunner 'nl.axlproductions.kiaklimaatplanner.RuntimeCheck'
+        targetSdk 36
+        versionCode 52
+        ndk { abiFilters 'arm64-v8a', 'x86_64' }
+        versionName '0.5.6'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+
+chaquopy {
+    defaultConfig {
+        version = '3.15'
+        pip {
+            options '--find-links', rootProject.file('build/kia-wheels').absolutePath
+            install '-r', rootProject.file('kia-connect/requirements.txt').absolutePath
+        }
+    }
+}
+
+ def buildAndroidWheels = tasks.register('buildKiaAndroidWheels', Exec) {
+    inputs.file rootProject.file('kia-connect/build_android_wheels.py')
+    outputs.dir rootProject.file('build/kia-wheels')
+    commandLine 'python', rootProject.file('kia-connect/build_android_wheels.py').absolutePath
+}
+
+tasks.matching { it.name.endsWith('PythonRequirements') }.configureEach {
+    dependsOn buildAndroidWheels
+}
+
+
+
+dependencies {
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0'
+}
+

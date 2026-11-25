@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:paddingMode="stack">
+    <item>
+        <inset
+            android:insetLeft="15%"
+            android:insetTop="15%"
+            android:insetRight="15%"
+            android:insetBottom="15%">
+            <bitmap android:src="@drawable/climate_artwork" android:gravity="fill" android:filter="true" />
+        </inset>
+    </item>
+    <item android:drawable="@drawable/ic_climate_rim" />
+</layer-list>

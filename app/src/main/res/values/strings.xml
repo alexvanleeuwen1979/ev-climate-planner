@@ -1,0 +1,21 @@
+<resources>
+    <string name="shortcut_manual">Handmatig starten</string>
+    <string name="app_name">Kia Climate Control</string>
+    <string name="access_description">Herkent de klimaatknoppen in de officiële Kia App en bedient ze op de gekozen momenten.</string>
+    <style name="AppTheme" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">#E6E8EC</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:statusBarColor">#050505</item>
+        <item name="android:navigationBarColor">#050505</item>
+        <item name="android:windowBackground">#050A11</item>
+        <item name="android:windowSplashScreenBackground">#050A11</item>
+        <item name="android:alertDialogTheme">@style/ObsidianDialog</item>
+    </style>
+    <style name="ObsidianDialog" parent="@android:style/Theme.Material.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/obsidian_dialog</item>
+        <item name="android:backgroundDimAmount">0.58</item>
+        <item name="android:colorAccent">#E6E8EC</item>
+    </style>
+</resources>

@@ -33,6 +33,17 @@ public final class RuntimeCheck extends Instrumentation {
             } else if ("widget".equals(phase)) {
                 verifyWidget(context);
                 results.putString("stream", "\nAndroid widget bound and rendered.\n");
+            } else if ("english-profiles".equals(phase)) {
+                var prefs = Planner.prefs(context);
+                prefs.edit().putString("profile2Name", "Eigen profiel").commit();
+                var preset = ClimateProfiles.get(prefs, 2);
+                if (!"Custom profile".equals(preset.name()) || !"Eigen profiel".equals(ClimateProfiles.backupName(2, preset)))
+                    throw new AssertionError("Legacy default profile name was not localized or backed up consistently");
+                prefs.edit().putString("profile2Name", "Mijn eigen naam").commit();
+                if (!"Mijn eigen naam".equals(ClimateProfiles.get(prefs, 2).name()))
+                    throw new AssertionError("User profile name was translated");
+                prefs.edit().remove("profile2Name").commit();
+                results.putString("stream", "\nEnglish localizes legacy default profile names and keeps custom names.\n");
             } else if ("paused-refresh".equals(phase)) {
                 verifyPausedManualRefresh(context);
                 results.putString("stream", "\nManual paused refresh reads cached Kia data once, lifts the current pause on valid data, and stops after another rate limit.\n");
@@ -944,7 +955,7 @@ public final class RuntimeCheck extends Instrumentation {
                     || StartLedger.summary(context, StartLedger.month(now)).failed() != 1) {
                 throw new AssertionError("Failure ledger or notification actions missing");
             }
-            var exported = StartLedger.safeExport(new org.json.JSONArray()
+            var exported = StartLedger.safeExport(context, new org.json.JSONArray()
                 .put(new org.json.JSONObject().put("time", now).put("session", first).put("cause", "NETWORK")
                     .put("message", "private-vin-or-location"))
                 .put(new org.json.JSONObject().put("time", now).put("session", first).put("cause", "private-vin-or-location")),

@@ -1,6 +1,6 @@
 # Kia Climate Control
 
-An independent Android app for scheduling remote cabin climate on compatible European Kia vehicles. Live vehicle testing so far has been on a European Kia e-Niro. The app can link other Kia models exposed by the European Kia Connect service and lets you choose a vehicle if your account contains more than one. It controls one selected vehicle at a time. Model, model year, trim, country and Kia Connect capabilities can affect what works. This project is unaffiliated with Kia. The app interface is currently in Dutch.
+An independent Android app for scheduling remote cabin climate on compatible European Kia vehicles. Live vehicle testing so far has been on a European Kia e-Niro. The app can link other Kia models exposed by the European Kia Connect service and lets you choose a vehicle if your account contains more than one. It controls one selected vehicle at a time. Model, model year, trim, country and Kia Connect capabilities can affect what works. This project is unaffiliated with Kia. Choose Dutch, English, German, French or Spanish in Settings. The app follows a supported phone language initially and otherwise uses English.
 
 ## Features
 
@@ -15,7 +15,7 @@ An independent Android app for scheduling remote cabin climate on compatible Eur
 | Dashboard | Show traction-battery percentage, measurement age, target and outdoor temperatures, an estimated heating or cooling indicator, and the next window. Manual refresh and pull-to-refresh are available. Optional hourly battery reads use the latest Kia snapshot. |
 | Widget and alerts | Show the upcoming window, profile and active countdown on the home screen. Configure end-of-window, delayed departure, failed start and rate-limit notifications. Review a scrollable seven-day activity history, with retry and troubleshooting actions. |
 | Energy and diagnostics | See daily battery percentage and cumulative estimated climate energy, daily totals by week or month, an individual cycle log, and monthly start outcomes. The energy estimator can learn from suitable measurements. |
-| Settings and backups | Keep the Kia session encrypted on the device, inspect a planning backup before restoring it, run a connection diagnostic, and export a limited diagnostic log without credentials, VIN or exact location. |
+| Settings and backups | Switch the interface language using a flag and language name, keep the Kia session encrypted on the device, inspect a planning backup before restoring it, run a connection diagnostic, and export a limited diagnostic log without credentials, VIN or exact location. |
 
 ## Known limitations
 
@@ -25,6 +25,7 @@ An independent Android app for scheduling remote cabin climate on compatible Eur
 - Steering wheel, mirrors and rear-window heating worked as a group on the tested e-Niro. Driver-seat heating did not work in the tests and is not offered. Heating, defrost, lock status and location capability vary by model.
 - Heat versus cool is estimated when the vehicle does not report the mode. Energy is also an estimate rather than a direct meter reading. The percentage equivalent shown in the cycle log uses the 64 kWh e-Niro as its reference. Charging and driving can affect battery readings and exclude samples from calibration.
 - An exact phone location can set the home point. It does not supply the car's position. A location-based schedule still needs usable Kia vehicle location data.
+- Activity messages already recorded retain the language used when they were written. The language selection affects the interface and new app-generated messages.
 - Only the European Kia Connect route is configured. Verified results for other models are welcome. Please include only the model, model year, region and which functions worked. Keep credentials, VIN, location and raw logs out of public issues.
 
 ## Build from source

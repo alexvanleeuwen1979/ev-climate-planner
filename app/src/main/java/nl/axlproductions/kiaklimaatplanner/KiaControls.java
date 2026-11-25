@@ -1,5 +1,7 @@
 package nl.axlproductions.kiaklimaatplanner;
 
+import static nl.axlproductions.kiaklimaatplanner.AppLanguage.t;
+
 import android.accessibilityservice.AccessibilityService;
 import android.app.KeyguardManager;
 import android.app.Notification;
@@ -46,7 +48,7 @@ public final class KiaControls extends AccessibilityService {
             }
             if (part != null && part.toString().trim().equalsIgnoreCase("Klimaatregeling gestart.")) {
                 if (Planner.confirmStart(this, lastStart, now)) {
-                    Planner.note(this, "Kia meldt: klimaatregeling gestart.");
+                    Planner.note(this, t(R.string.kia_reports_climate_control_started));
                 }
                 return;
             }
@@ -72,7 +74,7 @@ public final class KiaControls extends AccessibilityService {
 
     void runSlot(Schedule.Slot slot, long wait) {
         if (busy) {
-            Planner.note(this, "Start overgeslagen. Een andere Kia-opdracht loopt nog.");
+            Planner.note(this, t(R.string.start_skipped_another_kia_order_is));
             return;
         }
         busy = true;
@@ -89,22 +91,22 @@ public final class KiaControls extends AccessibilityService {
     private void open(int id, Schedule.Slot slot) {
         if (id != request) return;
         if (!interactive()) {
-            finish("Tijdstip gemist. Het telefoonscherm stond uit of was vergrendeld.");
+            finish(t(R.string.missed_time_the_phone_screen_was));
             return;
         }
         if (slot != null && System.currentTimeMillis() >= slot.end()) {
-            finish("De geplande periode is voorbij.");
+            finish(t(R.string.the_planned_period_is_over));
             return;
         }
         Intent launch = getPackageManager().getLaunchIntentForPackage(KIA);
         if (launch == null) {
-            finish("De officiële Europese Kia App is niet gevonden.");
+            finish(t(R.string.the_official_european_kia_app_could));
             return;
         }
         try {
             startActivity(launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         } catch (RuntimeException error) {
-            finish("Android kon de Kia App niet openen.");
+            finish(t(R.string.android_could_not_open_the_kia));
             return;
         }
         poll(id, slot, SystemClock.uptimeMillis() + 16_000, false);
@@ -113,11 +115,11 @@ public final class KiaControls extends AccessibilityService {
     private void poll(int id, Schedule.Slot slot, long deadline, boolean homeTapped) {
         if (id != request) return;
         if (!interactive()) {
-            finish("Scherm vergrendeld of uitgeschakeld tijdens de Kia-opdracht.");
+            finish(t(R.string.screen_locked_or_disabled_during_kia));
             return;
         }
         if (slot != null && System.currentTimeMillis() >= slot.end()) {
-            finish("De geplande periode is voorbij.");
+            finish(t(R.string.the_planned_period_is_over));
             return;
         }
 
@@ -129,7 +131,7 @@ public final class KiaControls extends AccessibilityService {
             Label target = onButton(labels);
             if (target != null) {
                 if (slot == null) {
-                    finish("Test geslaagd. De ventilatorknop ‘Aan’ is gevonden. Er is niets naar de auto gestuurd.");
+                    finish(t(R.string.test_passed_the_fan_button_on));
                     return;
                 }
                 long now = System.currentTimeMillis();
@@ -142,11 +144,11 @@ public final class KiaControls extends AccessibilityService {
                     return;
                 }
                 Planner.clearCycle(this, now);
-                finish("‘Aan’ is gevonden, maar Android kon de knop niet bedienen.");
+                finish(t(R.string.on_was_found_but_android_was));
                 return;
             }
             if (offButton(labels) && (slot == null || SystemClock.uptimeMillis() >= deadline)) {
-                finish("De Kia App toont ‘Uit’. Er is geen startcommando gestuurd.");
+                finish(t(R.string.the_kia_app_shows_off_no));
                 return;
             }
             if (!homeTapped) {
@@ -161,7 +163,7 @@ public final class KiaControls extends AccessibilityService {
         }
 
         if (SystemClock.uptimeMillis() >= deadline) {
-            finish("De Kia App toont de ventilatorknop ‘Aan’ niet herkenbaar. Open Kia en controleer het Home-scherm.");
+            finish(t(R.string.the_kia_app_does_not_show));
             return;
         }
         boolean nextHomeTapped = openedHome;

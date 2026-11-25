@@ -1,5 +1,7 @@
 package nl.axlproductions.kiaklimaatplanner;
 
+import static nl.axlproductions.kiaklimaatplanner.AppLanguage.t;
+
 import android.content.SharedPreferences;
 import android.location.Location;
 import java.time.MonthDay;
@@ -13,13 +15,14 @@ final class ClimateRules {
     private static final float HOME_RADIUS = 150;
 
     enum Reason {
-        LOW_BATTERY("Accu onder de ingestelde grens"),
-        MILD("Buitentemperatuur binnen het comfortbereik"),
-        AWAY("Auto staat buiten de thuiszone"),
-        LOCATION_UNKNOWN("Geen recente Kia-locatie voor de thuiszone");
+        LOW_BATTERY(R.string.battery_below_the_set_limit),
+        MILD(R.string.outside_temperature_within_the_comfort_range),
+        AWAY(R.string.car_is_outside_the_home_zone),
+        LOCATION_UNKNOWN(R.string.no_recent_kia_location_for_the);
 
-        final String label;
-        Reason(String label) { this.label = label; }
+        private final int label;
+        Reason(int label) { this.label = label; }
+        String label() { return t(label); }
     }
 
     static int profile(SharedPreferences prefs, long time, ZoneId zone) {

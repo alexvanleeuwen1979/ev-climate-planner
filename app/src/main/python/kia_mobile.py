@@ -23,7 +23,7 @@ def _link_result(manager):
     _pending = None
     cars = list(manager.vehicles.values())
     if not cars:
-        return _result(error="Dit Kia-account heeft geen gekoppelde auto.")
+        return _result(error="no_vehicle_linked")
     if len(cars) == 1:
         return _linked_vehicle(manager, cars[0])
     _selection = manager, cars
@@ -45,11 +45,11 @@ def _linked_vehicle(manager, car):
 def select_vehicle(index):
     global _selection
     if _selection is None:
-        return _result(error="De voertuigkeuze is verlopen. Meld je opnieuw aan.")
+        return _result(error="selection_expired")
     manager, cars = _selection
     _selection = None
     if not 0 <= index < len(cars):
-        return _result(error="Ongeldige voertuigkeuze. Meld je opnieuw aan.")
+        return _result(error="selection_invalid")
     return _linked_vehicle(manager, cars[index])
 
 
@@ -63,7 +63,7 @@ def login(username, password, pin):
     if isinstance(response, OTPRequest):
         _pending = manager
         return _result(email=bool(response.has_email), sms=bool(response.has_sms))
-    return _result(error="Kia heeft geen sessie geopend.")
+    return _result(error="login_session_missing")
 
 
 def send_code(channel):

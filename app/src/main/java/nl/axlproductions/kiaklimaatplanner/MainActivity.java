@@ -1,5 +1,7 @@
 package nl.axlproductions.kiaklimaatplanner;
 
+import static nl.axlproductions.kiaklimaatplanner.AppLanguage.t;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -49,15 +51,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 public final class MainActivity extends Activity {
-    private static final Locale NL = Locale.forLanguageTag("nl-NL");
     private static final int INK = 0xfff2fbfc;
     private static final int MUTED = 0xffc9dee2;
     private static final int ACCENT = 0xffc4edf8;
     private static final int ICE = 0xff50d4eb;
     private static final int CORAL = 0xffff665d;
     private static final int OBSIDIAN = 0xff050505;
-    private static final String[] DAYS = {
-        "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"
+    private final String[] DAYS = {
+        t(R.string.monday), t(R.string.tuesday), t(R.string.wednesday), t(R.string.thursday), t(R.string.friday), t(R.string.saturday), t(R.string.sunday)
     };
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Button[][] windowButtons = new Button[7][2];
@@ -120,6 +121,10 @@ public final class MainActivity extends Activity {
         }
     };
 
+    @Override protected void attachBaseContext(android.content.Context base) {
+        super.attachBaseContext(AppLanguage.localized(base));
+    }
+
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
         Planner.migrateDurations(this);
@@ -167,53 +172,56 @@ public final class MainActivity extends Activity {
 
         buildDashboard(sections[0]);
 
-        var profiles = card(sections[2], "Klimaatprofielen");
+        var language = card(sections[2], AppLanguage.t(R.string.app_language));
+        addButton(language, AppLanguage.choices()[AppLanguage.selectedIndex()], false, this::chooseLanguage);
+
+        var profiles = card(sections[2], t(R.string.climate_profiles));
         generalProfileSetting = addButton(profiles, "", false, this::chooseGeneralProfile);
         generalProfileSetting.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-        profiles.addView(text("Geldt voor starts zonder een eigen profiel.", 13, MUTED, false));
-        addButton(profiles, "Profielen beheren", false, this::manageProfiles);
-        addButton(profiles, "Profielen per seizoen", false, this::editSeasons);
+        profiles.addView(text(t(R.string.applies_to_starts_without_their_own), 13, MUTED, false));
+        addButton(profiles, t(R.string.manage_profiles), false, this::manageProfiles);
+        addButton(profiles, t(R.string.profiles_per_season), false, this::editSeasons);
 
-        LinearLayout heat = card(sections[2], "Standaardverwarming");
+        LinearLayout heat = card(sections[2], t(R.string.standard_heating));
         temperatureControl(heat);
-        heatSwitch(heat, "Stuurverwarming", "heatWheel", R.drawable.ic_ui_wheel);
-        heatSwitch(heat, "Spiegels en achterruit", "heatMirrors", R.drawable.ic_ui_rear);
-        windshieldSetting = addButton(heat, "Voorruit ontdooien", false, this::editDefaultWindshield);
+        heatSwitch(heat, t(R.string.steering_wheel_heating), "heatWheel", R.drawable.ic_ui_wheel);
+        heatSwitch(heat, t(R.string.mirrors_and_rear_window), "heatMirrors", R.drawable.ic_ui_rear);
+        windshieldSetting = addButton(heat, t(R.string.windshield_defrost), false, this::editDefaultWindshield);
         windshieldSetting.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
         decorate(windshieldSetting, R.drawable.ic_ui_defrost, ACCENT, 20);
-        heat.addView(text("Voorruit alleen in de eerste cyclus.", 13, MUTED, false));
+        heat.addView(text(t(R.string.windshield_only_in_the_first_cycle), 13, MUTED, false));
         addClimateWeatherSetting(heat);
-        var rules = card(sections[2], "Voorwaarden voor geplande starts");
-        addButton(rules, "Accugrens en comfortbereik", false, this::editStartRules);
-        addButton(rules, "Thuislocatie instellen", false, this::saveHomeLocation);
-        var security = card(sections[2], "Handmatige bediening");
-        var authentication = heatingChoice(security, "Biometrische bevestiging", prefs.getBoolean("requireBiometric", false));
+        var rules = card(sections[2], t(R.string.conditions_for_planned_takeoffs));
+        addButton(rules, t(R.string.battery_limit_and_comfort_range), false, this::editStartRules);
+        addButton(rules, t(R.string.set_home_location), false, this::saveHomeLocation);
+        var security = card(sections[2], t(R.string.manual_operation));
+        var authentication = heatingChoice(security, t(R.string.biometric_confirmation), prefs.getBoolean("requireBiometric", false));
         authentication.setOnCheckedChangeListener((view, checked) -> {
             if (checked && !biometricAvailable()) {
                 view.setChecked(false);
-                Toast.makeText(this, "Stel eerst biometrie in op je Samsung.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, t(R.string.first_set_up_biometrics_on_your), Toast.LENGTH_LONG).show();
                 return;
             }
             prefs.edit().putBoolean("requireBiometric", checked).apply();
         });
-        var reports = card(sections[2], "Overzicht en diagnose");
-        addButton(reports, "Maandoverzicht openen", false, this::showMonth);
-        addButton(reports, "Privélog exporteren", false, this::choosePrivateLog);
-        var energyLog = card(sections[2], "Klimaatverbruik");
-        addButton(energyLog, "Grafieken en overzicht", false, this::showEnergyReport);
-        addButton(energyLog, "Verbruikslog openen", false, this::showEnergyLog);
-        var autoBattery = heatingChoice(energyLog, "Accu elk uur bijwerken", BatterySampling.enabled(this));
+        var reports = card(sections[2], t(R.string.overview_and_diagnosis));
+        addButton(reports, t(R.string.open_monthly_overview), false, this::showMonth);
+        addButton(reports, t(R.string.export_private_log), false, this::choosePrivateLog);
+        var energyLog = card(sections[2], t(R.string.climate_consumption));
+        addButton(energyLog, t(R.string.charts_and_overview), false, this::showEnergyReport);
+        addButton(energyLog, t(R.string.open_consumption_log), false, this::showEnergyLog);
+        var autoBattery = heatingChoice(energyLog, t(R.string.update_battery_every_hour), BatterySampling.enabled(this));
         autoBattery.setOnCheckedChangeListener((view, checked) -> {
             prefs.edit().putBoolean(BatterySampling.ENABLED, checked).apply();
             BatterySampling.updateSchedule(this);
         });
-        var backup = card(sections[2], "Back-up weekplanning");
-        addButton(backup, "Planning exporteren", false, () -> openBackup(true));
-        addButton(backup, "Planning terugzetten", false, () -> openBackup(false));
+        var backup = card(sections[2], t(R.string.backup_weekly_planning));
+        addButton(backup, t(R.string.export_schedule), false, () -> openBackup(true));
+        addButton(backup, t(R.string.reset_planning), false, () -> openBackup(false));
 
-        LinearLayout planning = card(sections[1], "Weekplanning");
+        LinearLayout planning = card(sections[1], t(R.string.weekly_schedule));
         enabled = new Switch(this);
-        enabled.setText("Weekplanning actief");
+        enabled.setText(t(R.string.weekly_schedule_enabled));
         enabled.setPadding(dp(10), 0, dp(10), 0);
         enabled.setBackground(glassSurface(false, 12));
         styleSwitch(enabled);
@@ -225,15 +233,15 @@ public final class MainActivity extends Activity {
             Planner.schedule(this);
             refresh();
         });
-        pauseButton = addButton(planning, "Weekplanning pauzeren", false, this::pausePlanning);
-        addButton(planning, "Komende zeven dagen", false, this::showAgenda);
-        addButton(planning, "Volgende start controleren", false, this::showPreflight);
+        pauseButton = addButton(planning, t(R.string.pause_weekly_planning), false, this::pausePlanning);
+        addButton(planning, t(R.string.next_seven_days), false, this::showAgenda);
+        addButton(planning, t(R.string.check_next_start), false, this::showPreflight);
         for (int day = 0; day < DAYS.length; day++) addDay(planning, day);
 
-        LinearLayout notifications = card(sections[2], "Meldingen");
+        LinearLayout notifications = card(sections[2], t(R.string.notifications));
         buildSettings(card(sections[2], "Kia Connect"), notifications);
 
-        LinearLayout log = card(sections[0], "Laatste meldingen");
+        LinearLayout log = card(sections[0], t(R.string.recent_notifications));
         historyScroll = new ListView(this);
         historyAdapter = new HistoryAdapter();
         historyScroll.setAdapter(historyAdapter);
@@ -319,7 +327,7 @@ public final class MainActivity extends Activity {
         windowClock = clockReadout(55);
         cycleClock = clockReadout(38);
         windowLabel = text("", 15, MUTED, false);
-        cycleLabel = text("Cyclus resterend", 15, MUTED, false);
+        cycleLabel = text(t(R.string.cycle_remaining), 15, MUTED, false);
         windowMetric.addView(windowClock);
         windowMetric.addView(windowLabel);
         cycleMetric.addView(cycleClock);
@@ -341,17 +349,17 @@ public final class MainActivity extends Activity {
 
         LinearLayout actions = new LinearLayout(this);
         if (stackControls()) actions.setOrientation(LinearLayout.VERTICAL);
-        manualButton = addButton(dashboard, "Handmatig starten", true, this::manual);
+        manualButton = addButton(dashboard, t(R.string.start_manually), true, this::manual);
         dashboard.addView(actions, -1, -2);
-        stopButton = addButton(actions, "Stoppen", true, () -> {
-            authenticate("Klimaat stoppen", () -> {
+        stopButton = addButton(actions, t(R.string.stop), true, () -> {
+            authenticate(t(R.string.stop_climate), () -> {
                 if (Planner.cancelRunning(this)) KiaStartService.enqueueStop(this);
                 refresh();
             });
         });
         styleButton(stopButton, CORAL, 15);
         decorate(stopButton, R.drawable.ic_ui_stop, 0xff181012, 25);
-        onceButton = addButton(actions, "Eenmalig plannen", false, this::planOnce);
+        onceButton = addButton(actions, t(R.string.plan_once), false, this::planOnce);
         decorate(onceButton, R.drawable.ic_ui_calendar, INK, 20);
         stopButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         stopButton.setTextSize(18);
@@ -360,11 +368,11 @@ public final class MainActivity extends Activity {
         onceButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         onceButton.setTextSize(16);
         arrangeActions(actions);
-        extendAction = addButton(dashboard, "Verleng met 15 min", false, () -> authenticate("Tijdvak verlengen", () -> {
-            if (!Planner.extend(this)) Toast.makeText(this, "Dit tijdvak is niet meer actief.", Toast.LENGTH_SHORT).show();
+        extendAction = addButton(dashboard, t(R.string.extend_by_15_minutes), false, () -> authenticate(t(R.string.extend_period), () -> {
+            if (!Planner.extend(this)) Toast.makeText(this, t(R.string.this_time_period_is_no_longer), Toast.LENGTH_SHORT).show();
             refresh();
         }));
-        repeatAction = addButton(dashboard, "Vorige start herhalen", false, () -> manual(true, false));
+        repeatAction = addButton(dashboard, t(R.string.repeat_previous_start), false, () -> manual(true, false));
 
         LinearLayout summary = new LinearLayout(this);
         if (stackControls()) summary.setOrientation(LinearLayout.VERTICAL);
@@ -374,13 +382,13 @@ public final class MainActivity extends Activity {
         energy.setOnClickListener(view -> requestBattery(true));
         energy.setForeground(new RippleDrawable(ColorStateList.valueOf(0x35c4edf8), null, glassSurface(false, 18)));
         energy.setFocusable(true);
-        LinearLayout batteryDetails = summaryTile(energy, "Tractieaccu", R.drawable.ic_ui_battery, ICE);
+        LinearLayout batteryDetails = summaryTile(energy, t(R.string.traction_battery), R.drawable.ic_ui_battery, ICE);
         battery = clockReadout(33);
         batteryDetails.addView(battery);
         batteryMeasured = text("", 13, MUTED, false);
         batteryDetails.addView(batteryMeasured);
         LinearLayout next = card(addMetric(summary, 1), null);
-        LinearLayout nextDetails = summaryTile(next, "Volgende start", R.drawable.ic_ui_calendar, ACCENT);
+        LinearLayout nextDetails = summaryTile(next, t(R.string.next_start), R.drawable.ic_ui_calendar, ACCENT);
         nextView = clockReadout(33);
         nextDetails.addView(nextView);
         nextDay = text("", 13, MUTED, false);
@@ -394,20 +402,20 @@ public final class MainActivity extends Activity {
         nextPreview = text("", 14, MUTED, false);
         previewRow.addView(nextPreview, stacked ? new LinearLayout.LayoutParams(-1, -2)
             : new LinearLayout.LayoutParams(0, -2, 1));
-        changeNext = addButton(previewRow, "Wijzigen", false, this::nextStartOptions);
-        changeNext.setContentDescription("Volgende start wijzigen");
+        changeNext = addButton(previewRow, t(R.string.change), false, this::nextStartOptions);
+        changeNext.setContentDescription(t(R.string.change_next_start));
         changeNext.setMinHeight(dp(48));
         if (!stacked) {
             var actionSize = new LinearLayout.LayoutParams(-2, -2);
             actionSize.setMarginStart(dp(10));
             changeNext.setLayoutParams(actionSize);
         }
-        preflightAction = addButton(nextPreviewCard, "Volgende start controleren", false, this::showPreflight);
+        preflightAction = addButton(nextPreviewCard, t(R.string.check_next_start), false, this::showPreflight);
         undoBar = card(page, null);
         adjustmentMessage = text("", 14, INK, true);
         adjustmentMessage.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
         undoBar.addView(adjustmentMessage);
-        addButton(undoBar, "Ongedaan maken", false, this::undoWeeklyChange);
+        addButton(undoBar, t(R.string.undo), false, this::undoWeeklyChange);
         if (!stackControls()) {
             energy.setMinimumHeight(dp(101));
             next.setMinimumHeight(dp(101));
@@ -461,7 +469,7 @@ public final class MainActivity extends Activity {
         boolean stack = getResources().getConfiguration().fontScale >= 1.5f;
         if (stack) bar.setOrientation(LinearLayout.VERTICAL);
         page.addView(bar);
-        String[] labels = {"Dashboard", "Weekplanning", "Instellingen"};
+        String[] labels = {"Dashboard", t(R.string.weekly_schedule), t(R.string.settings)};
         for (int index = 0; index < labels.length; index++) {
             int target = index;
             Button tab = new Button(this);
@@ -575,7 +583,7 @@ public final class MainActivity extends Activity {
         header.setPadding(dp(4), 0, dp(4), 0);
         header.setTextSize(17);
         dayHeaders[day] = header;
-        daySwitches[day] = editorSwitch(heading, DAYS[day] + " actief");
+        daySwitches[day] = editorSwitch(heading, DAYS[day] + t(R.string.active));
         var chevron = text("", 20, ACCENT, true);
         chevron.setGravity(Gravity.CENTER);
         chevron.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
@@ -594,7 +602,7 @@ public final class MainActivity extends Activity {
             LinearLayout row = editorRow(pane);
             windowButtons[day][slot] = editorButton(row, "",
                 () -> editWindow(day, slot, readSlot(day, slot).enabled()));
-            windowSwitches[day][slot] = editorSwitch(row, DAYS[day] + ", tijdvak " + (slot + 1) + " actief");
+            windowSwitches[day][slot] = editorSwitch(row, DAYS[day] + t(R.string.period) + (slot + 1) + t(R.string.active));
             windowSwitches[day][slot].setOnCheckedChangeListener((view, checked) -> {
                 if (updatingWeek) return;
                 SlotPlan current = readSlot(day, slot);
@@ -607,7 +615,7 @@ public final class MainActivity extends Activity {
                     current.ready(), current.profile(), current.homeOnly()));
             });
         }
-        decorate(addButton(pane, "Kopieer dag", false, () -> copyDay(day)), R.drawable.ic_ui_copy, INK, 18);
+        decorate(addButton(pane, t(R.string.copy_day), false, () -> copyDay(day)), R.drawable.ic_ui_copy, INK, 18);
     }
 
     private LinearLayout editorRow(LinearLayout parent) {
@@ -648,25 +656,25 @@ public final class MainActivity extends Activity {
                 for (int index = 0; index < 2; index++) {
                     SlotPlan slot = readSlot(day, index);
                     if (slot.enabled() && slot.duration() > 0) {
-                        times.add((slot.ready() ? "Klaar om " : "") + clock(slot.start()));
+                        times.add((slot.ready() ? t(R.string.ready_by) : "") + clock(slot.start()));
                     }
                     windowSwitches[day][index].setChecked(slot.enabled());
-                    String range = slot.duration() == 0 ? "Niet ingesteld"
-                        : slot.ready() ? "Klaar om " + clock(slot.start())
+                    String range = slot.duration() == 0 ? t(R.string.not_set)
+                        : slot.ready() ? t(R.string.ready_by) + clock(slot.start())
                         : clock(slot.start()) + " – " + endTime(slot.start(), slot.duration());
                     String heat = slot.profile() >= 0 ? " · " + ClimateProfiles.get(prefs, slot.profile()).name()
-                        : slot.heating() == Planner.DEFAULT_HEAT ? "" : " · Eigen verwarming";
-                    if (slot.homeOnly()) heat += " · Alleen thuis";
+                        : slot.heating() == Planner.DEFAULT_HEAT ? "" : t(R.string.own_heating);
+                    if (slot.homeOnly()) heat += t(R.string.home_alone);
                     Button button = windowButtons[day][index];
-                    set(button, (slot.duration() == 0 ? "Tijdvak " + (index + 1) + " toevoegen" : range) + heat);
-                    button.setContentDescription("Tijdvak " + (index + 1) + ", " + range + heat);
+                    set(button, (slot.duration() == 0 ? t(R.string.time_slot) + (index + 1) + t(R.string.add) : range) + heat);
+                    button.setContentDescription(t(R.string.time_slot) + (index + 1) + ", " + range + heat);
                     button.setCompoundDrawablesRelativeWithIntrinsicBounds(
                         active && slot.enabled() ? slotAccent : null, null, null, null);
                     button.setCompoundDrawablePadding(dp(8));
                 }
                 boolean expanded = dayPanes[day].getVisibility() == View.VISIBLE;
-                String status = !active ? "Niet actief" : times.isEmpty() ? "Geen actieve tijdvakken"
-                    : expanded ? times.size() + (times.size() == 1 ? " actief tijdvak" : " actieve tijdvakken")
+                String status = !active ? t(R.string.not_active) : times.isEmpty() ? t(R.string.no_active_time_slots)
+                    : expanded ? times.size() + (times.size() == 1 ? t(R.string.active_period) : t(R.string.active_time_slots))
                     : String.join(" · ", times);
                 String dayTitle = DAYS[day];
                 set(dayChevrons[day], expanded ? "⌃" : "⌄");
@@ -680,7 +688,7 @@ public final class MainActivity extends Activity {
                 dayHeaders[day].setText(label);
                 dayHeaders[day].setContentDescription(DAYS[day] + ", " + status);
                 if (Build.VERSION.SDK_INT >= 30) {
-                    dayHeaders[day].setStateDescription(expanded ? "Uitgeklapt" : "Ingeklapt");
+                    dayHeaders[day].setStateDescription(expanded ? t(R.string.expanded) : t(R.string.collapsed));
                 }
             }
         } finally {
@@ -696,17 +704,17 @@ public final class MainActivity extends Activity {
         for (int day = 0; day < DAYS.length; day++) {
             if (day == source) continue;
             labels[index] = DAYS[day] + (readSlot(day, 0).duration() > 0 || readSlot(day, 1).duration() > 0
-                ? " · vervangt bestaande tijdvakken" : "");
+                ? t(R.string.replaces_existing_time_slots) : "");
             days[index++] = day;
         }
         AlertDialog dialog = new AlertDialog.Builder(this)
-            .setTitle(DAYS[source] + " kopiëren naar")
+            .setTitle(DAYS[source] + t(R.string.copy_to))
             .setMultiChoiceItems(labels, selected, (window, position, checked) -> {
                 selected[position] = checked;
                 setCopyEnabled(((AlertDialog) window).getButton(AlertDialog.BUTTON_POSITIVE), hasSelection(selected));
             })
-            .setNegativeButton("Annuleren", null)
-            .setPositiveButton("Tijdvakken vervangen", null).create();
+            .setNegativeButton(t(R.string.cancel), null)
+            .setPositiveButton(t(R.string.replace_time_slots), null).create();
         dialog.setOnShowListener(ignored -> {
             Button confirm = styleDialogAction(dialog);
             setCopyEnabled(confirm, false);
@@ -717,7 +725,7 @@ public final class MainActivity extends Activity {
                 }
                 if (saveDayCopy(source, targets)) {
                     dialog.dismiss();
-                    Toast.makeText(this, "Tijdvakken gekopieerd.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, t(R.string.time_slots_copied), Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -759,15 +767,15 @@ public final class MainActivity extends Activity {
         SlotPlan current = readSlot(day, index);
         LinearLayout form = column();
         form.setPadding(dp(20), dp(4), dp(20), dp(12));
-        Switch ready = heatingChoice(form, "Klaar om de gekozen tijd", current.ready());
+        Switch ready = heatingChoice(form, t(R.string.ready_at_the_chosen_time), current.ready());
         LinearLayout controls = editorRow(form);
-        NumberPicker hour = timePicker("Uur", 23, current.start() / 60);
-        NumberPicker minute = timePicker("Startminuut", 59, current.start() % 60);
+        NumberPicker hour = timePicker(t(R.string.hour), 23, current.start() / 60);
+        NumberPicker minute = timePicker(t(R.string.start_minute), 59, current.start() % 60);
         NumberPicker duration = durationPicker(current.duration(), true);
-        duration.setContentDescription("Duur in minuten");
-        addPicker(controls, "Uur", hour);
-        addPicker(controls, "Minuut", minute);
-        addPicker(controls, "Duur (min)", duration);
+        duration.setContentDescription(t(R.string.duration_in_minutes));
+        addPicker(controls, t(R.string.hour), hour);
+        addPicker(controls, t(R.string.minute), minute);
+        addPicker(controls, t(R.string.duration_min), duration);
 
         TextView summary = text("", 17, INK, true);
         summary.setPadding(0, dp(4), 0, 0);
@@ -776,9 +784,9 @@ public final class MainActivity extends Activity {
             int start = hour.getValue() * 60 + minute.getValue();
             int minutes = pickedDuration(duration);
             int begin = start - (ready.isChecked() ? minutes : 0);
-            set(summary, "Start om " + clock(Math.floorMod(begin, 1440))
-                + (begin < 0 ? " (vorige dag)" : "") + " · " + cycleLabel(minutes)
-                + "\nEinde " + endTime(begin, minutes));
+            set(summary, t(R.string.start_at) + clock(Math.floorMod(begin, 1440))
+                + (begin < 0 ? t(R.string.previous_day) : "") + " · " + cycleLabel(minutes)
+                + t(R.string.end) + endTime(begin, minutes));
         };
         ready.setOnCheckedChangeListener((view, selected) -> showEnd.run());
         hour.setOnValueChangedListener((picker, oldValue, newValue) -> showEnd.run());
@@ -787,21 +795,21 @@ public final class MainActivity extends Activity {
         showEnd.run();
 
         var profile = profilePicker(form, current.profile());
-        var home = heatingChoice(form, "Alleen starten als de auto thuis staat", current.homeOnly());
-        if (!prefs.contains("homeLat")) form.addView(text("Stel de thuislocatie eerst in onder Instellingen.", 13, MUTED, false));
-        Switch useCustomHeat = heatingChoice(form, "Eigen verwarmingsopties",
+        var home = heatingChoice(form, t(R.string.only_start_when_the_car_is), current.homeOnly());
+        if (!prefs.contains("homeLat")) form.addView(text(t(R.string.first_set_the_home_location_under), 13, MUTED, false));
+        Switch useCustomHeat = heatingChoice(form, t(R.string.own_heating_options),
             current.heating() != Planner.DEFAULT_HEAT);
-        TextView heatHint = text("Gebruikt " + generalProfileName() + " uit Instellingen.", 14, MUTED, false);
+        TextView heatHint = text(t(R.string.used) + generalProfileName() + t(R.string.from_settings), 14, MUTED, false);
         form.addView(heatHint);
         LinearLayout choices = column();
         form.addView(choices);
         int savedHeat = current.heating() == Planner.DEFAULT_HEAT
             ? Planner.climateOptions(prefs, null, ZoneId.systemDefault()).heat() : current.heating();
-        Switch wheel = heatingChoice(choices, "Stuurverwarming", (savedHeat & Planner.HEAT_WHEEL) != 0);
-        Switch mirrors = heatingChoice(choices, "Spiegel- en achterruitverwarming", (savedHeat & Planner.HEAT_MIRRORS) != 0);
-        choices.addView(text("Voorruit ontdooien", 14, MUTED, false));
+        Switch wheel = heatingChoice(choices, t(R.string.steering_wheel_heating), (savedHeat & Planner.HEAT_WHEEL) != 0);
+        Switch mirrors = heatingChoice(choices, t(R.string.mirror_and_rear_window_heating), (savedHeat & Planner.HEAT_MIRRORS) != 0);
+        choices.addView(text(t(R.string.windshield_defrost), 14, MUTED, false));
         var windshield = windshieldChoices(choices, savedHeat);
-        choices.addView(text("Slim gebruikt de grens uit Standaardverwarming.", 13, MUTED, false));
+        choices.addView(text(t(R.string.slim_uses_the_limit_from_standard), 13, MUTED, false));
         Runnable showHeat = () -> {
             boolean usesProfile = profile.getSelectedItemPosition() > 0;
             boolean custom = !usesProfile && useCustomHeat.isChecked();
@@ -821,20 +829,20 @@ public final class MainActivity extends Activity {
         formScroll.addView(form);
 
         AlertDialog dialog = new AlertDialog.Builder(this)
-            .setTitle(DAYS[day] + " · Tijdvak " + (index + 1)).setView(formScroll)
-            .setNegativeButton("Annuleren", null)
-            .setPositiveButton("Opslaan", null).create();
+            .setTitle(DAYS[day] + t(R.string.period_2) + (index + 1)).setView(formScroll)
+            .setNegativeButton(t(R.string.cancel), null)
+            .setPositiveButton(t(R.string.save), null).create();
         if (current.duration() > 0) {
-            Button clear = addButton(form, "Tijdvak wissen", false, () -> new AlertDialog.Builder(this)
-                .setTitle("Tijdvak wissen?")
-                .setMessage(DAYS[day] + " · Tijdvak " + (index + 1)
-                    + "\nDe opgeslagen tijd en verwarmingsopties worden gewist.")
-                .setNegativeButton("Annuleren", null)
-                .setPositiveButton("Wissen", (confirmation, choice) -> {
+            Button clear = addButton(form, t(R.string.clear_time_slot), false, () -> new AlertDialog.Builder(this)
+                .setTitle(t(R.string.delete_time_slot))
+                .setMessage(DAYS[day] + t(R.string.period_2) + (index + 1)
+                    + t(R.string.the_saved_time_and_heating_options))
+                .setNegativeButton(t(R.string.cancel), null)
+                .setPositiveButton(t(R.string.clear), (confirmation, choice) -> {
                     int defaultStart = index == 0 ? 17 * 60 + 30 : 19 * 60;
                     if (saveWindow(day, index, new SlotPlan(defaultStart, 0, false, Planner.DEFAULT_HEAT), error)) {
                         dialog.dismiss();
-                        Toast.makeText(this, "Tijdvak gewist.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, t(R.string.time_slot_deleted), Toast.LENGTH_SHORT).show();
                     }
                 }).show());
             clear.setTextColor(CORAL);
@@ -853,7 +861,7 @@ public final class MainActivity extends Activity {
                     enabled || current.duration() == 0, heating, ready.isChecked(),
                     profile.getSelectedItemPosition() - 1, home.isChecked()), error)) {
                 dialog.dismiss();
-                Toast.makeText(this, "Tijdvak opgeslagen.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, t(R.string.time_slot_saved), Toast.LENGTH_SHORT).show();
             } else {
                 error.post(() -> formScroll.smoothScrollTo(0, error.getBottom()));
             }
@@ -866,7 +874,7 @@ public final class MainActivity extends Activity {
         picker.setContentDescription(description);
         picker.setMinValue(0);
         picker.setMaxValue(max);
-        picker.setFormatter(number -> String.format(NL, "%02d", number));
+        picker.setFormatter(number -> String.format(AppLanguage.locale(), "%02d", number));
         picker.setValue(value);
         return picker;
     }
@@ -883,7 +891,7 @@ public final class MainActivity extends Activity {
 
     private static String endTime(int start, int minutes) {
         int end = start + minutes;
-        return clock(end % 1440) + (end >= 1440 ? " (+1 dag)" : "");
+        return clock(end % 1440) + (end >= 1440 ? t(R.string.text_1_day) : "");
     }
 
     private boolean saveWindow(int day, int index, SlotPlan slot) {
@@ -930,7 +938,7 @@ public final class MainActivity extends Activity {
             }
         }
         if (Schedule.overlaps(windows)) {
-            String message = "Tijdvakken overlappen. Pas de starttijd of duur aan, of zet een overlappend tijdvak uit.";
+            String message = t(R.string.time_slots_overlap_adjust_the_start);
             if (error == null) {
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             } else {
@@ -1017,11 +1025,11 @@ public final class MainActivity extends Activity {
         var profile = profilePicker(form, selectedProfile);
         var profileTemp = text("", 14, MUTED, false);
         form.addView(profileTemp);
-        var override = heatingChoice(form, "Temperatuur voor deze start aanpassen", savedTemperature >= Planner.MIN_TEMP_HALVES);
+        var override = heatingChoice(form, t(R.string.adjust_temperature_before_this_start), savedTemperature >= Planner.MIN_TEMP_HALVES);
         var temperature = temperaturePicker(savedTemperature >= Planner.MIN_TEMP_HALVES ? savedTemperature
             : Planner.climateOptions(prefs, null, ZoneId.systemDefault()).temperature());
         form.addView(temperature, -1, -2);
-        form.addView(text("Duur", 15, MUTED, true));
+        form.addView(text(t(R.string.expensive), 15, MUTED, true));
         var quick = new LinearLayout(this);
         quick.setOrientation(stackControls() ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
         form.addView(quick, -1, -2);
@@ -1035,14 +1043,14 @@ public final class MainActivity extends Activity {
             int selection = profile.getSelectedItemPosition() - 1;
             int degrees = selection >= 0 ? ClimateProfiles.get(prefs, selection).temperature()
                 : Planner.climateOptions(prefs, null, ZoneId.systemDefault()).temperature();
-            set(profileTemp, "Doeltemperatuur " + temperatureLabel(override.isChecked() ? temperature.getValue() : degrees));
+            set(profileTemp, t(R.string.target_temperature) + temperatureLabel(override.isChecked() ? temperature.getValue() : degrees));
             var timing = Planner.previewManual(this, minutes, System.currentTimeMillis());
-            set(preview, timing.firstConflict() > 0 ? "Overlapt met " + format(timing.firstConflict(), "EEE HH:mm")
-                + " · samen tot " + format(timing.end(), "EEE HH:mm") : "Verwacht einde " + format(timing.end(), "HH:mm"));
+            set(preview, timing.firstConflict() > 0 ? t(R.string.overlaps_with) + format(timing.firstConflict(), "EEE HH:mm")
+                + t(R.string.together_until) + format(timing.end(), "EEE HH:mm") : t(R.string.expected_ending) + format(timing.end(), "HH:mm"));
         };
         for (int index = 0; index < buttons.length; index++) {
             int minutes = (index + 1) * 15;
-            var button = addButton(quick, minutes + " min", false, () -> {
+            var button = addButton(quick, minutes + t(R.string.min), false, () -> {
                 picker.setValue(minutes / 15 - 1);
                 picker.setVisibility(View.GONE);
                 update.run();
@@ -1050,11 +1058,11 @@ public final class MainActivity extends Activity {
             if (!stackControls()) button.setLayoutParams(new LinearLayout.LayoutParams(0, -2, 1));
             buttons[index] = button;
         }
-        var more = addButton(form, "Andere duur kiezen", false, () -> {
+        var more = addButton(form, t(R.string.choose_a_different_duration), false, () -> {
             picker.setVisibility(picker.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
             update.run();
         });
-        more.setContentDescription("Andere klimaatduur kiezen");
+        more.setContentDescription(t(R.string.select_a_different_climate_duration));
         form.addView(picker, -1, -2);
         picker.setVisibility(savedDuration > 45 ? View.VISIBLE : View.GONE);
         form.addView(preview);
@@ -1074,17 +1082,17 @@ public final class MainActivity extends Activity {
         update.run();
         var body = new ScrollView(this);
         body.addView(form);
-        var dialog = new AlertDialog.Builder(this).setTitle(retry ? "Opnieuw proberen" : "Handmatig starten").setView(body)
-            .setNegativeButton("Annuleren", null)
-            .setPositiveButton("Starten", (window, option) -> {
+        var dialog = new AlertDialog.Builder(this).setTitle(retry ? t(R.string.try_again) : t(R.string.start_manually)).setView(body)
+            .setNegativeButton(t(R.string.cancel), null)
+            .setPositiveButton(t(R.string.start), (window, option) -> {
                 picker.clearFocus();
                 temperature.clearFocus();
                 int duration = pickedDuration(picker);
                 int selected = profile.getSelectedItemPosition() - 1;
                 int requested = override.isChecked() ? temperature.getValue() : -1;
-                authenticate("Klimaat starten", () -> {
+                authenticate(t(R.string.start_climate), () -> {
                     if (!Planner.manual(this, duration, selected, requested))
-                        Toast.makeText(this, "Controleer Kia Connect en exacte alarmen.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, t(R.string.check_kia_connect_and_exact_alarms), Toast.LENGTH_LONG).show();
                     refresh();
                 });
             }).create();
@@ -1109,19 +1117,19 @@ public final class MainActivity extends Activity {
         };
         LinearLayout form = column();
         form.setPadding(dp(20), 0, dp(20), dp(8));
-        Switch ready = heatingChoice(form, "Klaar om de gekozen tijd", savedReady);
+        Switch ready = heatingChoice(form, t(R.string.ready_at_the_chosen_time), savedReady);
         Button date = addButton(form, "", false, () -> {});
         Button time = addButton(form, "", false, () -> {});
         var duration = durationPicker(editing ? (int) ((savedEnd - saved) / Schedule.MINUTE) : Schedule.CYCLE_MINUTES, false);
         TextView schedulePreview = text("", 16, INK, true);
         schedulePreview.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
         Runnable showChoice = () -> {
-            set(date, choice.start.format(DateTimeFormatter.ofPattern("EEEE d MMMM yyyy", NL)));
-            set(time, (ready.isChecked() ? "Klaar om" : "Starttijd") + " · "
-                + choice.start.format(DateTimeFormatter.ofPattern("HH:mm", NL)));
+            set(date, choice.start.format(DateTimeFormatter.ofPattern("EEEE d MMMM yyyy", AppLanguage.locale())));
+            set(time, (ready.isChecked() ? t(R.string.ready_by_2) : t(R.string.start_time)) + " · "
+                + choice.start.format(DateTimeFormatter.ofPattern("HH:mm", AppLanguage.locale())));
             int minutes = pickedDuration(duration);
             long start = onceStart(choice.start, zone, minutes, ready.isChecked());
-            set(schedulePreview, "Start " + format(start, "EEE d MMM 'om' HH:mm") + " · " + cycleLabel(minutes));
+            set(schedulePreview, t(R.string.go) + format(start, "EEE d MMM · HH:mm") + " · " + cycleLabel(minutes));
         };
         date.setOnClickListener(view -> {
             var current = choice.start.toLocalDate();
@@ -1139,14 +1147,14 @@ public final class MainActivity extends Activity {
         ready.setOnCheckedChangeListener((view, checked) -> showChoice.run());
         duration.setOnValueChangedListener((picker, oldValue, newValue) -> showChoice.run());
         showChoice.run();
-        duration.setContentDescription("Duur in minuten");
-        form.addView(text("Duur in minuten", 15, MUTED, false));
+        duration.setContentDescription(t(R.string.duration_in_minutes));
+        form.addView(text(t(R.string.duration_in_minutes), 15, MUTED, false));
         form.addView(duration, -1, -2);
         form.addView(schedulePreview);
         var profile = profilePicker(form, editing ? prefs.getInt("onceProfile", -1) : -1);
-        var home = heatingChoice(form, "Alleen starten als de auto thuis staat", editing && prefs.getBoolean("onceHomeOnly", false));
-        if (!prefs.contains("homeLat")) form.addView(text("Stel de thuislocatie eerst in onder Instellingen.", 13, MUTED, false));
-        addButton(form, "Vertrektijd uit agenda", false, () -> pickCalendar(selected -> {
+        var home = heatingChoice(form, t(R.string.only_start_when_the_car_is), editing && prefs.getBoolean("onceHomeOnly", false));
+        if (!prefs.contains("homeLat")) form.addView(text(t(R.string.first_set_the_home_location_under), 13, MUTED, false));
+        addButton(form, t(R.string.departure_time_from_agenda), false, () -> pickCalendar(selected -> {
             choice.start = Instant.ofEpochMilli(selected).atZone(zone).toLocalDateTime().truncatedTo(ChronoUnit.MINUTES);
             ready.setChecked(true);
             showChoice.run();
@@ -1157,9 +1165,9 @@ public final class MainActivity extends Activity {
         form.addView(error);
         var scroll = new ScrollView(this);
         scroll.addView(form);
-        var builder = new AlertDialog.Builder(this).setTitle("Eenmalig plannen").setView(scroll)
-            .setNegativeButton("Sluiten", null).setPositiveButton("Inplannen", null);
-        if (editing) builder.setNeutralButton("Planning wissen", (dialog, button) -> {
+        var builder = new AlertDialog.Builder(this).setTitle(t(R.string.plan_once)).setView(scroll)
+            .setNegativeButton(t(R.string.close), null).setPositiveButton(t(R.string.schedule), null);
+        if (editing) builder.setNeutralButton(t(R.string.clear_schedule), (dialog, button) -> {
             Planner.cancelOnce(this);
             refresh();
         });
@@ -1172,8 +1180,8 @@ public final class MainActivity extends Activity {
                 dialog.dismiss();
                 refresh();
             } else {
-                set(error, start <= System.currentTimeMillis() ? "Kies een datum en tijd in de toekomst."
-                    : "Inplannen lukte niet. Controleer de Kia-koppeling en de toestemming voor exacte alarmen.");
+                set(error, start <= System.currentTimeMillis() ? t(R.string.choose_a_date_and_time_in)
+                    : t(R.string.scheduling_was_not_possible_check_the));
                 error.setVisibility(View.VISIBLE);
                 scroll.post(() -> scroll.fullScroll(View.FOCUS_DOWN));
             }
@@ -1231,43 +1239,54 @@ public final class MainActivity extends Activity {
         accountState = account;
         accountDetails = column();
         settings.addView(accountDetails);
-        accountButton = addButton(accountDetails, "Kia-account koppelen", true,
+        accountButton = addButton(accountDetails, t(R.string.link_kia_account), true,
             () -> openFromPlanner(new Intent(this, KiaAccountActivity.class)));
-        unlink = addButton(accountDetails, "Account loskoppelen", false, () -> new AlertDialog.Builder(this)
-            .setTitle("Kia-account loskoppelen?")
-            .setMessage("De planning wordt uitgezet en de opgeslagen aanmeldgegevens worden gewist.")
-            .setNegativeButton("Annuleren", null)
-            .setPositiveButton("Loskoppelen", (dialog, choice) -> unlinkAccount())
+        unlink = addButton(accountDetails, t(R.string.disconnect_account), false, () -> new AlertDialog.Builder(this)
+            .setTitle(t(R.string.disconnect_kia_account))
+            .setMessage(t(R.string.the_schedule_is_disabled_and_the))
+            .setNegativeButton(t(R.string.cancel), null)
+            .setPositiveButton(t(R.string.disconnect), (dialog, choice) -> unlinkAccount())
             .show());
         access = text("", 14, MUTED, false);
         accountDetails.addView(access);
-        alertToggle(notifications, "Einde tijdvak", "notifyWindowEnd");
-        alertToggle(notifications, "Startlimiet Kia", "notifyStartLimit");
-        var late = heatingChoice(notifications, "Vertraging bij Klaar om", prefs.getBoolean("notifyDepartureDelay", false));
+        alertToggle(notifications, t(R.string.end_of_period), "notifyWindowEnd");
+        alertToggle(notifications, t(R.string.kia_request_limit), "notifyStartLimit");
+        var late = heatingChoice(notifications, t(R.string.delay_at_ready_at), prefs.getBoolean("notifyDepartureDelay", false));
         late.setOnCheckedChangeListener((view, checked) -> prefs.edit().putBoolean("notifyDepartureDelay", checked).apply());
-        alertToggle(notifications, "Geplande start mislukt", "notifyStartFailure");
-        var quiet = heatingChoice(notifications, "Stille meldingsstand", prefs.getBoolean("quietAlerts", false));
+        alertToggle(notifications, t(R.string.scheduled_start_failed), "notifyStartFailure");
+        var quiet = heatingChoice(notifications, t(R.string.silent_notification_mode), prefs.getBoolean("quietAlerts", false));
         quiet.setOnCheckedChangeListener((view, checked) -> prefs.edit().putBoolean("quietAlerts", checked).apply());
-        notifications.addView(text("Alleen pop-ups bij problemen. Tijdvakken blijven in het log.", 13, MUTED, false));
-        addButton(settings, "Verbindingscheck", false, this::checkConnection);
-        alertPermission = addButton(notifications, "Android-meldingen toestaan", false, this::allowAlerts);
-        alarmPermission = addButton(accountDetails, "Exacte alarmen toestaan", false, () -> {
+        notifications.addView(text(t(R.string.only_pop_ups_in_case_of), 13, MUTED, false));
+        addButton(settings, t(R.string.connection_check), false, this::checkConnection);
+        alertPermission = addButton(notifications, t(R.string.allow_android_notifications), false, this::allowAlerts);
+        alarmPermission = addButton(accountDetails, t(R.string.allow_exact_alarms), false, () -> {
             if (Build.VERSION.SDK_INT >= 31) openFromPlanner(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
                 Uri.parse("package:" + getPackageName())));
         });
         screenControls = column();
         accountDetails.addView(screenControls);
-        addButton(screenControls, "Toegankelijkheid openen", false,
+        addButton(screenControls, t(R.string.open_accessibility), false,
             () -> openFromPlanner(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)));
-        addButton(screenControls, "Kia-knop controleren", false, () -> {
+        addButton(screenControls, t(R.string.check_kia_button), false, () -> {
             if (KiaControls.active != null) KiaControls.active.preview();
-            else Toast.makeText(this, "Schakel eerst toegankelijkheid in.", Toast.LENGTH_LONG).show();
+            else Toast.makeText(this, t(R.string.first_enable_accessibility), Toast.LENGTH_LONG).show();
         });
+    }
+
+    private void chooseLanguage() {
+        new AlertDialog.Builder(this).setTitle(AppLanguage.t(R.string.choose_language))
+            .setSingleChoiceItems(AppLanguage.choices(), AppLanguage.selectedIndex(), (dialog, index) -> {
+                dialog.dismiss();
+                if (AppLanguage.select(this, index)) {
+                    ClimateWidget.refresh(this);
+                    if (Build.VERSION.SDK_INT < 33) recreate();
+                }
+            }).setNegativeButton(android.R.string.cancel, null).show();
     }
 
     private void addClimateWeatherSetting(LinearLayout panel) {
         divider(panel);
-        var toggle = heatingChoice(panel, "Weer gebruiken voor klimaaticoontje",
+        var toggle = heatingChoice(panel, t(R.string.use_weather_for_climate_icon),
             prefs.getBoolean(ClimateIndicator.WEATHER_ENABLED, true));
         toggle.setOnCheckedChangeListener((view, checked) -> {
             prefs.edit().putBoolean(ClimateIndicator.WEATHER_ENABLED, checked).apply();
@@ -1277,7 +1296,7 @@ public final class MainActivity extends Activity {
                 requestBattery(false);
             }
         });
-        var source = text("Open-Meteo gebruikt de laatst bekende autolocatie voor deze schatting.", 13, MUTED, false);
+        var source = text(t(R.string.open_meteo_uses_the_last_known), 13, MUTED, false);
         source.setPadding(0, 0, 0, dp(4));
         panel.addView(source);
     }
@@ -1295,7 +1314,7 @@ public final class MainActivity extends Activity {
                 info.setClassName(Button.class.getName());
             }
         });
-        var label = text("Temperatuur", 16, INK, false);
+        var label = text(t(R.string.temperature), 16, INK, false);
         decorate(label, R.drawable.ic_ui_temp, ACCENT, 20);
         control.addView(label, new LinearLayout.LayoutParams(0, -2, 1));
         var value = text("", 18, INK, true);
@@ -1303,7 +1322,7 @@ public final class MainActivity extends Activity {
         Runnable updateTemperature = () -> {
             String degrees = temperatureLabel(Planner.temperatureHalves(prefs));
             set(value, degrees + "  ›");
-            control.setContentDescription("Temperatuur, " + degrees + ", wijzigen");
+            control.setContentDescription(t(R.string.temperature_2) + degrees + t(R.string.change_2));
         };
         label.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         value.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
@@ -1319,9 +1338,9 @@ public final class MainActivity extends Activity {
             picker.setDisplayedValues(temperatures);
             picker.setValue(Planner.temperatureHalves(prefs));
             picker.setWrapSelectorWheel(false);
-            picker.setContentDescription("Temperatuur in graden Celsius");
-            var dialog = new AlertDialog.Builder(this).setTitle("Gewenste temperatuur").setView(picker)
-                .setNegativeButton("Annuleren", null).setPositiveButton("Opslaan", (window, choice) -> {
+            picker.setContentDescription(t(R.string.temperature_in_degrees_celsius));
+            var dialog = new AlertDialog.Builder(this).setTitle(t(R.string.desired_temperature)).setView(picker)
+                .setNegativeButton(t(R.string.cancel), null).setPositiveButton(t(R.string.save), (window, choice) -> {
                     picker.clearFocus();
                     int selected = picker.getValue();
                     prefs.edit().putInt("temperatureHalves", selected).apply();
@@ -1333,7 +1352,7 @@ public final class MainActivity extends Activity {
     }
 
     private static String temperatureLabel(int halves) {
-        return halves / 2 + (halves % 2 == 0 ? " °C" : ",5 °C");
+        return String.format(AppLanguage.locale(), halves % 2 == 0 ? "%.0f °C" : "%.1f °C", halves / 2.0);
     }
 
     private Switch heatingChoice(LinearLayout panel, String label, boolean checked) {
@@ -1379,16 +1398,16 @@ public final class MainActivity extends Activity {
     private android.widget.Spinner profilePicker(LinearLayout form, int selected) {
         String[] names = new String[ClimateProfiles.COUNT + 1];
         int active = ClimateRules.profile(prefs, System.currentTimeMillis(), ZoneId.systemDefault());
-        names[0] = "Algemeen · " + (active < 0 ? "Standaardverwarming" : ClimateProfiles.get(prefs, active).name());
+        names[0] = t(R.string.general) + (active < 0 ? t(R.string.standard_heating) : ClimateProfiles.get(prefs, active).name());
         for (int index = 0; index < ClimateProfiles.COUNT; index++) {
             names[index + 1] = ClimateProfiles.get(prefs, index).name();
         }
-        return choicePicker(form, "Klimaatprofiel", names, selected + 1);
+        return choicePicker(form, t(R.string.climate_profile), names, selected + 1);
     }
 
     private android.widget.RadioGroup windshieldChoices(LinearLayout form, int heat) {
         var group = new android.widget.RadioGroup(this);
-        String[] options = {"Uit", "Altijd bij eerste cyclus", "Slim bij kou"};
+        String[] options = {t(R.string.off), t(R.string.always_on_first_cycle), t(R.string.smart_in_the_cold)};
         for (String option : options) {
             var radio = new android.widget.RadioButton(this);
             radio.setId(View.generateViewId());
@@ -1410,15 +1429,15 @@ public final class MainActivity extends Activity {
 
     private static String windshieldLabel(int heat, int threshold) {
         return switch (ClimateProfiles.windshieldMode(heat)) {
-            case 1 -> "Altijd bij eerste cyclus";
-            case 2 -> "Slim ≤ " + threshold + " °C";
-            default -> "Uit";
+            case 1 -> t(R.string.always_on_first_cycle);
+            case 2 -> t(R.string.smart) + threshold + " °C";
+            default -> t(R.string.off);
         };
     }
 
     private static String cycleLabel(int minutes) {
         int count = Schedule.cycleCount(0, minutes * Schedule.MINUTE);
-        return count == 1 ? "1 cyclus gepland" : count + " cyclussen gepland";
+        return count == 1 ? t(R.string.text_1_cycle_planned) : count + t(R.string.cycles_planned);
     }
 
     private static long onceStart(LocalDateTime selected, ZoneId zone, int minutes, boolean ready) {
@@ -1453,11 +1472,11 @@ public final class MainActivity extends Activity {
         threshold.setMaxValue(30);
         threshold.setFormatter(value -> (value - 15) + " °C");
         threshold.setValue(selected + 15);
-        threshold.setContentDescription("Inschakelen bij of onder");
+        threshold.setContentDescription(t(R.string.enable_at_or_below));
         threshold.setWrapSelectorWheel(false);
         var box = column();
         form.addView(box);
-        box.addView(text("Inschakelen bij of onder", 14, MUTED, false));
+        box.addView(text(t(R.string.enable_at_or_below), 14, MUTED, false));
         box.addView(threshold, -1, -2);
         Runnable show = () -> box.setVisibility(selectedWindshield(mode) == 2 ? View.VISIBLE : View.GONE);
         mode.setOnCheckedChangeListener((group, checkedId) -> show.run());
@@ -1470,35 +1489,35 @@ public final class MainActivity extends Activity {
         form.setPadding(dp(20), 0, dp(20), dp(8));
         var mode = windshieldChoices(form, Planner.defaultHeat(prefs));
         var threshold = thresholdPicker(form, prefs.getInt("windshieldThreshold", ClimateProfiles.DEFAULT_THRESHOLD), mode);
-        new AlertDialog.Builder(this).setTitle("Voorruit ontdooien").setView(form)
-            .setNegativeButton("Annuleren", null).setPositiveButton("Opslaan", (dialog, which) -> {
+        new AlertDialog.Builder(this).setTitle(t(R.string.windshield_defrost)).setView(form)
+            .setNegativeButton(t(R.string.cancel), null).setPositiveButton(t(R.string.save), (dialog, which) -> {
                 threshold.clearFocus();
                 prefs.edit().putInt("windshieldMode", selectedWindshield(mode))
                     .putInt("windshieldThreshold", threshold.getValue() - 15).apply();
                 refresh();
-                Toast.makeText(this, "Voorruitstand opgeslagen.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, t(R.string.windshield_position_saved), Toast.LENGTH_SHORT).show();
             }).show();
     }
 
     private String generalProfileName() {
         int index = ClimateProfiles.general(prefs);
-        return index < 0 ? "Standaardverwarming" : ClimateProfiles.get(prefs, index).name();
+        return index < 0 ? t(R.string.standard_heating) : ClimateProfiles.get(prefs, index).name();
     }
 
     private void chooseGeneralProfile() {
         String[] names = new String[ClimateProfiles.COUNT + 1];
-        names[0] = "Standaardverwarming";
+        names[0] = t(R.string.standard_heating);
         for (int index = 0; index < ClimateProfiles.COUNT; index++) {
             var profile = ClimateProfiles.get(prefs, index);
             names[index + 1] = profile.name() + " · " + temperatureLabel(profile.temperature());
         }
-        new AlertDialog.Builder(this).setTitle("Algemeen klimaatprofiel")
+        new AlertDialog.Builder(this).setTitle(t(R.string.general_climate_profile))
             .setSingleChoiceItems(names, ClimateProfiles.general(prefs) + 1, (dialog, position) -> {
                 prefs.edit().putInt(ClimateProfiles.GENERAL, position - 1).apply();
                 ClimateWidget.refresh(this);
                 dialog.dismiss();
                 refresh();
-            }).setNegativeButton("Annuleren", null).show();
+            }).setNegativeButton(t(R.string.cancel), null).show();
     }
 
     private void manageProfiles() {
@@ -1507,8 +1526,8 @@ public final class MainActivity extends Activity {
             var profile = ClimateProfiles.get(prefs, index);
             names[index] = profile.name() + " · " + temperatureLabel(profile.temperature());
         }
-        new AlertDialog.Builder(this).setTitle("Klimaatprofielen").setItems(names, (dialog, index) -> editProfile(index))
-            .setNegativeButton("Sluiten", null).show();
+        new AlertDialog.Builder(this).setTitle(t(R.string.climate_profiles)).setItems(names, (dialog, index) -> editProfile(index))
+            .setNegativeButton(t(R.string.close), null).show();
     }
 
     private void editProfile(int index) {
@@ -1516,7 +1535,7 @@ public final class MainActivity extends Activity {
         LinearLayout form = column();
         form.setPadding(dp(20), 0, dp(20), dp(12));
         var name = new android.widget.EditText(this);
-        name.setHint("Profielnaam");
+        name.setHint(t(R.string.profile_name));
         name.setSingleLine(true);
         name.setFilters(new android.text.InputFilter[]{new android.text.InputFilter.LengthFilter(30)});
         name.setText(saved.name());
@@ -1526,22 +1545,22 @@ public final class MainActivity extends Activity {
         temperature.setMaxValue(Planner.MAX_TEMP_HALVES);
         temperature.setFormatter(MainActivity::temperatureLabel);
         temperature.setValue(saved.temperature());
-        temperature.setContentDescription("Doeltemperatuur");
-        form.addView(text("Doeltemperatuur", 14, MUTED, false));
+        temperature.setContentDescription(t(R.string.target_temperature_2));
+        form.addView(text(t(R.string.target_temperature_2), 14, MUTED, false));
         form.addView(temperature, -1, -2);
-        var wheel = heatingChoice(form, "Stuurverwarming", (saved.heat() & Planner.HEAT_WHEEL) != 0);
-        var mirrors = heatingChoice(form, "Spiegels en achterruit", (saved.heat() & Planner.HEAT_MIRRORS) != 0);
-        form.addView(text("Voorruit ontdooien", 14, MUTED, false));
+        var wheel = heatingChoice(form, t(R.string.steering_wheel_heating), (saved.heat() & Planner.HEAT_WHEEL) != 0);
+        var mirrors = heatingChoice(form, t(R.string.mirrors_and_rear_window), (saved.heat() & Planner.HEAT_MIRRORS) != 0);
+        form.addView(text(t(R.string.windshield_defrost), 14, MUTED, false));
         var mode = windshieldChoices(form, saved.heat());
         var threshold = thresholdPicker(form, saved.threshold(), mode);
         var body = new ScrollView(this);
         body.addView(form);
-        var dialog = new AlertDialog.Builder(this).setTitle("Profiel bewerken").setView(body)
-            .setNegativeButton("Annuleren", null).setPositiveButton("Opslaan", null).create();
+        var dialog = new AlertDialog.Builder(this).setTitle(t(R.string.edit_profile)).setView(body)
+            .setNegativeButton(t(R.string.cancel), null).setPositiveButton(t(R.string.save), null).create();
         dialog.setOnShowListener(ignored -> styleDialogAction(dialog).setOnClickListener(view -> {
             String label = name.getText().toString().trim();
             if (label.isEmpty()) {
-                name.setError("Vul een profielnaam in");
+                name.setError(t(R.string.enter_a_profile_name));
                 return;
             }
             temperature.clearFocus();
@@ -1563,27 +1582,27 @@ public final class MainActivity extends Activity {
     private void nextStartOptions() {
         var slot = displayedNext;
         if (slot == null) return;
-        if ("Eenmalige start".equals(Planner.startType(prefs, slot))) {
+        if (t(R.string.one_time_start).equals(Planner.startType(prefs, slot))) {
             planOnce();
             return;
         }
         if (!Planner.upcomingWeekly(prefs, slot, System.currentTimeMillis())) return;
         new AlertDialog.Builder(this).setTitle(format(slot.session(), "EEEE d MMM · HH:mm"))
-            .setItems(new String[]{"Deze start overslaan", "Deze start verplaatsen"}, (dialog, option) -> {
+            .setItems(new String[]{t(R.string.skip_this_start), t(R.string.this_starts_moving)}, (dialog, option) -> {
                 if (option == 1) {
                     var zone = ZoneId.systemDefault();
                     var selected = Instant.ofEpochMilli(slot.session()).atZone(zone).toLocalDateTime();
-                    pickDateTime(selected, "Nieuwe starttijd", start -> applyWeeklyChange(slot, start));
+                    pickDateTime(selected, t(R.string.new_start_time), start -> applyWeeklyChange(slot, start));
                 } else {
                     applyWeeklyChange(slot, 0);
                 }
-            }).setNegativeButton("Sluiten", null).show();
+            }).setNegativeButton(t(R.string.close), null).show();
     }
 
     private void applyWeeklyChange(Schedule.Slot slot, long start) {
         var change = Planner.adjustWeekly(this, slot, start);
         if (change == null) {
-            Toast.makeText(this, "Kies een vrije toekomstige starttijd of open Volgende start opnieuw.",
+            Toast.makeText(this, t(R.string.choose_a_free_future_start_time),
                 Toast.LENGTH_LONG).show();
         } else {
             undoChange = change;
@@ -1592,7 +1611,7 @@ public final class MainActivity extends Activity {
                 android.view.accessibility.AccessibilityManager.FLAG_CONTENT_CONTROLS
                 | android.view.accessibility.AccessibilityManager.FLAG_CONTENT_TEXT) : 12_000;
             undoUntil = android.os.SystemClock.elapsedRealtime() + timeout;
-            set(adjustmentMessage, start == 0 ? "Start overgeslagen" : "Start verplaatst naar "
+            set(adjustmentMessage, start == 0 ? t(R.string.start_skipped) : t(R.string.start_moved_to)
                 + format(start, "EEE d MMM HH:mm"));
         }
         refresh();
@@ -1602,7 +1621,7 @@ public final class MainActivity extends Activity {
         var change = undoChange;
         undoChange = null;
         if (change != null && !Planner.undoWeekly(this, change)) {
-            Toast.makeText(this, "Deze wijziging kan niet meer ongedaan worden gemaakt.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, t(R.string.this_change_cannot_be_undone), Toast.LENGTH_LONG).show();
         }
         refresh();
     }
@@ -1610,26 +1629,26 @@ public final class MainActivity extends Activity {
     private void pausePlanning() {
         boolean paused = prefs.getLong(WeeklyAdjustment.PAUSE, 0) > System.currentTimeMillis();
         String[] options = paused
-            ? new String[]{"Nu hervatten", "Pauzeren tot morgen", "Datum en tijd kiezen"}
-            : new String[]{"Tot morgen", "Datum en tijd kiezen"};
+            ? new String[]{t(R.string.resume_now), t(R.string.take_a_break_until_tomorrow), t(R.string.select_date_and_time)}
+            : new String[]{t(R.string.see_you_tomorrow), t(R.string.select_date_and_time)};
         var zone = ZoneId.systemDefault();
         var tomorrow = LocalDate.now(zone).plusDays(1).atStartOfDay();
-        new AlertDialog.Builder(this).setTitle("Weekplanning pauzeren").setItems(options, (dialog, index) -> {
+        new AlertDialog.Builder(this).setTitle(t(R.string.pause_weekly_planning)).setItems(options, (dialog, index) -> {
             int option = paused ? index : index + 1;
             if (option == 2) {
-                pickDateTime(tomorrow, "Hervatten om", until -> {
+                pickDateTime(tomorrow, t(R.string.resume_at), until -> {
                     if (until > System.currentTimeMillis()) {
                         Planner.pauseWeekly(this, until);
                         refresh();
                     } else {
-                        Toast.makeText(this, "Kies een tijd in de toekomst.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, t(R.string.choose_a_time_in_the_future), Toast.LENGTH_SHORT).show();
                     }
                 });
                 return;
             }
             Planner.pauseWeekly(this, option == 0 ? 0 : tomorrow.atZone(zone).toInstant().toEpochMilli());
             refresh();
-        }).setNegativeButton("Sluiten", null).show();
+        }).setNegativeButton(t(R.string.close), null).show();
     }
 
     private void pickDateTime(LocalDateTime initial, String title, java.util.function.LongConsumer confirm) {
@@ -1645,14 +1664,14 @@ public final class MainActivity extends Activity {
     }
 
     private void checkConnection() {
-        var dialog = new AlertDialog.Builder(this).setTitle("Verbindingscheck")
-            .setMessage("Kia en Android controleren…").setPositiveButton("Sluiten", null).show();
+        var dialog = new AlertDialog.Builder(this).setTitle(t(R.string.connection_check))
+            .setMessage(t(R.string.checking_kia_and_android)).setPositiveButton(t(R.string.close), null).show();
         KiaCloud.WORKER.execute(() -> {
             String result = KiaCloud.connectionCheck(getApplicationContext());
             runOnUiThread(() -> {
                 if (!dialog.isShowing()) return;
-                dialog.setMessage(result + "\nExacte alarmen: " + (Planner.hasAlarmAccess(this) ? "toegestaan" : "toestemming nodig")
-                    + "\nAndroid-meldingen: " + (WindowAlerts.permitted(this) ? "toegestaan" : "uitgeschakeld"));
+                dialog.setMessage(result + t(R.string.exact_alarms) + (Planner.hasAlarmAccess(this) ? t(R.string.allowed) : t(R.string.permission_required))
+                    + t(R.string.android_notifications) + (WindowAlerts.permitted(this) ? t(R.string.allowed) : t(R.string.disabled)));
             });
         });
     }
@@ -1669,7 +1688,7 @@ public final class MainActivity extends Activity {
         var radios = new android.widget.RadioGroup(this);
         radios.setOrientation(stackControls() ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
         toolbar.addView(radios, -1, -2);
-        String[] labels = {"Dag", "Week", "Maand"};
+        String[] labels = {t(R.string.day), t(R.string.week), t(R.string.month)};
         int[] ids = new int[labels.length];
         for (int index = 0; index < labels.length; index++) {
             var option = new android.widget.RadioButton(this);
@@ -1688,7 +1707,7 @@ public final class MainActivity extends Activity {
         var dateButton = new Button(this);
         var next = new Button(this);
         Runnable redraw = () -> {
-            set(dateButton, anchor[0].format(DateTimeFormatter.ofPattern("d MMM yyyy", NL)));
+            set(dateButton, anchor[0].format(DateTimeFormatter.ofPattern("d MMM yyyy", AppLanguage.locale())));
             next.setEnabled(anchor[0].isBefore(LocalDate.now(zone)));
             if (loaded[0]) render.run();
         };
@@ -1696,7 +1715,7 @@ public final class MainActivity extends Activity {
             anchor[0] = shiftEnergyDate(anchor[0], period[0], -1);
             redraw.run();
         });
-        previous.setContentDescription("Vorige periode");
+        previous.setContentDescription(t(R.string.previous_period));
         previous.setLayoutParams(new LinearLayout.LayoutParams(dp(48), dp(48)));
         var center = new LinearLayout.LayoutParams(0, dp(48), 1);
         center.setMarginStart(dp(8));
@@ -1714,7 +1733,7 @@ public final class MainActivity extends Activity {
             picker.show();
         });
         next.setText("›");
-        next.setContentDescription("Volgende periode");
+        next.setContentDescription(t(R.string.next_period));
         styleButton(next, false, 10);
         next.setMinHeight(dp(48));
         dates.addView(next, dp(48), dp(48));
@@ -1729,9 +1748,9 @@ public final class MainActivity extends Activity {
             for (int index = 0; index < ids.length; index++) if (ids[index] == checked) period[0] = index;
             redraw.run();
         });
-        var dialog = new AlertDialog.Builder(this).setTitle("Accu en klimaatverbruik").setView(body)
-            .setNegativeButton("Sluiten", null).create();
-        lines.addView(text("Overzicht laden…", 14, MUTED, false));
+        var dialog = new AlertDialog.Builder(this).setTitle(t(R.string.battery_and_climate_consumption)).setView(body)
+            .setNegativeButton(t(R.string.close), null).create();
+        lines.addView(text(t(R.string.loading_overview), 14, MUTED, false));
         dialog.show();
         SharedPreferences.OnSharedPreferenceChangeListener batteryChanged = (stored, key) -> {
             if ("batteryTime".equals(key)) handler.post(() -> {
@@ -1753,7 +1772,7 @@ public final class MainActivity extends Activity {
                 runOnUiThread(() -> {
                     if (dialog.isShowing()) {
                         lines.removeAllViews();
-                        lines.addView(text("Verbruiksgegevens konden niet worden geopend.", 14, MUTED, false));
+                        lines.addView(text(t(R.string.usage_data_could_not_be_opened), 14, MUTED, false));
                     }
                 });
             }
@@ -1784,20 +1803,20 @@ public final class MainActivity extends Activity {
             energy += day.energy();
             duration += day.duration();
         }
-        String range = period == 0 ? first.format(DateTimeFormatter.ofPattern("EEEE d MMMM", NL))
-            : period == 1 ? first.format(DateTimeFormatter.ofPattern("d MMM", NL)) + " – "
-                + end.minusDays(1).format(DateTimeFormatter.ofPattern("d MMM", NL))
-                : first.format(DateTimeFormatter.ofPattern("MMMM yyyy", NL));
+        String range = period == 0 ? first.format(DateTimeFormatter.ofPattern("EEEE d MMMM", AppLanguage.locale()))
+            : period == 1 ? first.format(DateTimeFormatter.ofPattern("d MMM", AppLanguage.locale())) + " – "
+                + end.minusDays(1).format(DateTimeFormatter.ofPattern("d MMM", AppLanguage.locale()))
+                : first.format(DateTimeFormatter.ofPattern("MMMM yyyy", AppLanguage.locale()));
         var heading = text(range, 16, INK, true);
         if (Build.VERSION.SDK_INT >= 28) heading.setAccessibilityHeading(true);
         page.addView(heading);
-        page.addView(text("Geschat klimaatverbruik  " + EnergyChart.format(energy) + " kWh · " + minutes(duration), 15, ACCENT, true));
+        page.addView(text(t(R.string.estimated_climate_consumption) + EnergyChart.format(energy) + " kWh · " + minutes(duration), 15, ACCENT, true));
         if (period != 0) {
             var today = LocalDate.now(zone);
             for (var day : days) {
                 if (day.date().isAfter(today)) break;
                 var row = editorRow(page);
-                var date = text(day.date().format(DateTimeFormatter.ofPattern("EEE d MMM", NL)), 14, MUTED, false);
+                var date = text(day.date().format(DateTimeFormatter.ofPattern("EEE d MMM", AppLanguage.locale())), 14, MUTED, false);
                 row.addView(date, new LinearLayout.LayoutParams(0, -2, 1));
                 var amount = text(EnergyChart.format(day.energy()) + " kWh", 14, INK, true);
                 row.addView(amount);
@@ -1807,21 +1826,21 @@ public final class MainActivity extends Activity {
             return;
         }
         var battery = history.batteryChart(anchor, zone);
-        page.addView(text("Tractieaccu (%)", 16, INK, true));
+        page.addView(text(t(R.string.traction_battery_2), 16, INK, true));
         if (battery.isEmpty()) {
-            page.addView(text("Geen Kia-accumeting op deze dag.", 14, MUTED, false));
+            page.addView(text(t(R.string.no_kia_battery_measurement_on_this), 14, MUTED, false));
         } else {
             var firstPoint = battery.get(0);
             var lastPoint = battery.get(battery.size() - 1);
-            page.addView(text(dashboardPercentage(firstPoint.value()) + " om " + format(firstPoint.time(), "HH:mm")
-                + (battery.size() > 1 ? " → " + dashboardPercentage(lastPoint.value()) + " om " + format(lastPoint.time(), "HH:mm")
-                : " · één meting"), 14, MUTED, false));
+            page.addView(text(dashboardPercentage(firstPoint.value()) + t(R.string.om) + format(firstPoint.time(), "HH:mm")
+                + (battery.size() > 1 ? " → " + dashboardPercentage(lastPoint.value()) + t(R.string.om) + format(lastPoint.time(), "HH:mm")
+                : t(R.string.one_measurement)), 14, MUTED, false));
             page.addView(new EnergyChart(this, battery, anchor, zone, true), -1, dp(152));
         }
-        page.addView(text(BatterySampling.enabled(this) ? "Meetpunten bij Kia-statusupdates, met een automatische uurcheck."
-            : "Meetpunten bij een Kia-statusupdate.", 13, MUTED, false));
-        page.addView(text("Cumulatief klimaatverbruik (kWh)", 16, INK, true));
-        if (duration == 0) page.addView(text("Geen geregistreerde klimaatcyclussen.", 14, MUTED, false));
+        page.addView(text(BatterySampling.enabled(this) ? t(R.string.measuring_points_for_kia_status_updates)
+            : t(R.string.measuring_points_for_a_kia_status), 13, MUTED, false));
+        page.addView(text(t(R.string.cumulative_climate_consumption_kwh), 16, INK, true));
+        if (duration == 0) page.addView(text(t(R.string.no_recorded_climate_cycles), 14, MUTED, false));
         page.addView(new EnergyChart(this, history.cumulativeChart(anchor, zone, System.currentTimeMillis()), anchor, zone, false),
             -1, dp(152));
     }
@@ -1832,56 +1851,56 @@ public final class MainActivity extends Activity {
         var log = ClimateEnergy.log(this);
         var header = column();
         header.setPadding(dp(16), dp(4), dp(16), dp(10));
-        String method = average.learned() ? "Gemiddelde uit je metingen" : "Voorlopige rekenwaarde";
+        String method = average.learned() ? t(R.string.average_from_your_measurements) : t(R.string.provisional_calculation_value);
         header.addView(text(method + " · " + decimal(average.kilowatts()) + " kW", 16, INK, true));
-        String samples = average.samples() == 1 ? "1 geschikte cyclus" : average.samples() + " geschikte cyclussen";
+        String samples = average.samples() == 1 ? t(R.string.text_1_suitable_cycle) : average.samples() + t(R.string.suitable_cycles);
         header.addView(text(samples + " · " + minutes(average.duration()), 14, MUTED, false));
-        header.addView(text("Kalibratie gebruikt recente Kia-metingen van geparkeerde, niet-aangesloten cyclussen."
-            + " Bij een onzekere eindtijd blijven looptijd en verbruik schattingen.", 13, MUTED, false));
+        header.addView(text(t(R.string.calibration_uses_recent_kia_measurements_fro)
+            + t(R.string.with_an_uncertain_end_time_running), 13, MUTED, false));
         var rows = new ArrayList<String>();
         for (int index = 0; index < log.length(); index++) {
             var record = log.optJSONObject(index);
             if (record == null) continue;
             String reason = switch (record.optString("reason")) {
-                case "STATUS_OFF" -> "Uitstatus van Kia ontvangen";
-                case "MANUAL" -> "Stop bevestigd door Kia";
-                case "UNLOCKED" -> "Beëindigd na ontgrendelen";
-                default -> "Eindtijd geschat";
+                case "STATUS_OFF" -> t(R.string.received_off_status_from_kia);
+                case "MANUAL" -> t(R.string.stop_confirmed_by_kia);
+                case "UNLOCKED" -> t(R.string.terminated_after_unlocking);
+                default -> t(R.string.end_time_estimated);
             };
             double estimated = record.optDouble("estimate");
             String value = format(record.optLong("start"), "EEE d MMM · HH:mm") + " · " + minutes(record.optLong("elapsed"))
-                + "\nGeschat " + decimal(estimated) + " kWh · circa " + decimal(estimated / ClimateEnergy.BATTERY_KWH * 100)
-                + "% van 64 kWh\n" + decimal(record.optDouble("power"))
-                + " kW (" + (record.optBoolean("learned") ? "eigen gemiddelde" : "rekenwaarde") + ")"
-                + "\n" + reason + (record.optBoolean("eligible") ? " · telt mee voor kalibratie" : "");
+                + t(R.string.estimated) + decimal(estimated) + t(R.string.kwh_approx) + decimal(estimated / ClimateEnergy.BATTERY_KWH * 100)
+                + t(R.string.of_64_kwh) + decimal(record.optDouble("power"))
+                + " kW (" + (record.optBoolean("learned") ? t(R.string.own_average) : t(R.string.calculation_value)) + ")"
+                + "\n" + reason + (record.optBoolean("eligible") ? t(R.string.counts_towards_calibration) : "");
             if (record.has("before") && record.has("after")) {
-                value += "\nAccu " + dashboardPercentage(record.optDouble("before")) + " → "
+                value += t(R.string.battery) + dashboardPercentage(record.optDouble("before")) + " → "
                     + dashboardPercentage(record.optDouble("after"));
             }
             rows.add(value);
         }
-        if (rows.isEmpty()) rows.add("Je eerste bevestigde klimaatcyclus verschijnt hier.");
+        if (rows.isEmpty()) rows.add(t(R.string.your_first_confirmed_climate_cycle_appears));
         var list = new ListView(this);
         list.addHeaderView(header, null, false);
         list.setDivider(new ColorDrawable(0x5482afc5));
         list.setDividerHeight(dp(1));
         list.setAdapter(new android.widget.ArrayAdapter<>(this, android.R.layout.simple_list_item_1, rows));
-        var dialog = new AlertDialog.Builder(this).setTitle("Verbruikslog").setView(list)
-            .setNegativeButton("Sluiten", null).show();
+        var dialog = new AlertDialog.Builder(this).setTitle(t(R.string.consumption_log)).setView(list)
+            .setNegativeButton(t(R.string.close), null).show();
         dialog.getWindow().setLayout(-1, getResources().getDisplayMetrics().heightPixels * 3 / 4);
     }
 
     private static String minutes(long milliseconds) {
         long minutes = Math.round(milliseconds / (double) Schedule.MINUTE);
-        return minutes + " min";
+        return minutes + t(R.string.min);
     }
 
     private static String decimal(double number) {
-        return String.format(NL, "%.1f", number);
+        return String.format(AppLanguage.locale(), "%.1f", number);
     }
 
     private static String dashboardPercentage(double number) {
-        return String.format(NL, number == Math.rint(number) ? "%.0f%%" : "%.1f%%", number);
+        return String.format(AppLanguage.locale(), number == Math.rint(number) ? "%.0f%%" : "%.1f%%", number);
     }
 
     private NumberPicker temperaturePicker(int value) {
@@ -1917,29 +1936,29 @@ public final class MainActivity extends Activity {
     private void editStartRules() {
         var form = paddedForm();
         var limits = new ArrayList<String>();
-        limits.add("Uit");
+        limits.add(t(R.string.off));
         for (int percent = 5; percent <= 100; percent += 5) limits.add(percent + "%");
-        var minimum = choicePicker(form, "Minimale accu wanneer losgekoppeld",
+        var minimum = choicePicker(form, t(R.string.minimum_battery_when_disconnected),
             limits.toArray(new String[0]), prefs.getInt("minimumUnpluggedBattery", 0) / 5);
-        var mild = heatingChoice(form, "Overslaan bij mild weer", prefs.getBoolean("skipMild", false));
+        var mild = heatingChoice(form, t(R.string.skip_in_mild_weather), prefs.getBoolean("skipMild", false));
         var range = editorRow(form);
         var low = boundedPicker(-10, 40, prefs.getInt("mildMin", 18), value -> value + " °C");
         var high = boundedPicker(-10, 40, prefs.getInt("mildMax", 22), value -> value + " °C");
-        addPicker(range, "Vanaf", low);
-        addPicker(range, "Tot en met", high);
+        addPicker(range, t(R.string.from), low);
+        addPicker(range, t(R.string.until), high);
         range.setVisibility(mild.isChecked() ? View.VISIBLE : View.GONE);
         mild.setOnCheckedChangeListener((view, checked) -> range.setVisibility(checked ? View.VISIBLE : View.GONE));
         var validation = text("", 14, CORAL, true);
         form.addView(validation);
         var body = new ScrollView(this);
         body.addView(form);
-        var dialog = new AlertDialog.Builder(this).setTitle("Accugrens en comfortbereik").setView(body)
-            .setNegativeButton("Annuleren", null).setPositiveButton("Opslaan", null).create();
+        var dialog = new AlertDialog.Builder(this).setTitle(t(R.string.battery_limit_and_comfort_range)).setView(body)
+            .setNegativeButton(t(R.string.cancel), null).setPositiveButton(t(R.string.save), null).create();
         dialog.setOnShowListener(ignored -> styleDialogAction(dialog).setOnClickListener(view -> {
             low.clearFocus();
             high.clearFocus();
             if (low.getValue() > high.getValue()) {
-                set(validation, "De eerste temperatuur moet gelijk of lager zijn.");
+                set(validation, t(R.string.the_first_temperature_must_be_the));
                 return;
             }
             prefs.edit().putInt("minimumUnpluggedBattery", minimum.getSelectedItemPosition() * 5)
@@ -1952,27 +1971,27 @@ public final class MainActivity extends Activity {
 
     private void saveHomeLocation() {
         String current = prefs.getString("homeSource", "");
-        String saved = !prefs.contains("homeLat") ? "Er is nog geen thuislocatie opgeslagen."
-            : "Thuislocatie opgeslagen" + ("phone".equals(current) ? " via je telefoon." : " via Kia.");
+        String saved = !prefs.contains("homeLat") ? t(R.string.no_home_location_has_been_saved)
+            : t(R.string.home_location_saved) + ("phone".equals(current) ? t(R.string.via_your_phone) : t(R.string.through_kia));
         var form = paddedForm();
         form.addView(text(saved, 15, INK, true));
-        form.addView(text("Sta thuis als je de locatie van je telefoon opslaat. De thuiszone heeft een straal van 150 meter."
-            + " Bij geplande starts vergelijkt de app dit punt met de autolocatie van Kia.", 14, MUTED, false));
-        var dialog = new AlertDialog.Builder(this).setTitle("Thuislocatie instellen").setView(form)
-            .setNegativeButton("Sluiten", null).create();
-        addButton(form, "Telefoonlocatie gebruiken", true, () -> {
+        form.addView(text(t(R.string.stand_at_home_when_you_save)
+            + t(R.string.for_scheduled_starts_the_app_compares), 14, MUTED, false));
+        var dialog = new AlertDialog.Builder(this).setTitle(t(R.string.set_home_location)).setView(form)
+            .setNegativeButton(t(R.string.close), null).create();
+        addButton(form, t(R.string.use_phone_location), true, () -> {
             dialog.dismiss();
             requestPhonePosition();
         });
-        addButton(form, "Kia-autolocatie gebruiken", false, () -> {
+        addButton(form, t(R.string.use_kia_car_location), false, () -> {
             dialog.dismiss();
             readKiaHomePosition();
         });
         if (prefs.contains("homeLat")) {
-            addButton(form, "Thuislocatie wissen", false, () -> new AlertDialog.Builder(this)
-                .setTitle("Thuislocatie wissen?")
-                .setMessage("Alleen-thuis-tijdvakken worden overgeslagen totdat er weer een thuislocatie is.")
-                .setNegativeButton("Annuleren", null).setPositiveButton("Wissen", (child, option) -> {
+            addButton(form, t(R.string.clear_home_location), false, () -> new AlertDialog.Builder(this)
+                .setTitle(t(R.string.delete_home_location))
+                .setMessage(t(R.string.home_only_time_slots_will_be))
+                .setNegativeButton(t(R.string.cancel), null).setPositiveButton(t(R.string.clear), (child, option) -> {
                     prefs.edit().remove("homeLat").remove("homeLon").remove("homeSource").apply();
                     dialog.dismiss();
                 }).show());
@@ -1988,27 +2007,27 @@ public final class MainActivity extends Activity {
         }
         var manager = getSystemService(android.location.LocationManager.class);
         if (Build.VERSION.SDK_INT >= 28 && !manager.isLocationEnabled()) {
-            new AlertDialog.Builder(this).setTitle("Locatie staat uit")
-                .setMessage("Zet locatie aan op je Samsung om je thuispunt op te halen.")
-                .setNegativeButton("Sluiten", null).setPositiveButton("Locatie-instellingen", (dialog, option) ->
+            new AlertDialog.Builder(this).setTitle(t(R.string.location_is_off))
+                .setMessage(t(R.string.turn_on_location_on_your_samsung))
+                .setNegativeButton(t(R.string.close), null).setPositiveButton(t(R.string.location_settings), (dialog, option) ->
                     openFromPlanner(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))).show();
             return;
         }
-        var dialog = new AlertDialog.Builder(this).setTitle("Telefoonlocatie zoeken")
-            .setMessage("Wacht op een nauwkeurige locatie…").setNegativeButton("Annuleren", null).show();
+        var dialog = new AlertDialog.Builder(this).setTitle(t(R.string.find_phone_location))
+            .setMessage(t(R.string.wait_for_an_accurate_location)).setNegativeButton(t(R.string.cancel), null).show();
         pendingGpsDialog = dialog;
         var lookup = new PhonePosition(manager, handler, fix -> {
             if (!dialog.isShowing() || isDestroyed()) return;
             dialog.dismiss();
             if (fix == null) {
-                new AlertDialog.Builder(this).setTitle("Locatie nog niet nauwkeurig genoeg")
-                    .setMessage("Probeer bij een raam of buiten. Je kunt ook de Kia-autolocatie kiezen.")
-                    .setNegativeButton("Sluiten", null).setPositiveButton("Opnieuw zoeken", (window, option) ->
+                new AlertDialog.Builder(this).setTitle(t(R.string.location_not_yet_accurate_enough))
+                    .setMessage(t(R.string.try_near_a_window_or_outside))
+                    .setNegativeButton(t(R.string.close), null).setPositiveButton(t(R.string.search_again), (window, option) ->
                         requestPhonePosition()).show();
                 return;
             }
             confirmHomePosition(fix.getLatitude(), fix.getLongitude(), "phone",
-                "Telefoonlocatie gevonden, nauwkeurig tot circa " + Math.round(fix.getAccuracy()) + " meter.");
+                t(R.string.phone_location_found_accurate_to_approx) + Math.round(fix.getAccuracy()) + t(R.string.meters));
         });
         dialog.setOnDismissListener(ignored -> {
             lookup.cancel();
@@ -2019,44 +2038,44 @@ public final class MainActivity extends Activity {
 
     private void readKiaHomePosition() {
         if (showKiaPause()) return;
-        var wait = new AlertDialog.Builder(this).setTitle("Thuislocatie")
-            .setMessage("Autolocatie ophalen…").setNegativeButton("Annuleren", null).show();
+        var wait = new AlertDialog.Builder(this).setTitle(t(R.string.home_location))
+            .setMessage(t(R.string.pick_up_car_location)).setNegativeButton(t(R.string.cancel), null).show();
         KiaCloud.WORKER.execute(() -> {
             var location = KiaCloud.readHomePosition(getApplicationContext());
             runOnUiThread(() -> {
                 if (!wait.isShowing() || isDestroyed()) return;
                 wait.dismiss();
                 if (location == null) {
-                    new AlertDialog.Builder(this).setTitle("Geen recente Kia-autolocatie")
-                        .setMessage("Je kunt je thuislocatie met je telefoon opslaan. De geplande thuiscontrole heeft wel een Kia-autolocatie nodig.")
-                        .setNegativeButton("Sluiten", null).setPositiveButton("Telefoonlocatie gebruiken", (dialog, option) ->
+                    new AlertDialog.Builder(this).setTitle(t(R.string.no_recent_kia_car_location))
+                        .setMessage(t(R.string.you_can_save_your_home_location))
+                        .setNegativeButton(t(R.string.close), null).setPositiveButton(t(R.string.use_phone_location), (dialog, option) ->
                             requestPhonePosition()).show();
                 } else {
-                    confirmHomePosition(location[0], location[1], "kia", "Kia heeft een recente autolocatie teruggegeven.");
+                    confirmHomePosition(location[0], location[1], "kia", t(R.string.kia_has_returned_a_recent_car));
                 }
             });
         });
     }
 
     private void confirmHomePosition(double latitude, double longitude, String source, String hint) {
-        new AlertDialog.Builder(this).setTitle("Opslaan als thuislocatie?")
-            .setMessage(hint + "\nDe thuislocatie wordt op dit toestel bewaard.")
-            .setNegativeButton("Annuleren", null).setPositiveButton("Opslaan", (dialog, option) -> {
+        new AlertDialog.Builder(this).setTitle(t(R.string.save_as_home_location))
+            .setMessage(hint + t(R.string.the_home_location_is_stored_on))
+            .setNegativeButton(t(R.string.cancel), null).setPositiveButton(t(R.string.save), (dialog, option) -> {
                 prefs.edit().putLong("homeLat", Double.doubleToLongBits(latitude))
                     .putLong("homeLon", Double.doubleToLongBits(longitude)).putString("homeSource", source).apply();
-                Toast.makeText(this, "Thuislocatie opgeslagen.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, t(R.string.home_location_saved_2), Toast.LENGTH_SHORT).show();
             }).show();
     }
 
     private void editSeasons() {
         var form = paddedForm();
-        var active = heatingChoice(form, "Wissel automatisch op datum", prefs.getBoolean("seasonalProfile", false));
+        var active = heatingChoice(form, t(R.string.automatically_switch_by_date), prefs.getBoolean("seasonalProfile", false));
         String[] names = new String[ClimateProfiles.COUNT];
         for (int index = 0; index < names.length; index++) names[index] = ClimateProfiles.get(prefs, index).name();
         int[] dates = {prefs.getInt("summerDate", 401), prefs.getInt("winterDate", 1001)};
-        var summer = choicePicker(form, "Profiel vanaf de eerste datum", names, prefs.getInt("summerProfile", 1));
+        var summer = choicePicker(form, t(R.string.profile_from_the_first_date), names, prefs.getInt("summerProfile", 1));
         var fromSummer = addButton(form, monthDayLabel(dates[0]), false, () -> {});
-        var winter = choicePicker(form, "Profiel vanaf de tweede datum", names, prefs.getInt("winterProfile", 0));
+        var winter = choicePicker(form, t(R.string.profile_from_the_second_date), names, prefs.getInt("winterProfile", 0));
         var fromWinter = addButton(form, monthDayLabel(dates[1]), false, () -> {});
         fromSummer.setOnClickListener(view -> chooseMonthDay(dates[0], selected -> {
             dates[0] = selected;
@@ -2066,14 +2085,14 @@ public final class MainActivity extends Activity {
             dates[1] = selected;
             set(fromWinter, monthDayLabel(selected));
         }));
-        form.addView(text("Starts met een eigen profiel behouden die keuze.", 13, MUTED, false));
+        form.addView(text(t(R.string.starts_with_their_own_profile_retain), 13, MUTED, false));
         var body = new ScrollView(this);
         body.addView(form);
-        var dialog = new AlertDialog.Builder(this).setTitle("Profielen per seizoen").setView(body)
-            .setNegativeButton("Annuleren", null).setPositiveButton("Opslaan", null).create();
+        var dialog = new AlertDialog.Builder(this).setTitle(t(R.string.profiles_per_season)).setView(body)
+            .setNegativeButton(t(R.string.cancel), null).setPositiveButton(t(R.string.save), null).create();
         dialog.setOnShowListener(ignored -> styleDialogAction(dialog).setOnClickListener(view -> {
             if (active.isChecked() && dates[0] == dates[1]) {
-                Toast.makeText(this, "Kies twee verschillende wisseldatums.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, t(R.string.choose_two_different_changeover_dates), Toast.LENGTH_LONG).show();
                 return;
             }
             prefs.edit().putBoolean("seasonalProfile", active.isChecked()).putInt("summerDate", dates[0])
@@ -2087,7 +2106,7 @@ public final class MainActivity extends Activity {
     }
 
     private static String monthDayLabel(int code) {
-        return LocalDate.of(2000, code / 100, code % 100).format(DateTimeFormatter.ofPattern("d MMMM", NL));
+        return LocalDate.of(2000, code / 100, code % 100).format(DateTimeFormatter.ofPattern("d MMMM", AppLanguage.locale()));
     }
 
     private void chooseMonthDay(int selected, java.util.function.IntConsumer result) {
@@ -2107,12 +2126,12 @@ public final class MainActivity extends Activity {
             return;
         }
         if (!biometricAvailable()) {
-            Toast.makeText(this, "Biometrie is niet beschikbaar. Controleer je Samsung-instellingen.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, t(R.string.biometrics_are_not_available_check_your), Toast.LENGTH_LONG).show();
             return;
         }
         new android.hardware.biometrics.BiometricPrompt.Builder(this).setTitle(title)
             .setAllowedAuthenticators(android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_STRONG)
-            .setNegativeButton("Annuleren", getMainExecutor(), (dialog, which) -> {})
+            .setNegativeButton(t(R.string.cancel), getMainExecutor(), (dialog, which) -> {})
             .build().authenticate(new android.os.CancellationSignal(), getMainExecutor(),
                 new android.hardware.biometrics.BiometricPrompt.AuthenticationCallback() {
                     @Override public void onAuthenticationSucceeded(
@@ -2128,8 +2147,8 @@ public final class MainActivity extends Activity {
             requestPermissions(new String[]{Manifest.permission.READ_CALENDAR}, CALENDAR_PERMISSION);
             return;
         }
-        var wait = new AlertDialog.Builder(this).setTitle("Vertrektijd uit agenda")
-            .setMessage("Afspraken ophalen…").setNegativeButton("Annuleren", null).show();
+        var wait = new AlertDialog.Builder(this).setTitle(t(R.string.departure_time_from_agenda))
+            .setMessage(t(R.string.pick_up_appointments)).setNegativeButton(t(R.string.cancel), null).show();
         new Thread(() -> {
             var labels = new ArrayList<String>();
             var times = new ArrayList<Long>();
@@ -2141,7 +2160,7 @@ public final class MainActivity extends Activity {
                     long start = records.getLong(0);
                     if (start <= now || records.getInt(2) != 0) continue;
                     times.add(start);
-                    labels.add(format(start, "EEE d MMM HH:mm") + " · " + (records.isNull(1) ? "Afspraak" : records.getString(1)));
+                    labels.add(format(start, "EEE d MMM HH:mm") + " · " + (records.isNull(1) ? t(R.string.appointment) : records.getString(1)));
                 }
             } catch (RuntimeException ignored) {
                 // The calendar provider or permission can disappear while it opens.
@@ -2150,13 +2169,13 @@ public final class MainActivity extends Activity {
                 if (!wait.isShowing() || isDestroyed()) return;
                 wait.dismiss();
                 if (labels.isEmpty()) {
-                    new AlertDialog.Builder(this).setTitle("Vertrektijd uit agenda")
-                        .setMessage("Geen zichtbare afspraken met een begintijd in de komende drie weken.")
-                        .setPositiveButton("Sluiten", null).show();
+                    new AlertDialog.Builder(this).setTitle(t(R.string.departure_time_from_agenda))
+                        .setMessage(t(R.string.no_visible_appointments_with_a_start))
+                        .setPositiveButton(t(R.string.close), null).show();
                 } else {
-                    new AlertDialog.Builder(this).setTitle("Kies een afspraak")
+                    new AlertDialog.Builder(this).setTitle(t(R.string.choose_an_appointment))
                         .setItems(labels.toArray(new String[0]), (dialog, index) -> selected.accept(times.get(index)))
-                        .setNegativeButton("Annuleren", null).show();
+                        .setNegativeButton(t(R.string.cancel), null).show();
                 }
             });
         }, "kia-calendar").start();
@@ -2168,9 +2187,9 @@ public final class MainActivity extends Activity {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED) {
                 requestPhonePosition();
             } else {
-                new AlertDialog.Builder(this).setTitle("Nauwkeurige locatie nodig")
-                    .setMessage("Kies nauwkeurige locatietoegang om het middelpunt van de thuiszone op te slaan.")
-                    .setNegativeButton("Sluiten", null).setPositiveButton("App-instellingen", (dialog, option) ->
+                new AlertDialog.Builder(this).setTitle(t(R.string.accurate_location_needed))
+                    .setMessage(t(R.string.choose_precise_location_access_to_save))
+                    .setNegativeButton(t(R.string.close), null).setPositiveButton(t(R.string.app_settings), (dialog, option) ->
                         openFromPlanner(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                             Uri.parse("package:" + getPackageName())))).show();
             }
@@ -2182,7 +2201,7 @@ public final class MainActivity extends Activity {
         if (result.length > 0 && result[0] == android.content.pm.PackageManager.PERMISSION_GRANTED && action != null) {
             action.run();
         } else {
-            Toast.makeText(this, "Agenda-toegang is nodig om een afspraak te kiezen.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, t(R.string.calendar_access_is_required_to_choose), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -2195,11 +2214,11 @@ public final class MainActivity extends Activity {
         for (var row : rows) {
             String label = format(row.start(), "EEEE d MMM · HH:mm") + "–" + format(row.end(), "HH:mm")
                 + "\n" + row.type();
-            if (row.original() > 0) label += " · was " + format(row.original(), "EEE d MMM HH:mm");
+            if (row.original() > 0) label += t(R.string.wash) + format(row.original(), "EEE d MMM HH:mm");
             labels.add(label);
         }
-        var dialog = new AlertDialog.Builder(this).setTitle("Komende zeven dagen").setPositiveButton("Sluiten", null);
-        if (labels.isEmpty()) dialog.setMessage("Geen geplande starts in deze periode.");
+        var dialog = new AlertDialog.Builder(this).setTitle(t(R.string.next_seven_days)).setPositiveButton(t(R.string.close), null);
+        if (labels.isEmpty()) dialog.setMessage(t(R.string.no_scheduled_starts_during_this_period));
         else dialog.setItems(labels.toArray(new String[0]), null);
         dialog.show();
     }
@@ -2208,28 +2227,28 @@ public final class MainActivity extends Activity {
         var slot = displayedNext;
         if (slot == null) slot = Planner.next(this);
         var status = new StringBuilder();
-        if (slot != null) status.append("Gepland ").append(format(slot.time(), "EEE d MMM HH:mm")).append('\n');
-        status.append(KiaCloud.linked(this) && !KiaCloud.needsLink(this) ? "Kia Connect gekoppeld" : "Kia Connect koppelen");
-        status.append(Planner.hasAlarmAccess(this) ? "\nExacte alarmen toegestaan" : "\nExacte alarmen zijn uitgeschakeld");
+        if (slot != null) status.append(t(R.string.planned)).append(format(slot.time(), "EEE d MMM HH:mm")).append('\n');
+        status.append(KiaCloud.linked(this) && !KiaCloud.needsLink(this) ? t(R.string.kia_connect_connected) : t(R.string.connect_kia_connect));
+        status.append(Planner.hasAlarmAccess(this) ? t(R.string.exact_alarms_allowed) : t(R.string.exact_alarms_are_disabled));
         long measured = Math.max(prefs.getLong("batteryTime", 0), prefs.getLong("lastClimateSample", 0));
-        status.append(measured > 0 ? "\nLaatste autostatus " + format(measured, "d MMM HH:mm") : "\nNog geen autostatus bekend");
+        status.append(measured > 0 ? t(R.string.latest_car_status) + format(measured, "d MMM HH:mm") : t(R.string.no_car_status_known_yet));
         if (slot != null && Planner.homeOnly(prefs, slot, ZoneId.systemDefault())) {
-            status.append(prefs.contains("homeLat") ? "\nThuiszone wordt bij de start gecontroleerd" : "\nStel eerst je thuislocatie in");
+            status.append(prefs.contains("homeLat") ? t(R.string.home_zone_is_checked_at_the) : t(R.string.first_set_your_home_location));
         }
-        new AlertDialog.Builder(this).setTitle("Volgende start controleren").setMessage(status.toString())
-            .setPositiveButton("Sluiten", null).setNeutralButton("Verbinding controleren", (dialog, which) -> checkConnection())
+        new AlertDialog.Builder(this).setTitle(t(R.string.check_next_start)).setMessage(status.toString())
+            .setPositiveButton(t(R.string.close), null).setNeutralButton(t(R.string.check_connection), (dialog, which) -> checkConnection())
             .show();
     }
 
     private void showFailureActions(String cause) {
         String recovery = switch (cause) {
-            case "AUTH" -> "Kia opnieuw koppelen";
-            case "ALARM" -> "Alarmen toestaan";
-            default -> "Verbinding controleren";
+            case "AUTH" -> t(R.string.reconnect_kia);
+            case "ALARM" -> t(R.string.allow_alarms);
+            default -> t(R.string.check_connection);
         };
-        new AlertDialog.Builder(this).setTitle("Wat wil je doen?")
+        new AlertDialog.Builder(this).setTitle(t(R.string.what_do_you_want_to_do))
             .setPositiveButton(recovery, (dialog, option) -> recoverFailure(cause))
-            .setNegativeButton("Sluiten", null).show();
+            .setNegativeButton(t(R.string.close), null).show();
     }
 
     private void recoverFailure() {
@@ -2252,8 +2271,8 @@ public final class MainActivity extends Activity {
 
     private void showMonth(java.time.YearMonth month) {
         var window = StartLedger.summary(this, month);
-        String message = "Bevestigd  " + window.confirmed() + "\nOvergeslagen  " + window.skipped() + "\nMislukt  "
-            + window.failed() + (window.common().isEmpty() ? "" : "\n\nMeest voorkomende oorzaak: "
+        String message = t(R.string.confirmed) + window.confirmed() + t(R.string.skipped) + window.skipped() + t(R.string.failed)
+            + window.failed() + (window.common().isEmpty() ? "" : t(R.string.most_common_cause)
                 + window.common() + " (" + window.commonCount() + ")");
         double usage = 0;
         var energy = ClimateEnergy.log(this);
@@ -2262,13 +2281,13 @@ public final class MainActivity extends Activity {
             if (entry != null && entry.optLong("start") > 0 && month.equals(StartLedger.month(entry.optLong("start"))))
                 usage += entry.optDouble("estimate", 0);
         }
-        message += "\n\nGeschat klimaatverbruik  " + decimal(usage) + " kWh";
-        var dialog = new AlertDialog.Builder(this).setTitle(month.format(DateTimeFormatter.ofPattern("MMMM yyyy", NL)))
-            .setMessage(message).setPositiveButton("Sluiten", null);
+        message += t(R.string.estimated_climate_consumption_2) + decimal(usage) + " kWh";
+        var dialog = new AlertDialog.Builder(this).setTitle(month.format(DateTimeFormatter.ofPattern("MMMM yyyy", AppLanguage.locale())))
+            .setMessage(message).setPositiveButton(t(R.string.close), null);
         if (month.isAfter(java.time.YearMonth.now().minusMonths(12)))
-            dialog.setNegativeButton("Vorige maand", (windowDialog, choice) -> showMonth(month.minusMonths(1)));
+            dialog.setNegativeButton(t(R.string.last_month), (windowDialog, choice) -> showMonth(month.minusMonths(1)));
         if (month.isBefore(java.time.YearMonth.now()))
-            dialog.setNeutralButton("Volgende maand", (windowDialog, choice) -> showMonth(month.plusMonths(1)));
+            dialog.setNeutralButton(t(R.string.next_month), (windowDialog, choice) -> showMonth(month.plusMonths(1)));
         dialog.show();
     }
 
@@ -2283,23 +2302,23 @@ public final class MainActivity extends Activity {
             }
             var dates = new ArrayList<>(sessions);
             if (dates.isEmpty()) {
-                Toast.makeText(this, "Er zijn nog geen tijdvakken om te exporteren.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, t(R.string.there_are_no_time_slots_for), Toast.LENGTH_LONG).show();
                 return;
             }
             String[] labels = new String[dates.size()];
             for (int i = 0; i < labels.length; i++) labels[i] = format(dates.get(i), "EEE d MMM · HH:mm");
-            new AlertDialog.Builder(this).setTitle("Privélog · kies een tijdvak")
+            new AlertDialog.Builder(this).setTitle(t(R.string.private_log_choose_a_time_period))
                 .setItems(labels, (window, index) -> {
                     try {
-                        pendingDiagnostic = StartLedger.safeExport(history, dates.get(index));
+                        pendingDiagnostic = StartLedger.safeExport(this, history, dates.get(index));
                         startActivityForResult(new Intent(Intent.ACTION_CREATE_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE)
                             .setType("application/json").putExtra(Intent.EXTRA_TITLE, "kia-klimaat-tijdvak.json"), EXPORT_DIAGNOSTIC);
                     } catch (JSONException error) {
-                        Toast.makeText(this, "Privélog maken is mislukt.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, t(R.string.failed_to_create_private_log), Toast.LENGTH_LONG).show();
                     }
-                }).setNegativeButton("Annuleren", null).show();
+                }).setNegativeButton(t(R.string.cancel), null).show();
         } catch (JSONException error) {
-            Toast.makeText(this, "Geen leesbaar meldingenlog beschikbaar.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, t(R.string.no_readable_notification_log_available), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -2322,9 +2341,9 @@ public final class MainActivity extends Activity {
             try (var out = getContentResolver().openOutputStream(file, "wt")) {
                 if (out == null) throw new java.io.IOException();
                 out.write(pendingDiagnostic.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-                Toast.makeText(this, "Privélog opgeslagen.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, t(R.string.private_log_saved), Toast.LENGTH_SHORT).show();
             } catch (java.io.IOException | SecurityException error) {
-                Toast.makeText(this, "Privélog opslaan is mislukt.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, t(R.string.private_log_save_failed), Toast.LENGTH_LONG).show();
             } finally {
                 pendingDiagnostic = null;
             }
@@ -2332,9 +2351,9 @@ public final class MainActivity extends Activity {
             try (var out = getContentResolver().openOutputStream(file, "wt")) {
                 if (out == null) throw new java.io.IOException();
                 out.write(PlanningBackup.export(prefs).toString(2).getBytes(java.nio.charset.StandardCharsets.UTF_8));
-                Toast.makeText(this, "Weekplanning geëxporteerd.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, t(R.string.weekly_schedule_exported), Toast.LENGTH_SHORT).show();
             } catch (java.io.IOException | JSONException | SecurityException error) {
-                Toast.makeText(this, "Back-up opslaan is mislukt.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, t(R.string.save_backup_failed), Toast.LENGTH_LONG).show();
             }
         } else if (request == IMPORT_PLAN) {
             try (var in = getContentResolver().openInputStream(file)) {
@@ -2347,18 +2366,18 @@ public final class MainActivity extends Activity {
                 }
                 var backup = new org.json.JSONObject(new String(bytes.toByteArray(), java.nio.charset.StandardCharsets.UTF_8));
                 var restore = PlanningBackup.restore(prefs, backup);
-                new AlertDialog.Builder(this).setTitle("Weekplanning terugzetten?")
+                new AlertDialog.Builder(this).setTitle(t(R.string.reset_weekly_schedule))
                     .setMessage(backupPreview(backup))
-                    .setNegativeButton("Annuleren", null).setPositiveButton("Terugzetten", (dialog, which) -> {
+                    .setNegativeButton(t(R.string.cancel), null).setPositiveButton(t(R.string.restore), (dialog, which) -> {
                         if (restore.commit()) {
                             Planner.schedule(this);
                             recreate();
                         } else {
-                            Toast.makeText(this, "Back-up terugzetten is mislukt.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, t(R.string.backup_restore_failed), Toast.LENGTH_LONG).show();
                         }
                     }).show();
             } catch (java.io.IOException | JSONException | SecurityException error) {
-                Toast.makeText(this, "Dit is geen geldige back-up van Kia Climate Control.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, t(R.string.this_is_not_a_valid_kia), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -2384,33 +2403,34 @@ public final class MainActivity extends Activity {
                         || ready != before.ready() || enabled != before.enabled() || after.getInt("profile") != before.profile()
                         || after.getInt("heat") != before.heating()
                         || after.optBoolean("homeOnly") != before.homeOnly())) different = true;
-                if (before.duration() > 0) previous.add((before.ready() ? "klaar " : "") + clock(before.start())
-                    + " (" + before.duration() + " min" + (before.enabled() ? "" : ", uit") + ")");
-                if (duration > 0) next.add((ready ? "klaar " : "") + clock(time)
-                    + " (" + duration + " min" + (enabled ? "" : ", uit") + ")");
+                if (before.duration() > 0) previous.add((before.ready() ? t(R.string.done) : "") + clock(before.start())
+                    + " (" + before.duration() + t(R.string.min) + (before.enabled() ? "" : t(R.string.out)) + ")");
+                if (duration > 0) next.add((ready ? t(R.string.done) : "") + clock(time)
+                    + " (" + duration + t(R.string.min) + (enabled ? "" : t(R.string.out)) + ")");
             }
             if (different) {
                 changed++;
-                String previousLabel = previous.isEmpty() ? "leeg" : String.join(" · ", previous);
-                String nextLabel = next.isEmpty() ? "leeg" : String.join(" · ", next);
+                String previousLabel = previous.isEmpty() ? t(R.string.empty) : String.join(" · ", previous);
+                String nextLabel = next.isEmpty() ? t(R.string.empty) : String.join(" · ", next);
                 message.append(DAYS[day]).append(": ").append(previousLabel);
                 if (!previousLabel.equals(nextLabel)) message.append(" → ").append(nextLabel);
                 else if (Planner.dayEnabled(prefs, day) == incoming.getBoolean("enabled"))
-                    message.append(" (tijdvakopties gewijzigd)");
+                    message.append(t(R.string.time_slot_options_changed));
                 if (Planner.dayEnabled(prefs, day) != incoming.getBoolean("enabled"))
-                    message.append(incoming.getBoolean("enabled") ? " (dag wordt actief)" : " (dag wordt uitgezet)");
+                    message.append(incoming.getBoolean("enabled") ? t(R.string.day_becomes_active) : t(R.string.day_is_plotted));
                 message.append('\n');
             }
         }
-        if (changed == 0) message.append("Geen verschillen in tijdvakken.\n");
+        if (changed == 0) message.append(t(R.string.no_differences_in_time_periods));
         var profiles = backup.getJSONArray("profiles");
-        message.append("\nTe herstellen profielen\n");
+        message.append(t(R.string.profiles_to_recover));
         for (int index = 0; index < profiles.length(); index++) {
             var saved = profiles.getJSONObject(index);
-            message.append(ClimateProfiles.get(prefs, index).name()).append(" → ").append(saved.getString("name"))
+            message.append(ClimateProfiles.get(prefs, index).name()).append(" → ")
+                .append(ClimateProfiles.displayName(index, saved.getString("name")))
                 .append(" · ").append(temperatureLabel(saved.getInt("temperature"))).append('\n');
         }
-        message.append("\nTijdelijke weekafwijkingen vervallen.");
+        message.append(t(R.string.temporary_weekly_deviations_are_canceled));
         return message.toString();
     }
 
@@ -2450,37 +2470,37 @@ public final class MainActivity extends Activity {
         boolean awaiting = Planner.awaitingConfirmation(this, now);
         boolean unconfirmed = prefs.getLong("unconfirmedHold", 0) > now;
         set(overall, manualStop && (stopPending || KiaStartService.stopInProgress())
-            ? (KiaStartService.stopInProgress() ? "Klimaat stoppen…" : "Stop niet bevestigd")
-            : running || vehicleStillOn ? "Klimaat actief" : awaiting ? "Wacht op Kia"
-            : external ? "Klimaatregeling al actief"
-            : unconfirmed ? "Klimaatstatus onbekend" : end > now ? "Tijdvak actief" : "Klimaat uit");
+            ? (KiaStartService.stopInProgress() ? t(R.string.stopping_climate) : t(R.string.stop_not_attached))
+            : running || vehicleStillOn ? t(R.string.climate_active) : awaiting ? t(R.string.wait_for_kia)
+            : external ? t(R.string.climate_control_already_active)
+            : unconfirmed ? t(R.string.climate_status_unknown) : end > now ? t(R.string.period_active) : t(R.string.climate_off));
         boolean ownClimate = running || vehicleStillOn;
         boolean activeClimate = ownClimate || (external && !stopPending && !awaiting);
         var temperature = ClimateIndicator.read(prefs, now, ownClimate);
         updateClimateIcon(temperature, activeClimate);
-        String outside = "Buiten " + dashboardTemperature(temperature.outdoor());
+        String outside = t(R.string.outside) + dashboardTemperature(temperature.outdoor());
         if (temperature.measured() > 0) {
-            outside += "\n" + (temperature.weather() ? "Weer " : "Kia ") + format(temperature.measured(), "HH:mm");
+            outside += "\n" + (temperature.weather() ? t(R.string.weather) : "Kia ") + format(temperature.measured(), "HH:mm");
         } else {
             var last = ClimateIndicator.lastOutdoor(prefs, now);
             if (last != null) {
                 boolean today = localDate(last.measured()).equals(localDate(now));
-                outside = "Buiten " + dashboardTemperature(last.value()) + "\n"
-                    + "Verouderd · " + (last.weather() ? "weer " : "Kia ")
+                outside = t(R.string.outside) + dashboardTemperature(last.value()) + "\n"
+                    + t(R.string.obsolete) + (last.weather() ? t(R.string.again) : "Kia ")
                     + format(last.measured(), today ? "HH:mm" : "d MMM HH:mm");
             }
         }
         set(outsideTemperature, outside);
-        set(windshieldSetting, "Voorruit ontdooien\n" + windshieldLabel(Planner.defaultHeat(prefs),
+        set(windshieldSetting, t(R.string.windshield_defrost_2) + windshieldLabel(Planner.defaultHeat(prefs),
             prefs.getInt("windshieldThreshold", ClimateProfiles.DEFAULT_THRESHOLD)) + "  ›");
         int seasonal = ClimateRules.profile(prefs, now, ZoneId.systemDefault());
         String general = prefs.getBoolean("seasonalProfile", false) && seasonal >= 0
-            ? ClimateProfiles.get(prefs, seasonal).name() + " · seizoen" : generalProfileName();
-        set(generalProfileSetting, "Algemeen klimaatprofiel\n" + general + "  ›");
+            ? ClimateProfiles.get(prefs, seasonal).name() + t(R.string.season) : generalProfileName();
+        set(generalProfileSetting, t(R.string.general_climate_profile_2) + general + "  ›");
         double defaultTarget = Planner.climateOptions(prefs, null, ZoneId.systemDefault()).temperature() / 2.0;
         double target = activeClimate ? temperature.target() : defaultTarget;
-        set(targetTemperature, "Ingesteld " + dashboardTemperature(target));
-        set(statusDetail, external && !running && !awaiting && !stopPending ? "Resterende tijd onbekend" : "");
+        set(targetTemperature, t(R.string.set) + dashboardTemperature(target));
+        set(statusDetail, external && !running && !awaiting && !stopPending ? t(R.string.remaining_time_unknown) : "");
         statusDetail.setVisibility(statusDetail.length() == 0 ? View.GONE : View.VISIBLE);
         boolean showWindow = !manualStop && end > now && Planner.hasConfirmedWindow(this, end);
         clocks.setVisibility(running || showWindow ? View.VISIBLE : View.GONE);
@@ -2495,7 +2515,7 @@ public final class MainActivity extends Activity {
             windowClock.setTag(clockSize);
         }
         set(windowClock, windowTime);
-        set(windowLabel, combined ? "Gecombineerd tijdvak" : onceActive ? "Eenmalig tijdvak" : "Tijdvak resterend");
+        set(windowLabel, combined ? t(R.string.combined_period) : onceActive ? t(R.string.one_time_period) : t(R.string.time_slot_remaining));
         set(cycleClock, running ? countdown(cycleEnd - now) : "");
         long windowStart = onceActive ? onceStart : manual ? prefs.getLong("manualFirst", 0)
             : prefs.getLong("activeSession", 0);
@@ -2513,10 +2533,10 @@ public final class MainActivity extends Activity {
         boolean separateCooldown = !monitoring && (!running || Planner.cooldownEnd(this) > cycleEnd + 1_000);
         cooldown.setVisibility(kiaPaused || (separateCooldown && remainingCooldown > 0 && (confirmedStart || !awaiting))
             ? View.VISIBLE : View.GONE);
-        set(cooldown, kiaPaused ? "Automatische Kia-controle gepauzeerd tot " + KiaBackoff.resumeLabel(kiaResume)
-            : Planner.manualRestartAvailable(prefs, now) ? "Handmatig starten kan direct"
-            : confirmedStart && !manualStop ? "Nieuwe start over minimaal " + countdown(Math.max(0, remainingCooldown))
-            : "Nieuwe opdracht mogelijk om " + format(Planner.nextAllowedStart(this), "HH:mm"));
+        set(cooldown, kiaPaused ? t(R.string.kia_automatic_control_paused_until) + KiaBackoff.resumeLabel(kiaResume)
+            : Planner.manualRestartAvailable(prefs, now) ? t(R.string.you_can_start_it_manually_immediately)
+            : confirmedStart && !manualStop ? t(R.string.new_start_in_at_least) + countdown(Math.max(0, remainingCooldown))
+            : t(R.string.new_order_possible) + format(Planner.nextAllowedStart(this), "HH:mm"));
         var next = Planner.next(this);
         boolean ready = linked && !needsLink && alarms;
         long nextStart = ready && next != null ? Math.max(next.time(), Planner.nextAllowedStart(this)) : 0;
@@ -2524,7 +2544,7 @@ public final class MainActivity extends Activity {
         if (continuation) nextStart = running && !kiaPaused ? cycleEnd + 15_000 : 0;
         displayedNext = ready && !continuation ? next : null;
         boolean actionable = displayedNext != null && (Planner.upcomingWeekly(prefs, displayedNext, now)
-            || "Eenmalige start".equals(Planner.startType(prefs, displayedNext)));
+            || t(R.string.one_time_start).equals(Planner.startType(prefs, displayedNext)));
         changeNext.setVisibility(actionable ? View.VISIBLE : View.GONE);
         var forecast = displayedNext != null ? upcomingClimateDetails(displayedNext, temperature) : "";
         set(nextPreview, forecast);
@@ -2532,78 +2552,78 @@ public final class MainActivity extends Activity {
         if (android.os.SystemClock.elapsedRealtime() >= undoUntil) undoChange = null;
         undoBar.setVisibility(undoChange == null ? View.GONE : View.VISIBLE);
         long pausedUntil = prefs.getLong(WeeklyAdjustment.PAUSE, 0);
-        set(pauseButton, pausedUntil > now ? "Gepauzeerd tot " + format(pausedUntil, "EEE d MMM HH:mm") : "Weekplanning pauzeren");
-        String nextType = continuation ? "Volgende cyclus" : Planner.startType(prefs, next);
+        set(pauseButton, pausedUntil > now ? t(R.string.paused_until) + format(pausedUntil, "EEE d MMM HH:mm") : t(R.string.pause_weekly_planning));
+        String nextType = continuation ? t(R.string.next_cycle) : Planner.startType(prefs, next);
         nextView.setVisibility(nextStart > 0 ? View.VISIBLE : View.GONE);
         set(nextView, nextStart > 0 ? format(nextStart, "HH:mm") : "");
-        set(nextDay, !linked || needsLink ? "Koppel Kia Connect" : !alarms ? "Exacte alarmen nodig"
+        set(nextDay, !linked || needsLink ? t(R.string.link_kia_connect) : !alarms ? t(R.string.exact_alarms_needed)
             : nextStart > 0 ? nextType + "\n" + format(nextStart, "EEE d MMM")
-            : continuation ? (kiaPaused ? "Wacht op einde Kia-pauze" : "Volgende cyclus wacht op Kia")
-            : pausedUntil > now ? "Weekplanning gepauzeerd" : prefs.getBoolean("enabled", false)
-                ? "Geen start gepland" : "Weekplanning staat uit");
-        String step = awaiting ? "Wacht op bevestiging van Kia"
-            : stopPending && !kiaPaused ? "Wacht op stopbevestiging van Kia"
-            : stopPending ? "Stop niet bevestigd door Kia"
-            : monitoring && kiaPaused ? "Klimaatcontrole tijdelijk gepauzeerd"
-            : monitoring && Planner.remainingCycles(prefs) > 0 ? "De planner controleert Kia rond het einde van de cyclus"
-            : monitoring ? "Laatste cyclus. De planner controleert de uitstatus rond het einde."
-            : unconfirmed ? "Kia heeft de start nog niet bevestigd"
+            : continuation ? (kiaPaused ? t(R.string.wait_for_the_end_of_the) : t(R.string.next_cycle_awaits_kia))
+            : pausedUntil > now ? t(R.string.weekly_planning_paused) : prefs.getBoolean("enabled", false)
+                ? t(R.string.no_start_planned) : t(R.string.weekly_planning_is_turned_off));
+        String step = awaiting ? t(R.string.wait_for_confirmation_from_kia)
+            : stopPending && !kiaPaused ? t(R.string.wait_for_stop_confirmation_from_kia)
+            : stopPending ? t(R.string.stop_not_confirmed_by_kia)
+            : monitoring && kiaPaused ? t(R.string.climate_control_temporarily_paused)
+            : monitoring && Planner.remainingCycles(prefs) > 0 ? t(R.string.the_planner_checks_kia_around_the)
+            : monitoring ? t(R.string.last_cycle_the_scheduler_checks_the)
+            : unconfirmed ? t(R.string.kia_has_not_yet_confirmed_the)
             : !activeClimate && end <= now && now - prefs.getLong("finishedOnUnlock", 0) < 15 * Schedule.MINUTE
-                ? "Afgerond na ontgrendelen of inschakelen" : "";
+                ? t(R.string.completed_after_unlocking_or_switching_on) : "";
         set(liveStep, step);
         liveStep.setVisibility(step.isEmpty() ? View.GONE : View.VISIBLE);
         boolean canStop = linked && (running || external || awaiting || unconfirmed || end > now
             || prefs.getLong("stopVehiclePending", 0) > now);
         manualButton.setVisibility(canStop && manual && ready ? View.GONE : View.VISIBLE);
         manualButton.setEnabled(!manual || !ready);
-        set(manualButton, ready ? "Handmatig starten" : "Naar instellingen");
+        set(manualButton, ready ? t(R.string.start_manually) : t(R.string.to_settings));
         stopButton.setVisibility(canStop ? View.VISIBLE : View.GONE);
         stopButton.setEnabled(!KiaStartService.stopInProgress());
-        set(stopButton, KiaStartService.stopInProgress() ? "Stoppen…" : "Stoppen");
+        set(stopButton, KiaStartService.stopInProgress() ? "Stoppen…" : t(R.string.stop));
         onceButton.setVisibility(ready ? View.VISIBLE : View.GONE);
         onceButton.setEnabled(!onceActive);
-        set(onceButton, onceActive ? "Eenmalig tijdvak loopt" : onceStart > now
-            ? "Eenmalig · " + format(onceStart, "d MMM HH:mm") : "Eenmalig plannen");
+        set(onceButton, onceActive ? t(R.string.one_time_period_is_running) : onceStart > now
+            ? t(R.string.one_off) + format(onceStart, "d MMM HH:mm") : t(R.string.plan_once));
         int percentage = prefs.getInt("battery", -1);
         long measured = prefs.getLong("batteryTime", 0);
-        set(battery, percentage < 0 ? "Onbekend" : percentage + "%");
-        String batteryDetail = batteryBusy ? "Accu ophalen…" : measured > 0
-            ? "Gemeten " + format(measured, "d MMM HH:mm") : "Geen meting";
+        set(battery, percentage < 0 ? t(R.string.unknown) : percentage + "%");
+        String batteryDetail = batteryBusy ? t(R.string.collect_battery) : measured > 0
+            ? t(R.string.measured) + format(measured, "d MMM HH:mm") : t(R.string.no_measurement);
         set(batteryMeasured, batteryDetail);
         batteryTile.setEnabled(linked && !needsLink && !batteryBusy);
-        batteryTile.setContentDescription("Tractieaccu, " + (percentage < 0 ? "onbekend" : percentage + " procent")
-            + ", " + batteryDetail + ", accustatus verversen");
+        batteryTile.setContentDescription(t(R.string.traction_battery_3) + (percentage < 0 ? t(R.string.unknown_2) : percentage + t(R.string.percent))
+            + ", " + batteryDetail + t(R.string.refresh_battery_status));
         extendAction.setVisibility(!manualStop && showWindow && prefs.getInt("activeConfirmedCycles", 0) > 0
             ? View.VISIBLE : View.GONE);
         repeatAction.setVisibility(!canStop && ready && prefs.contains("previousManualMinutes") ? View.VISIBLE : View.GONE);
         preflightAction.setVisibility(displayedNext == null ? View.GONE : View.VISIBLE);
         nextPreviewCard.setVisibility(displayedNext != null || !forecast.isEmpty() ? View.VISIBLE : View.GONE);
         boolean showAccountDetails = accountExpanded || !linked || needsLink || !alarms;
-        set(accountState, needsLink ? "Opnieuw koppelen vereist" : linked
-            ? "Gekoppeld · " + prefs.getString("kiaModel", "e-Niro") + (showAccountDetails ? "   ▴" : "   ›")
-            : "Kia Connect nog niet gekoppeld");
+        set(accountState, needsLink ? t(R.string.re_pairing_required) : linked
+            ? t(R.string.linked) + prefs.getString("kiaModel", "e-Niro") + (showAccountDetails ? "   ▴" : "   ›")
+            : t(R.string.kia_connect_not_yet_linked));
         accountDetails.setVisibility(showAccountDetails ? View.VISIBLE : View.GONE);
         if (Build.VERSION.SDK_INT >= 30) {
-            accountState.setStateDescription(showAccountDetails ? "Uitgeklapt" : "Ingeklapt");
+            accountState.setStateDescription(showAccountDetails ? t(R.string.expanded) : t(R.string.collapsed));
         }
-        set(accountButton, linked ? "Kia-account opnieuw koppelen" : "Kia-account koppelen");
+        set(accountButton, linked ? t(R.string.relink_kia_account) : t(R.string.link_kia_account));
         unlink.setVisibility(linked ? View.VISIBLE : View.GONE);
         screenControls.setVisibility(linked ? View.GONE : View.VISIBLE);
         alarmPermission.setVisibility(alarms ? View.GONE : View.VISIBLE);
         boolean alertsWanted = prefs.getBoolean("notifyDepartureDelay", false) || prefs.getBoolean("notifyWindowEnd", true)
             || prefs.getBoolean("notifyStartLimit", true) || prefs.getBoolean("notifyStartFailure", true);
         alertPermission.setVisibility(alertsWanted && !WindowAlerts.permitted(this) ? View.VISIBLE : View.GONE);
-        set(access, alarms ? "Exacte alarmen zijn toegestaan." : "Exacte alarmen hebben toestemming nodig.");
+        set(access, alarms ? t(R.string.exact_alarms_are_allowed) : t(R.string.exact_alarms_require_permission));
         refreshHistory();
     }
 
     private String upcomingClimateDetails(Schedule.Slot slot, ClimateIndicator.Reading reading) {
         var options = Planner.climateOptions(prefs, slot, ZoneId.systemDefault());
-        String name = options.profile() < 0 ? "Standaard" : ClimateProfiles.get(prefs, options.profile()).name();
-        if (options.customHeat()) name += " · Eigen verwarming";
-        String rule = "Voorruit " + windshieldLabel(options.heat(), options.threshold());
+        String name = options.profile() < 0 ? t(R.string.standard) : ClimateProfiles.get(prefs, options.profile()).name();
+        if (options.customHeat()) name += t(R.string.own_heating);
+        String rule = t(R.string.windshield) + windshieldLabel(options.heat(), options.threshold());
         if (ClimateProfiles.windshieldMode(options.heat()) == 2 && !Double.isFinite(reading.outdoor())) {
-            rule += " · beslissing bij start";
+            rule += t(R.string.decision_at_start);
         }
         return name + " · " + temperatureLabel(options.temperature()) + "\n" + rule;
     }
@@ -2613,8 +2633,8 @@ public final class MainActivity extends Activity {
     }
 
     private static String dashboardTemperature(double celsius) {
-        if (!Double.isFinite(celsius)) return "onbekend";
-        return String.format(NL, celsius == Math.rint(celsius) ? "%.0f °C" : "%.1f °C", celsius);
+        if (!Double.isFinite(celsius)) return t(R.string.unknown_2);
+        return String.format(AppLanguage.locale(), celsius == Math.rint(celsius) ? "%.0f °C" : "%.1f °C", celsius);
     }
 
     private void updateClimateIcon(ClimateIndicator.Reading reading, boolean active) {
@@ -2626,13 +2646,13 @@ public final class MainActivity extends Activity {
                 case HEATING -> {
                     icon = R.drawable.ic_ui_flame;
                     tint = 0xffffb747;
-                    estimate = "Waarschijnlijk verwarmen";
+                    estimate = t(R.string.probably_heating);
                 }
-                case COOLING -> estimate = "Waarschijnlijk koelen";
+                case COOLING -> estimate = t(R.string.probably_refrigerate);
                 case UNKNOWN -> {
                     icon = R.drawable.ic_ui_fan;
                     tint = ACCENT;
-                    estimate = "Verwarmen of koelen onbekend";
+                    estimate = t(R.string.heating_or_cooling_unknown);
                 }
             }
             if (reading.weather() && reading.mode() != ClimateIndicator.Mode.UNKNOWN) estimate += " · Open-Meteo";
@@ -2694,7 +2714,7 @@ public final class MainActivity extends Activity {
         for (var entry : entries) {
             historyReloadAt = Math.min(historyReloadAt, entry.time() + Planner.HISTORY_AGE + 1);
         }
-        if (entries.isEmpty()) entries.add(new HistoryEntry(0, "Nog geen meldingen"));
+        if (entries.isEmpty()) entries.add(new HistoryEntry(0, t(R.string.no_notifications_yet)));
 
         var groups = new java.util.LinkedHashMap<Long, ArrayList<HistoryEntry>>();
         for (var entry : entries) {
@@ -2743,16 +2763,16 @@ public final class MainActivity extends Activity {
         for (var event : group) {
             String type = event.outcome();
             String message = event.message();
-            if ("UNLOCKED".equals(type) || message.contains("auto is ontgrendeld")) return "Afgerond na ontgrendelen";
-            if ("STOPPED".equals(type) || message.equals("Lopend tijdvak geannuleerd.")) return "Handmatig beëindigd";
+            if ("UNLOCKED".equals(type) || message.contains("auto is ontgrendeld")) return t(R.string.completed_after_unlocking);
+            if ("STOPPED".equals(type) || message.equals("Lopend tijdvak geannuleerd.")) return t(R.string.terminated_manually);
             if ("RULE".equals(type)) return message;
-            if ("REFUSED".equals(type) || message.contains("heeft de klimaatstart geweigerd")) return "Start geweigerd door Kia";
+            if ("REFUSED".equals(type) || message.contains("heeft de klimaatstart geweigerd")) return t(R.string.start_denied_by_kia);
             if ("UNCONFIRMED".equals(type) || message.equals("Geen bevestiging van de auto ontvangen."))
-                return "Geen bevestiging van Kia";
+                return t(R.string.no_confirmation_from_kia);
             if (event.confirmed()) break;
         }
-        if (planned == 1 && confirmed == 1) return "1 van 1 cyclus bevestigd";
-        return confirmed + " van " + planned + " cyclussen bevestigd";
+        if (planned == 1 && confirmed == 1) return t(R.string.text_1_of_1_cycle_confirmed);
+        return confirmed + t(R.string.of) + planned + t(R.string.cycles_confirmed);
     }
 
     private record HistoryEntry(long time, String message, long session, long end, boolean confirmed, boolean header,
@@ -2780,7 +2800,7 @@ public final class MainActivity extends Activity {
                 ? expanded ? android.R.drawable.arrow_up_float : android.R.drawable.arrow_down_float : 0, 0);
             row.setCompoundDrawablePadding(dp(12));
             if (Build.VERSION.SDK_INT >= 30) row.setStateDescription(entry.header()
-                ? expanded ? "Uitgeklapt" : "Ingeklapt" : null);
+                ? expanded ? t(R.string.expanded) : t(R.string.collapsed) : null);
             row.setTextColor(entry.time() == 0 ? MUTED : INK);
             row.setPadding(entry.session() > 0 && !entry.header() ? dp(12) : 0, dp(9), 0, dp(9));
             return row;
@@ -2807,25 +2827,25 @@ public final class MainActivity extends Activity {
         KiaCloud.WORKER.execute(() -> {
             try {
                 KiaSessionStore.clear(getApplicationContext());
-                Planner.note(this, "Kia-account losgekoppeld.");
+                Planner.note(this, t(R.string.kia_account_disconnected));
             } catch (Exception error) {
-                Planner.note(this, "De opgeslagen Kia-sessie kon niet worden gewist.");
+                Planner.note(this, t(R.string.the_saved_kia_session_could_not));
             }
         });
     }
 
     private static String clock(int minute) {
-        return String.format(NL, "%02d:%02d", minute / 60, minute % 60);
+        return String.format(AppLanguage.locale(), "%02d:%02d", minute / 60, minute % 60);
     }
 
     private static String countdown(long millis) {
         long sec = Math.max(0, (millis + 999) / 1000);
-        return sec >= 3600 ? String.format(NL, "%d:%02d:%02d", sec / 3600, sec / 60 % 60, sec % 60)
-            : String.format(NL, "%02d:%02d", sec / 60, sec % 60);
+        return sec >= 3600 ? String.format(AppLanguage.locale(), "%d:%02d:%02d", sec / 3600, sec / 60 % 60, sec % 60)
+            : String.format(AppLanguage.locale(), "%02d:%02d", sec / 60, sec % 60);
     }
 
     private static String format(long millis, String pattern) {
-        return DateTimeFormatter.ofPattern(pattern, NL).withZone(ZoneId.systemDefault())
+        return DateTimeFormatter.ofPattern(pattern, AppLanguage.locale()).withZone(ZoneId.systemDefault())
             .format(Instant.ofEpochMilli(millis));
     }
 
@@ -2897,17 +2917,15 @@ public final class MainActivity extends Activity {
         }
         card.setPadding(dp(13), dp(12), dp(13), dp(12));
         if (title != null) {
-            boolean compact = title.equals("Tractieaccu") || title.equals("Volgende start");
+            boolean compact = title.equals(t(R.string.traction_battery)) || title.equals(t(R.string.next_start));
             var heading = text(title, compact ? 16 : 21, INK, true);
-            int icon = switch (title) {
-                case "Tractieaccu" -> R.drawable.ic_ui_battery;
-                case "Volgende start", "Weekplanning" -> R.drawable.ic_ui_calendar;
-                case "Laatste meldingen" -> R.drawable.ic_ui_list;
-                case "Standaardverwarming" -> R.drawable.ic_ui_heat;
-                case "Meldingen" -> R.drawable.ic_ui_bell;
-                case "Kia Connect" -> R.drawable.ic_ui_link;
-                default -> 0;
-            };
+            int icon = 0;
+            if (title.equals(t(R.string.traction_battery))) icon = R.drawable.ic_ui_battery;
+            else if (title.equals(t(R.string.next_start)) || title.equals(t(R.string.weekly_schedule))) icon = R.drawable.ic_ui_calendar;
+            else if (title.equals(t(R.string.recent_notifications))) icon = R.drawable.ic_ui_list;
+            else if (title.equals(t(R.string.standard_heating))) icon = R.drawable.ic_ui_heat;
+            else if (title.equals(t(R.string.notifications))) icon = R.drawable.ic_ui_bell;
+            else if (title.equals("Kia Connect")) icon = R.drawable.ic_ui_link;
             if (icon != 0) decorate(heading, icon, ACCENT, compact ? 18 : 24);
             heading.setPadding(0, 0, 0, dp(4));
             card.addView(heading);

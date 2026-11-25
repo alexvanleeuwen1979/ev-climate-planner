@@ -1,0 +1,559 @@
+<resources>
+    <string name="shortcut_manual" formatted="false">"Démarrer manuellement"</string>
+    <string name="access_description" formatted="false">"Reconnaît les boutons de climatisation dans l\'application officielle Kia et les actionne aux heures sélectionnées."</string>
+    <string name="app_language" formatted="false">"Langue"</string>
+    <string name="choose_language" formatted="false">"Choisissez la langue de l\'application"</string>
+    <string name="no_vehicle_linked" formatted="false">"Ce compte Kia n\'a pas de voiture associée."</string>
+    <string name="login_session_missing" formatted="false">"Kia n\'a pas ouvert de session."</string>
+    <string name="selection_expired" formatted="false">"La sélection de véhicule a expiré. Veuillez vous reconnecter."</string>
+    <string name="selection_invalid" formatted="false">"Sélection de véhicule invalide. Veuillez vous reconnecter."</string>
+    <string name="monday" formatted="false">"lundi"</string>
+    <string name="tuesday" formatted="false">"mardi"</string>
+    <string name="wednesday" formatted="false">"mercredi"</string>
+    <string name="thursday" formatted="false">"jeudi"</string>
+    <string name="friday" formatted="false">"vendredi"</string>
+    <string name="saturday" formatted="false">"samedi"</string>
+    <string name="sunday" formatted="false">"dimanche"</string>
+    <string name="climate_profiles" formatted="false">"Profils climatiques"</string>
+    <string name="applies_to_starts_without_their_own" formatted="false">"S\'applique aux démarrages sans leur propre profil."</string>
+    <string name="manage_profiles" formatted="false">"Gérer les profils"</string>
+    <string name="profiles_per_season" formatted="false">"Profils par saison"</string>
+    <string name="standard_heating" formatted="false">"Chauffage standard"</string>
+    <string name="steering_wheel_heating" formatted="false">"Chauffage du volant"</string>
+    <string name="mirrors_and_rear_window" formatted="false">"Rétroviseurs et lunette arrière"</string>
+    <string name="windshield_defrost" formatted="false">"Dégivrage du pare-brise"</string>
+    <string name="windshield_only_in_the_first_cycle" formatted="false">"Pare-brise uniquement au premier cycle."</string>
+    <string name="conditions_for_planned_takeoffs" formatted="false">"Conditions des démarrages programmés"</string>
+    <string name="battery_limit_and_comfort_range" formatted="false">"Limite de batterie et plage de confort"</string>
+    <string name="set_home_location" formatted="false">"Définir l\'emplacement du domicile"</string>
+    <string name="manual_operation" formatted="false">"Fonctionnement manuel"</string>
+    <string name="biometric_confirmation" formatted="false">"Confirmation biométrique"</string>
+    <string name="first_set_up_biometrics_on_your" formatted="false">"Configurez d’abord la biométrie sur votre Samsung."</string>
+    <string name="overview_and_diagnosis" formatted="false">"Présentation et diagnostic"</string>
+    <string name="open_monthly_overview" formatted="false">"Aperçu mensuel ouvert"</string>
+    <string name="export_private_log" formatted="false">"Exporter le journal privé"</string>
+    <string name="climate_consumption" formatted="false">"Consommation de la climatisation"</string>
+    <string name="charts_and_overview" formatted="false">"Graphiques et aperçu"</string>
+    <string name="open_consumption_log" formatted="false">"Ouvrir le journal de consommation"</string>
+    <string name="update_battery_every_hour" formatted="false">"Mettre à jour la batterie toutes les heures"</string>
+    <string name="backup_weekly_planning" formatted="false">"Sauvegarde du planning hebdomadaire"</string>
+    <string name="export_schedule" formatted="false">"Calendrier d\'exportation"</string>
+    <string name="reset_planning" formatted="false">"Restaurer le planning"</string>
+    <string name="weekly_schedule" formatted="false">"Planning hebdomadaire"</string>
+    <string name="weekly_schedule_enabled" formatted="false">"Planification hebdomadaire active"</string>
+    <string name="pause_weekly_planning" formatted="false">"Suspendre la planification hebdomadaire"</string>
+    <string name="next_seven_days" formatted="false">"Sept prochains jours"</string>
+    <string name="check_next_start" formatted="false">"Vérifier le prochain démarrage"</string>
+    <string name="notifications" formatted="false">"Notifications"</string>
+    <string name="recent_notifications" formatted="false">"Dernières notifications"</string>
+    <string name="cycle_remaining" formatted="false">"Cycle restant"</string>
+    <string name="start_manually" formatted="false">"Démarrer manuellement"</string>
+    <string name="stop" formatted="false">"Arrêter"</string>
+    <string name="stop_climate" formatted="false">"Stop au climat"</string>
+    <string name="plan_once" formatted="false">"Planifier une fois"</string>
+    <string name="extend_by_15_minutes" formatted="false">"Prolonger de 15 minutes"</string>
+    <string name="extend_period" formatted="false">"Prolonger la période"</string>
+    <string name="this_time_period_is_no_longer" formatted="false">"Cette période n\'est plus active."</string>
+    <string name="repeat_previous_start" formatted="false">"Répéter le démarrage précédent"</string>
+    <string name="traction_battery" formatted="false">"Batterie de traction"</string>
+    <string name="next_start" formatted="false">"Prochain démarrage"</string>
+    <string name="change" formatted="false">"Changement"</string>
+    <string name="change_next_start" formatted="false">"Modifier le prochain démarrage"</string>
+    <string name="undo" formatted="false">"Annuler"</string>
+    <string name="settings" formatted="false">"Paramètres"</string>
+    <string name="active" formatted="false">" actif"</string>
+    <string name="period" formatted="false">", point final "</string>
+    <string name="copy_day" formatted="false">"Jour de copie"</string>
+    <string name="ready_by" formatted="false">"Prêt à "</string>
+    <string name="not_set" formatted="false">"Non défini"</string>
+    <string name="own_heating" formatted="false">" · Propre chauffage"</string>
+    <string name="home_alone" formatted="false">" · À domicile uniquement"</string>
+    <string name="time_slot" formatted="false">"Créneau "</string>
+    <string name="add" formatted="false">" ajouter"</string>
+    <string name="not_active" formatted="false">"Pas actif"</string>
+    <string name="no_active_time_slots" formatted="false">"Aucune plage horaire active"</string>
+    <string name="active_period" formatted="false">" période active"</string>
+    <string name="active_time_slots" formatted="false">" plages horaires actives"</string>
+    <string name="expanded" formatted="false">"Élargi"</string>
+    <string name="collapsed" formatted="false">"Effondré"</string>
+    <string name="replaces_existing_time_slots" formatted="false">" · remplace les plages horaires existantes"</string>
+    <string name="copy_to" formatted="false">" copier vers"</string>
+    <string name="cancel" formatted="false">"Annuler"</string>
+    <string name="replace_time_slots" formatted="false">"Remplacer les plages horaires"</string>
+    <string name="time_slots_copied" formatted="false">"Plages horaires copiées."</string>
+    <string name="ready_at_the_chosen_time" formatted="false">"Prêt à l\'heure choisie"</string>
+    <string name="hour" formatted="false">"Heure"</string>
+    <string name="start_minute" formatted="false">"Minute de début"</string>
+    <string name="duration_in_minutes" formatted="false">"Durée en minutes"</string>
+    <string name="minute" formatted="false">"Minutes"</string>
+    <string name="duration_min" formatted="false">"Durée (min)"</string>
+    <string name="start_at" formatted="false">"Commencez à "</string>
+    <string name="previous_day" formatted="false">" (jour précédent)"</string>
+    <string name="end" formatted="false">"\nFin "</string>
+    <string name="only_start_when_the_car_is" formatted="false">"Ne démarrez que lorsque la voiture est à la maison"</string>
+    <string name="first_set_the_home_location_under" formatted="false">"Définissez d’abord l’emplacement du domicile sous Paramètres."</string>
+    <string name="own_heating_options" formatted="false">"Propre options de chauffage"</string>
+    <string name="used" formatted="false">"Utilisé "</string>
+    <string name="from_settings" formatted="false">" à partir des paramètres."</string>
+    <string name="mirror_and_rear_window_heating" formatted="false">"Chauffage des rétroviseurs et des vitres arrière"</string>
+    <string name="slim_uses_the_limit_from_standard" formatted="false">"Slim utilise la limite de Standard Heating."</string>
+    <string name="period_2" formatted="false">" · Période "</string>
+    <string name="save" formatted="false">"Enregistrer"</string>
+    <string name="clear_time_slot" formatted="false">"Effacer le créneau horaire"</string>
+    <string name="delete_time_slot" formatted="false">"Supprimer le créneau horaire ?"</string>
+    <string name="the_saved_time_and_heating_options" formatted="false">"\nLe temps économisé et les options de chauffage sont effacés."</string>
+    <string name="clear" formatted="false">"Effacer"</string>
+    <string name="time_slot_deleted" formatted="false">"Plage horaire supprimée."</string>
+    <string name="time_slot_saved" formatted="false">"Plage horaire enregistrée."</string>
+    <string name="text_1_day" formatted="false">" (+1 jour)"</string>
+    <string name="time_slots_overlap_adjust_the_start" formatted="false">"Les plages horaires se chevauchent. Ajustez l’heure de début ou la durée, ou définissez un créneau horaire qui se chevauche."</string>
+    <string name="adjust_temperature_before_this_start" formatted="false">"Ajuster la température avant ce démarrage"</string>
+    <string name="expensive" formatted="false">"Cher"</string>
+    <string name="target_temperature" formatted="false">"Température cible "</string>
+    <string name="overlaps_with" formatted="false">"Se chevauche avec "</string>
+    <string name="together_until" formatted="false">" · ensemble jusqu\'à "</string>
+    <string name="expected_ending" formatted="false">"Fin attendue "</string>
+    <string name="min" formatted="false">" min"</string>
+    <string name="choose_a_different_duration" formatted="false">"Choisissez une durée différente"</string>
+    <string name="select_a_different_climate_duration" formatted="false">"Sélectionnez une durée climatique différente"</string>
+    <string name="try_again" formatted="false">"Réessayez"</string>
+    <string name="start" formatted="false">"Commencer"</string>
+    <string name="start_climate" formatted="false">"Démarrer le climat"</string>
+    <string name="check_kia_connect_and_exact_alarms" formatted="false">"Vérifiez Kia Connect et les alarmes exactes."</string>
+    <string name="ready_by_2" formatted="false">"Prêt à"</string>
+    <string name="start_time" formatted="false">"Heure de début"</string>
+    <string name="go" formatted="false">"Allez "</string>
+    <string name="eee_d_mmm_at_hh_mm" formatted="false">"EEE d MMM \'à\' HH:mm"</string>
+    <string name="departure_time_from_agenda" formatted="false">"Heure de départ de l\'ordre du jour"</string>
+    <string name="close" formatted="false">"Fermer"</string>
+    <string name="schedule" formatted="false">"Calendrier"</string>
+    <string name="clear_schedule" formatted="false">"Calendrier clair"</string>
+    <string name="choose_a_date_and_time_in" formatted="false">"Choisissez une date et une heure dans le futur."</string>
+    <string name="scheduling_was_not_possible_check_the" formatted="false">"La planification n\'était pas possible. Vérifiez le lien Kia et l\'autorisation pour les alarmes exactes."</string>
+    <string name="link_kia_account" formatted="false">"Associer un compte Kia"</string>
+    <string name="disconnect_account" formatted="false">"Déconnecter le compte"</string>
+    <string name="disconnect_kia_account" formatted="false">"Déconnecter le compte Kia ?"</string>
+    <string name="the_schedule_is_disabled_and_the" formatted="false">"Le planning est désactivé et les informations de connexion enregistrées sont supprimées."</string>
+    <string name="disconnect" formatted="false">"Déconnecter"</string>
+    <string name="end_of_period" formatted="false">"Fin de période"</string>
+    <string name="kia_request_limit" formatted="false">"Limite de départ Kia"</string>
+    <string name="delay_at_ready_at" formatted="false">"Retard à Prêt à"</string>
+    <string name="scheduled_start_failed" formatted="false">"Le démarrage planifié a échoué"</string>
+    <string name="silent_notification_mode" formatted="false">"Mode de notification silencieuse"</string>
+    <string name="only_pop_ups_in_case_of" formatted="false">"Uniquement des pop-ups en cas de problèmes. Les plages horaires restent dans le journal."</string>
+    <string name="connection_check" formatted="false">"Vérification de la connexion"</string>
+    <string name="allow_android_notifications" formatted="false">"Autoriser les notifications Android"</string>
+    <string name="allow_exact_alarms" formatted="false">"Autoriser les alarmes exactes"</string>
+    <string name="open_accessibility" formatted="false">"Accessibilité ouverte"</string>
+    <string name="check_kia_button" formatted="false">"Vérifier le bouton Kia"</string>
+    <string name="first_enable_accessibility" formatted="false">"Activez d’abord l’accessibilité."</string>
+    <string name="use_weather_for_climate_icon" formatted="false">"Utiliser la météo pour l\'icône climatique"</string>
+    <string name="open_meteo_uses_the_last_known" formatted="false">"Open-Meteo utilise la dernière localisation de voiture connue pour cette estimation."</string>
+    <string name="temperature" formatted="false">"Température"</string>
+    <string name="temperature_2" formatted="false">"Température, "</string>
+    <string name="change_2" formatted="false">", changer"</string>
+    <string name="temperature_in_degrees_celsius" formatted="false">"Température en degrés Celsius"</string>
+    <string name="desired_temperature" formatted="false">"Température souhaitée"</string>
+    <string name="general" formatted="false">"Général · "</string>
+    <string name="climate_profile" formatted="false">"Profil climatique"</string>
+    <string name="off" formatted="false">"Désactivé"</string>
+    <string name="always_on_first_cycle" formatted="false">"Toujours au premier cycle"</string>
+    <string name="smart_in_the_cold" formatted="false">"Intelligent dans le froid"</string>
+    <string name="smart" formatted="false">"Intelligent ≤ "</string>
+    <string name="text_1_cycle_planned" formatted="false">"1 cycle prévu"</string>
+    <string name="cycles_planned" formatted="false">" cycles prévus"</string>
+    <string name="enable_at_or_below" formatted="false">"Activer à ou en dessous"</string>
+    <string name="windshield_position_saved" formatted="false">"Position du pare-brise enregistrée."</string>
+    <string name="general_climate_profile" formatted="false">"Profil climatique général"</string>
+    <string name="profile_name" formatted="false">"Nom du profil"</string>
+    <string name="target_temperature_2" formatted="false">"Température cible"</string>
+    <string name="edit_profile" formatted="false">"Modifier le profil"</string>
+    <string name="enter_a_profile_name" formatted="false">"Entrez un nom de profil"</string>
+    <string name="one_time_start" formatted="false">"Démarrage unique"</string>
+    <string name="skip_this_start" formatted="false">"Passer ce début"</string>
+    <string name="this_starts_moving" formatted="false">"Cela commence à bouger"</string>
+    <string name="new_start_time" formatted="false">"Nouvelle heure de début"</string>
+    <string name="choose_a_free_future_start_time" formatted="false">"Choisissez une heure de début future gratuite ou ouvrez le prochain redémarrage."</string>
+    <string name="start_skipped" formatted="false">"Début ignoré"</string>
+    <string name="start_moved_to" formatted="false">"Début déplacé vers "</string>
+    <string name="this_change_cannot_be_undone" formatted="false">"Ce changement ne peut pas être annulé."</string>
+    <string name="resume_now" formatted="false">"Reprendre maintenant"</string>
+    <string name="take_a_break_until_tomorrow" formatted="false">"Faites une pause jusqu\'à demain"</string>
+    <string name="select_date_and_time" formatted="false">"Sélectionnez la date et l\'heure"</string>
+    <string name="see_you_tomorrow" formatted="false">"A demain"</string>
+    <string name="resume_at" formatted="false">"Reprendre à"</string>
+    <string name="choose_a_time_in_the_future" formatted="false">"Choisissez une heure dans le futur."</string>
+    <string name="checking_kia_and_android" formatted="false">"Vérification de Kia et Android…"</string>
+    <string name="exact_alarms" formatted="false">"\nAlarmes exactes : "</string>
+    <string name="allowed" formatted="false">"autorisé"</string>
+    <string name="permission_required" formatted="false">"autorisation requise"</string>
+    <string name="android_notifications" formatted="false">"\nNotifications Android : "</string>
+    <string name="disabled" formatted="false">"désactivé"</string>
+    <string name="day" formatted="false">"Jour"</string>
+    <string name="week" formatted="false">"Semaine"</string>
+    <string name="month" formatted="false">"Mois"</string>
+    <string name="previous_period" formatted="false">"Période précédente"</string>
+    <string name="next_period" formatted="false">"Période suivante"</string>
+    <string name="battery_and_climate_consumption" formatted="false">"Consommation de batterie et climat"</string>
+    <string name="loading_overview" formatted="false">"Aperçu du chargement…"</string>
+    <string name="usage_data_could_not_be_opened" formatted="false">"Les données d\'utilisation n\'ont pas pu être ouvertes."</string>
+    <string name="estimated_climate_consumption" formatted="false">"Consommation climatique estimée  "</string>
+    <string name="traction_battery_2" formatted="false">"Batterie de traction (%)"</string>
+    <string name="no_kia_battery_measurement_on_this" formatted="false">"Pas de mesure de batterie Kia ce jour là."</string>
+    <string name="om" formatted="false">" oh "</string>
+    <string name="one_measurement" formatted="false">" · une mesure"</string>
+    <string name="measuring_points_for_kia_status_updates" formatted="false">"Points de mesure pour les mises à jour du statut Kia, avec une vérification horaire automatique."</string>
+    <string name="measuring_points_for_a_kia_status" formatted="false">"Points de mesure pour une mise à jour du statut Kia."</string>
+    <string name="cumulative_climate_consumption_kwh" formatted="false">"Consommation climatique cumulée (kWh)"</string>
+    <string name="no_recorded_climate_cycles" formatted="false">"Aucun cycle climatique enregistré."</string>
+    <string name="average_from_your_measurements" formatted="false">"Moyenne de vos mesures"</string>
+    <string name="provisional_calculation_value" formatted="false">"Valeur de calcul provisoire"</string>
+    <string name="text_1_suitable_cycle" formatted="false">"1 cycle adapté"</string>
+    <string name="suitable_cycles" formatted="false">" cycles adaptés"</string>
+    <string name="calibration_uses_recent_kia_measurements_fro" formatted="false">"L\'étalonnage utilise les mesures Kia récentes des cycles stationnés et débranchés."</string>
+    <string name="with_an_uncertain_end_time_running" formatted="false">" Avec une heure de fin incertaine, la durée de fonctionnement et la consommation restent des estimations."</string>
+    <string name="received_off_status_from_kia" formatted="false">"Reçu le statut désactivé de Kia"</string>
+    <string name="stop_confirmed_by_kia" formatted="false">"Arrêt confirmé par Kia"</string>
+    <string name="terminated_after_unlocking" formatted="false">"Terminé après le déverrouillage"</string>
+    <string name="end_time_estimated" formatted="false">"Heure de fin estimée"</string>
+    <string name="estimated" formatted="false">"\nEstimé "</string>
+    <string name="kwh_approx" formatted="false">" kWh · environ "</string>
+    <string name="of_64_kwh" formatted="false">"% de 64 kWh\n"</string>
+    <string name="own_average" formatted="false">"propre moyenne"</string>
+    <string name="calculation_value" formatted="false">"valeur de calcul"</string>
+    <string name="counts_towards_calibration" formatted="false">" · compte pour l\'étalonnage"</string>
+    <string name="battery" formatted="false">"\nBatterie "</string>
+    <string name="your_first_confirmed_climate_cycle_appears" formatted="false">"Le premier cycle de climatisation confirmé apparaîtra ici."</string>
+    <string name="consumption_log" formatted="false">"Journal de consommation"</string>
+    <string name="minimum_battery_when_disconnected" formatted="false">"Batterie minimale une fois déconnecté"</string>
+    <string name="skip_in_mild_weather" formatted="false">"Passer par temps doux"</string>
+    <string name="from" formatted="false">"De"</string>
+    <string name="until" formatted="false">"Jusqu\'à"</string>
+    <string name="the_first_temperature_must_be_the" formatted="false">"La première température doit être identique ou inférieure."</string>
+    <string name="no_home_location_has_been_saved" formatted="false">"Aucun emplacement d\'origine n\'a encore été enregistré."</string>
+    <string name="home_location_saved" formatted="false">"Lieu de résidence enregistré"</string>
+    <string name="via_your_phone" formatted="false">" via votre téléphone."</string>
+    <string name="through_kia" formatted="false">" via Kia."</string>
+    <string name="stand_at_home_when_you_save" formatted="false">"Restez chez vous lorsque vous enregistrez la position de votre téléphone. La zone d\'accueil a un rayon de 150 mètres."</string>
+    <string name="for_scheduled_starts_the_app_compares" formatted="false">" Pour les démarrages programmés, l\'application compare ce point avec l\'emplacement de la voiture Kia."</string>
+    <string name="use_phone_location" formatted="false">"Utiliser la localisation du téléphone"</string>
+    <string name="use_kia_car_location" formatted="false">"Utiliser la localisation de la voiture Kia"</string>
+    <string name="clear_home_location" formatted="false">"Effacer l\'emplacement de la maison"</string>
+    <string name="delete_home_location" formatted="false">"Supprimer votre domicile ?"</string>
+    <string name="home_only_time_slots_will_be" formatted="false">"Les plages horaires réservées à la maison seront ignorées jusqu\'à ce qu\'un lieu de résidence soit à nouveau disponible."</string>
+    <string name="location_is_off" formatted="false">"L\'emplacement est désactivé"</string>
+    <string name="turn_on_location_on_your_samsung" formatted="false">"Activez la localisation sur votre Samsung pour récupérer votre point d\'origine."</string>
+    <string name="find_phone_location" formatted="false">"Trouver l\'emplacement du téléphone"</string>
+    <string name="wait_for_an_accurate_location" formatted="false">"Attendez une localisation précise…"</string>
+    <string name="location_not_yet_accurate_enough" formatted="false">"Localisation pas encore assez précise"</string>
+    <string name="try_near_a_window_or_outside" formatted="false">"Essayez près d\'une fenêtre ou à l\'extérieur. Vous pouvez également choisir l’emplacement de la voiture Kia."</string>
+    <string name="search_again" formatted="false">"Rechercher à nouveau"</string>
+    <string name="phone_location_found_accurate_to_approx" formatted="false">"Localisation du téléphone trouvée, précise à environ "</string>
+    <string name="meters" formatted="false">" mètres."</string>
+    <string name="home_location" formatted="false">"Emplacement du domicile"</string>
+    <string name="pick_up_car_location" formatted="false">"Lieu de récupération de la voiture…"</string>
+    <string name="no_recent_kia_car_location" formatted="false">"Aucune localisation récente de voiture Kia"</string>
+    <string name="you_can_save_your_home_location" formatted="false">"Vous pouvez enregistrer l\'emplacement de votre domicile avec votre téléphone. Le contrôle à domicile prévu nécessite la localisation d\'une voiture Kia."</string>
+    <string name="kia_has_returned_a_recent_car" formatted="false">"Kia a restitué une localisation de voiture récente."</string>
+    <string name="save_as_home_location" formatted="false">"Enregistrer comme lieu de résidence ?"</string>
+    <string name="the_home_location_is_stored_on" formatted="false">"\nL\'emplacement du domicile est stocké sur cet appareil."</string>
+    <string name="home_location_saved_2" formatted="false">"Lieu d\'origine enregistré."</string>
+    <string name="automatically_switch_by_date" formatted="false">"Basculer automatiquement par date"</string>
+    <string name="profile_from_the_first_date" formatted="false">"Profil dès le premier rendez-vous"</string>
+    <string name="profile_from_the_second_date" formatted="false">"Profil du deuxième rendez-vous"</string>
+    <string name="starts_with_their_own_profile_retain" formatted="false">"Les débutants avec leur propre profil conservent ce choix."</string>
+    <string name="choose_two_different_changeover_dates" formatted="false">"Choisissez deux dates de changement différentes."</string>
+    <string name="biometrics_are_not_available_check_your" formatted="false">"La biométrie n\'est pas disponible. Vérifiez vos paramètres Samsung."</string>
+    <string name="pick_up_appointments" formatted="false">"Prise de rendez-vous…"</string>
+    <string name="appointment" formatted="false">"Rendez-vous"</string>
+    <string name="no_visible_appointments_with_a_start" formatted="false">"Aucun rendez-vous visible avec une heure de début dans les trois prochaines semaines."</string>
+    <string name="choose_an_appointment" formatted="false">"Choisissez un rendez-vous"</string>
+    <string name="accurate_location_needed" formatted="false">"Localisation précise nécessaire"</string>
+    <string name="choose_precise_location_access_to_save" formatted="false">"Choisissez un accès à une localisation précise pour enregistrer le point central de la zone d\'accueil."</string>
+    <string name="calendar_access_is_required_to_choose" formatted="false">"L\'accès au calendrier est requis pour choisir un rendez-vous."</string>
+    <string name="wash" formatted="false">" · laver "</string>
+    <string name="no_scheduled_starts_during_this_period" formatted="false">"Aucun démarrage programmé pendant cette période."</string>
+    <string name="planned" formatted="false">"Prévu "</string>
+    <string name="kia_connect_connected" formatted="false">"Kia Connect connecté"</string>
+    <string name="connect_kia_connect" formatted="false">"Connecter Kia Connect"</string>
+    <string name="exact_alarms_allowed" formatted="false">"\nAlarmes exactes autorisées"</string>
+    <string name="exact_alarms_are_disabled" formatted="false">"\nLes alarmes exactes sont désactivées"</string>
+    <string name="latest_car_status" formatted="false">"\nDernier état de la voiture "</string>
+    <string name="no_car_status_known_yet" formatted="false">"\nAucun statut de voiture connu pour l\'instant"</string>
+    <string name="home_zone_is_checked_at_the" formatted="false">"\nLa zone d\'accueil est vérifiée au départ"</string>
+    <string name="first_set_your_home_location" formatted="false">"\nDéfinissez d’abord l’emplacement de votre domicile"</string>
+    <string name="check_connection" formatted="false">"Vérifier la connexion"</string>
+    <string name="reconnect_kia" formatted="false">"Reconnecter Kia"</string>
+    <string name="allow_alarms" formatted="false">"Autoriser les alarmes"</string>
+    <string name="what_do_you_want_to_do" formatted="false">"Que veux-tu faire ?"</string>
+    <string name="confirmed" formatted="false">"Confirmé  "</string>
+    <string name="skipped" formatted="false">"\nSauté  "</string>
+    <string name="failed" formatted="false">"\nÉchec  "</string>
+    <string name="most_common_cause" formatted="false">"\n\nCause la plus fréquente : "</string>
+    <string name="estimated_climate_consumption_2" formatted="false">"\n\nConsommation climatique estimée  "</string>
+    <string name="last_month" formatted="false">"Le mois dernier"</string>
+    <string name="next_month" formatted="false">"Le mois prochain"</string>
+    <string name="there_are_no_time_slots_for" formatted="false">"Il n’y a pas encore de plages horaires pour exporter."</string>
+    <string name="private_log_choose_a_time_period" formatted="false">"Journal privé · choisissez une période"</string>
+    <string name="failed_to_create_private_log" formatted="false">"Échec de la création d\'un journal privé."</string>
+    <string name="no_readable_notification_log_available" formatted="false">"Aucun journal de notification lisible disponible."</string>
+    <string name="private_log_saved" formatted="false">"Journal privé enregistré."</string>
+    <string name="private_log_save_failed" formatted="false">"L\'enregistrement du journal privé a échoué."</string>
+    <string name="weekly_schedule_exported" formatted="false">"Programme hebdomadaire exporté."</string>
+    <string name="save_backup_failed" formatted="false">"L\'enregistrement de la sauvegarde a échoué."</string>
+    <string name="reset_weekly_schedule" formatted="false">"Réinitialiser le programme hebdomadaire ?"</string>
+    <string name="restore" formatted="false">"Restaurer"</string>
+    <string name="backup_restore_failed" formatted="false">"La restauration de la sauvegarde a échoué."</string>
+    <string name="this_is_not_a_valid_kia" formatted="false">"Il ne s\'agit pas d\'une sauvegarde Kia Climate Control valide."</string>
+    <string name="done" formatted="false">"fait "</string>
+    <string name="out" formatted="false">", désactivé"</string>
+    <string name="empty" formatted="false">"vide"</string>
+    <string name="time_slot_options_changed" formatted="false">" (les options de créneaux horaires ont été modifiées)"</string>
+    <string name="day_becomes_active" formatted="false">" (le jour devient actif)"</string>
+    <string name="day_is_plotted" formatted="false">" (le jour est tracé)"</string>
+    <string name="no_differences_in_time_periods" formatted="false">"Aucune différence dans les périodes.\n"</string>
+    <string name="profiles_to_recover" formatted="false">"\nProfils à récupérer\n"</string>
+    <string name="temporary_weekly_deviations_are_canceled" formatted="false">"\nLes écarts hebdomadaires temporaires sont annulés."</string>
+    <string name="stopping_climate" formatted="false">"Arrêter le climat…"</string>
+    <string name="stop_not_attached" formatted="false">"Arrêt non attaché"</string>
+    <string name="climate_active" formatted="false">"Actif pour le climat"</string>
+    <string name="wait_for_kia" formatted="false">"Attends Kia"</string>
+    <string name="climate_control_already_active" formatted="false">"La climatisation déjà active"</string>
+    <string name="climate_status_unknown" formatted="false">"Statut climatique inconnu"</string>
+    <string name="period_active" formatted="false">"Période active"</string>
+    <string name="climate_off" formatted="false">"Climat désactivé"</string>
+    <string name="outside" formatted="false">"À l\'extérieur "</string>
+    <string name="weather" formatted="false">"Météo "</string>
+    <string name="obsolete" formatted="false">"Obsolète · "</string>
+    <string name="again" formatted="false">"encore une fois "</string>
+    <string name="windshield_defrost_2" formatted="false">"Dégivrage du pare-brise\n"</string>
+    <string name="season" formatted="false">" · saison"</string>
+    <string name="general_climate_profile_2" formatted="false">"Profil climatique général\n"</string>
+    <string name="set" formatted="false">"Ensemble "</string>
+    <string name="remaining_time_unknown" formatted="false">"Temps restant inconnu"</string>
+    <string name="combined_period" formatted="false">"Période combinée"</string>
+    <string name="one_time_period" formatted="false">"Période unique"</string>
+    <string name="time_slot_remaining" formatted="false">"Période restante"</string>
+    <string name="kia_automatic_control_paused_until" formatted="false">"Le contrôle automatique Kia s\'est arrêté jusqu\'à ce que "</string>
+    <string name="you_can_start_it_manually_immediately" formatted="false">"Vous pouvez le démarrer manuellement immédiatement"</string>
+    <string name="new_start_in_at_least" formatted="false">"Nouveau départ dans au moins "</string>
+    <string name="new_order_possible" formatted="false">"Nouvelle commande possible "</string>
+    <string name="paused_until" formatted="false">"En pause jusqu\'à "</string>
+    <string name="next_cycle" formatted="false">"Cycle suivant"</string>
+    <string name="link_kia_connect" formatted="false">"Connecter Kia Connect"</string>
+    <string name="exact_alarms_needed" formatted="false">"Alarmes exactes nécessaires"</string>
+    <string name="wait_for_the_end_of_the" formatted="false">"Attendez la fin de la pause Kia"</string>
+    <string name="next_cycle_awaits_kia" formatted="false">"Le prochain cycle attend Kia"</string>
+    <string name="weekly_planning_paused" formatted="false">"Planification hebdomadaire suspendue"</string>
+    <string name="no_start_planned" formatted="false">"Aucun démarrage prévu"</string>
+    <string name="weekly_planning_is_turned_off" formatted="false">"La planification hebdomadaire est désactivée"</string>
+    <string name="wait_for_confirmation_from_kia" formatted="false">"Attendez la confirmation de Kia"</string>
+    <string name="wait_for_stop_confirmation_from_kia" formatted="false">"Attendez la confirmation d\'arrêt de Kia"</string>
+    <string name="stop_not_confirmed_by_kia" formatted="false">"Arrêt non confirmé par Kia"</string>
+    <string name="climate_control_temporarily_paused" formatted="false">"La climatisation temporairement suspendue"</string>
+    <string name="the_planner_checks_kia_around_the" formatted="false">"Le planificateur vérifie Kia vers la fin du cycle"</string>
+    <string name="last_cycle_the_scheduler_checks_the" formatted="false">"Dernier cycle. Le planificateur vérifie l\'état d\'arrêt vers la fin."</string>
+    <string name="kia_has_not_yet_confirmed_the" formatted="false">"Kia n\'a pas encore confirmé le départ"</string>
+    <string name="completed_after_unlocking_or_switching_on" formatted="false">"Terminé après le déverrouillage ou la mise sous tension"</string>
+    <string name="to_settings" formatted="false">"Vers les paramètres"</string>
+    <string name="one_time_period_is_running" formatted="false">"Un délai unique est en cours"</string>
+    <string name="one_off" formatted="false">"Unique · "</string>
+    <string name="unknown" formatted="false">"Inconnu"</string>
+    <string name="collect_battery" formatted="false">"Récupérer la batterie…"</string>
+    <string name="measured" formatted="false">"Mesuré "</string>
+    <string name="no_measurement" formatted="false">"Aucune mesure"</string>
+    <string name="traction_battery_3" formatted="false">"Batterie de traction, "</string>
+    <string name="unknown_2" formatted="false">"inconnu"</string>
+    <string name="percent" formatted="false">" pour cent"</string>
+    <string name="refresh_battery_status" formatted="false">", actualiser l\'état de la batterie"</string>
+    <string name="re_pairing_required" formatted="false">"Ré-appairage requis"</string>
+    <string name="linked" formatted="false">"Lié · "</string>
+    <string name="kia_connect_not_yet_linked" formatted="false">"Kia Connect pas encore lié"</string>
+    <string name="relink_kia_account" formatted="false">"Relier le compte Kia"</string>
+    <string name="exact_alarms_are_allowed" formatted="false">"Les alarmes exactes sont autorisées."</string>
+    <string name="exact_alarms_require_permission" formatted="false">"Les alarmes exactes nécessitent une autorisation."</string>
+    <string name="standard" formatted="false">"Norme"</string>
+    <string name="windshield" formatted="false">"Pare-brise "</string>
+    <string name="decision_at_start" formatted="false">" · décision au début"</string>
+    <string name="probably_heating" formatted="false">"Chauffage probable"</string>
+    <string name="probably_refrigerate" formatted="false">"Refroidissement probable"</string>
+    <string name="heating_or_cooling_unknown" formatted="false">"Chauffage ou refroidissement inconnu"</string>
+    <string name="no_notifications_yet" formatted="false">"Aucune notification pour l\'instant"</string>
+    <string name="completed_after_unlocking" formatted="false">"Terminé après le déverrouillage"</string>
+    <string name="current_period_cancelled" formatted="false">"Période en cours annulée."</string>
+    <string name="terminated_manually" formatted="false">"Terminé manuellement"</string>
+    <string name="start_denied_by_kia" formatted="false">"Démarrage refusé par Kia"</string>
+    <string name="no_confirmation_received_from_the_car" formatted="false">"Aucune confirmation reçue de la voiture."</string>
+    <string name="no_confirmation_from_kia" formatted="false">"Aucune confirmation de Kia"</string>
+    <string name="text_1_of_1_cycle_confirmed" formatted="false">"1 cycle sur 1 confirmé"</string>
+    <string name="of" formatted="false">" de "</string>
+    <string name="cycles_confirmed" formatted="false">" cycles confirmés"</string>
+    <string name="kia_account_disconnected" formatted="false">"Compte Kia déconnecté."</string>
+    <string name="the_saved_kia_session_could_not" formatted="false">"La session Kia enregistrée n\'a pas pu être supprimée."</string>
+    <string name="summer" formatted="false">"Été"</string>
+    <string name="own_profile" formatted="false">"Propre profil"</string>
+    <string name="battery_below_the_set_limit" formatted="false">"Batterie en dessous de la limite définie"</string>
+    <string name="outside_temperature_within_the_comfort_range" formatted="false">"Température extérieure dans la plage de confort"</string>
+    <string name="car_is_outside_the_home_zone" formatted="false">"La voiture est en dehors de la zone d\'origine"</string>
+    <string name="no_recent_kia_location_for_the" formatted="false">"Aucun emplacement Kia récent pour la zone d\'origine"</string>
+    <string name="timeline_of" formatted="false">"Chronologie de "</string>
+    <string name="until_2" formatted="false">" jusqu\'à "</string>
+    <string name="with_targets_every_15_minutes" formatted="false">", avec des cibles toutes les 15 minutes"</string>
+    <string name="end_2" formatted="false">"Fin "</string>
+    <string name="remaining_s" formatted="false">"Temps restant : %s"</string>
+    <string name="planning_awaits" formatted="false">"La planification attend"</string>
+    <string name="end_3" formatted="false">" · fin "</string>
+    <string name="log_in_with_your_kia_account" formatted="false">"Connectez-vous avec votre compte Kia pour des démarrages programmés avec votre Samsung verrouillé. "</string>
+    <string name="the_app_stores_the_connection_and" formatted="false">"L\'application stocke la connexion et vos informations de connexion cryptées sur cet appareil."</string>
+    <string name="kia_connect_pin_optional" formatted="false">"Code PIN Kia Connect (en option)"</string>
+    <string name="pairing" formatted="false">"Couplage"</string>
+    <string name="enter_your_email_address_and_password" formatted="false">"Entrez votre adresse e-mail et votre mot de passe."</string>
+    <string name="log_in_to_kia_connect" formatted="false">"Connectez-vous à Kia Connect…"</string>
+    <string name="sign_up" formatted="false">"inscrivez-vous"</string>
+    <string name="kia_connect_connected_automatic_starts_can" formatted="false">"Kia Connect connecté. Les démarrages automatiques peuvent être effectués via la connexion Internet."</string>
+    <string name="choose_a_kia" formatted="false">"Choisissez une Kia"</string>
+    <string name="connect_car" formatted="false">"Connecter la voiture…"</string>
+    <string name="kia_did_not_offer_a_supported" formatted="false">"Kia n\'a pas proposé de méthode d\'authentification prise en charge."</string>
+    <string name="request_verification_code" formatted="false">"Demander un code de vérification…"</string>
+    <string name="kia_has_asked_for_a_verification" formatted="false">"Kia a demandé un code de vérification."</string>
+    <string name="verification_code" formatted="false">"Code de vérification"</string>
+    <string name="enter_the_kia_code" formatted="false">"Entrez le code Kia"</string>
+    <string name="check" formatted="false">"Vérifier"</string>
+    <string name="check_verification_code" formatted="false">"Vérifiez le code de vérification…"</string>
+    <string name="kia_connect_paused_until" formatted="false">"Kia Connect a fait une pause jusqu\'à "</string>
+    <string name="to_switch_cars_first_disconnect_the" formatted="false">"Pour changer de voiture, déconnectez d\'abord la voiture actuelle dans Paramètres."</string>
+    <string name="smart_windshield_position" formatted="false">"Position intelligente du pare-brise : "</string>
+    <string name="at" formatted="false">" à "</string>
+    <string name="c_limit" formatted="false">" °C (limite "</string>
+    <string name="smart_windshield_mode_off_no_recent" formatted="false">"Mode pare-brise intelligent : désactivé. Aucune température extérieure récente disponible."</string>
+    <string name="climate_start_sent_requested_windshield" formatted="false">"Démarrage climatique envoyé. Demandé : pare-brise "</string>
+    <string name="send" formatted="false">", envoyer "</string>
+    <string name="rear_window_mirrors" formatted="false">", lunette arrière/rétroviseurs "</string>
+    <string name="kia_confirms_climate_control_started" formatted="false">"Kia confirme : la climatisation a démarré."</string>
+    <string name="status_before_climate_start" formatted="false">"état avant le début du climat"</string>
+    <string name="climate_start" formatted="false">"début du climat"</string>
+    <string name="kia_has_temporarily_refused_the_climate" formatted="false">"Kia a temporairement refusé le démarrage climatique."</string>
+    <string name="kia_confirms_climate_control_stopped" formatted="false">"Kia confirme : la climatisation s\'est arrêtée."</string>
+    <string name="kia_does_not_confirm_the_stop" formatted="false">"Kia ne confirme pas l\'arrêt. Vous pouvez à nouveau vous arrêter."</string>
+    <string name="climate_stop" formatted="false">"arrêt climatique"</string>
+    <string name="climate_stop_not_confirmed_kia_reports" formatted="false">"Arrêt climatique non confirmé. Kia signale une limite de requêtes."</string>
+    <string name="climate_stop_not_confirmed" formatted="false">"Arrêt climatique non confirmé. "</string>
+    <string name="kia_code" formatted="false">"Code Kia "</string>
+    <string name="climate_control" formatted="false">"contrôle climatique"</string>
+    <string name="climate_control_collection_failed" formatted="false">"Contrôle climatique · Échec de la collecte ("</string>
+    <string name="the_scheduler_is_waiting_for_a" formatted="false">"). Le planificateur attend un nouveau statut."</string>
+    <string name="on" formatted="false">"sur"</string>
+    <string name="out_2" formatted="false">"désactivé"</string>
+    <string name="heating_status_according_to_kia_windshield" formatted="false">"État du chauffage selon Kia : pare-brise "</string>
+    <string name="rear_window" formatted="false">", lunette arrière "</string>
+    <string name="mirrors" formatted="false">", miroirs "</string>
+    <string name="car_location" formatted="false">"emplacement de la voiture"</string>
+    <string name="kia_account_relink" formatted="false">"Compte Kia : Relier."</string>
+    <string name="kia_accessible_no_vehicle_status_received" formatted="false">"Kia accessible. Aucun statut de véhicule reçu."</string>
+    <string name="kia_accessible_receive_vehicle_status" formatted="false">"Kia accessible. Recevoir l\'état du véhicule ("</string>
+    <string name="kia_check_failed" formatted="false">"La vérification Kia a échoué ("</string>
+    <string name="the_automatic_checks_for_this_cycle" formatted="false">"Les contrôles automatiques pour ce cycle sont épuisés."</string>
+    <string name="last_status_shown_kia_inspection_possible" formatted="false">"Dernier statut affiché. Inspection Kia possible à partir de "</string>
+    <string name="last_status_shown_the_planner_is" formatted="false">"Dernier statut affiché. Le planificateur attend Kia."</string>
+    <string name="last_status_shown_you_can_refresh" formatted="false">"Dernier statut affiché. Vous pouvez actualiser à nouveau après une minute."</string>
+    <string name="next_manual_status_check_from" formatted="false">"Prochaine vérification manuelle de l\'état à partir de "</string>
+    <string name="kia_has_not_provided_a_valid" formatted="false">"Kia n\'a pas fourni de temps de mesure valide."</string>
+    <string name="kia_did_not_provide_usable_vehicle" formatted="false">"Kia n\'a pas fourni le statut du véhicule utilisable."</string>
+    <string name="kia_responds_again_pause_lifted_latest" formatted="false">"Kia répond à nouveau. Pause levée. Dernier état du véhicule "</string>
+    <string name="kia_responds_again_pause_lifted" formatted="false">"Kia répond à nouveau. Pause levée."</string>
+    <string name="latest_vehicle_status_at_kia" formatted="false">"Dernier statut du véhicule chez Kia : "</string>
+    <string name="kia_request_limit_on_manual_refresh" formatted="false">"Kia demande une limite sur l’actualisation manuelle. "</string>
+    <string name="kia_status_retrieval_failed_the_last" formatted="false">"La récupération du statut Kia a échoué. La dernière mesure reste visible."</string>
+    <string name="kia_has_not_yet_provided_a" formatted="false">"Kia n\'a pas encore fourni de mesure de batterie plus récente."</string>
+    <string name="climate_control_kia_does_not_provide" formatted="false">"Climatisation · Kia ne fournit pas d\'état d\'activation ou de désactivation."</string>
+    <string name="climate_control_active_according_to_kia" formatted="false">"Climatisation · Actif selon Kia."</string>
+    <string name="climate_control_off_according_to_kia" formatted="false">"Climatisation · Désactivé selon Kia."</string>
+    <string name="replace_battery" formatted="false">"remplacer la batterie"</string>
+    <string name="failed_to_get_battery_percentage_the" formatted="false">"Impossible d\'obtenir le pourcentage de batterie. La dernière mesure reste visible."</string>
+    <string name="climate_control_refresh_failed" formatted="false">"Climatisation · Échec du rafraîchissement ("</string>
+    <string name="kia_reports_that_the_request_limit" formatted="false">"Kia signale que la limite de demandes a été atteinte."</string>
+    <string name="kia_has_refused_the_registration_please" formatted="false">"Kia a refusé l\'immatriculation. Veuillez vérifier vos coordonnées ou relier à nouveau votre compte."</string>
+    <string name="the_saved_kia_session_is_not" formatted="false">"La session Kia enregistrée n\'est pas disponible. Reliez votre compte."</string>
+    <string name="the_connection_to_kia_connect_failed" formatted="false">"La connexion à Kia Connect a échoué ("</string>
+    <string name="kia_connect_could_not_complete_the" formatted="false">"Kia Connect n\'a pas pu répondre à la demande ("</string>
+    <string name="kia_reports_climate_control_started" formatted="false">"Rapports Kia : la climatisation a démarré."</string>
+    <string name="start_skipped_another_kia_order_is" formatted="false">"Début sauté. Une autre commande Kia est toujours en cours."</string>
+    <string name="missed_time_the_phone_screen_was" formatted="false">"Temps manqué. L\'écran du téléphone était éteint ou verrouillé."</string>
+    <string name="the_planned_period_is_over" formatted="false">"La période prévue est terminée."</string>
+    <string name="the_official_european_kia_app_could" formatted="false">"L\'application officielle européenne Kia est introuvable."</string>
+    <string name="android_could_not_open_the_kia" formatted="false">"Android n\'a pas pu ouvrir l\'application Kia."</string>
+    <string name="screen_locked_or_disabled_during_kia" formatted="false">"Écran verrouillé ou désactivé pendant la commande Kia."</string>
+    <string name="test_passed_the_fan_button_on" formatted="false">"Test réussi. Le bouton du ventilateur \'On\' a été trouvé. Rien n\'a été envoyé à la voiture."</string>
+    <string name="on_was_found_but_android_was" formatted="false">"« On » a été trouvé, mais Android n\'a pas pu utiliser le bouton."</string>
+    <string name="the_kia_app_shows_off_no" formatted="false">"L\'application Kia affiche « Désactivé ». Aucune commande de démarrage n\'a été envoyée."</string>
+    <string name="the_kia_app_does_not_show" formatted="false">"L\'application Kia n\'affiche pas le bouton du ventilateur « On » de manière reconnaissable. Ouvrez Kia et vérifiez l\'écran d\'accueil."</string>
+    <string name="android_has_blocked_the_scheduled_background" formatted="false">"Android a bloqué le démarrage programmé en arrière-plan."</string>
+    <string name="android_has_blocked_the_climate_command" formatted="false">"Android a bloqué la commande climatique."</string>
+    <string name="climate_start_2" formatted="false">"Début du climat"</string>
+    <string name="connection_to_kia_connect" formatted="false">"Connexion à Kia Connect"</string>
+    <string name="manual_start" formatted="false">"Démarrage manuel"</string>
+    <string name="next_start_skipped_from_the_weekly" formatted="false">"Prochain démarrage ignoré du programme hebdomadaire."</string>
+    <string name="start_moved_once_from_the_weekly" formatted="false">"Début déplacé une fois du planning hebdomadaire."</string>
+    <string name="changes_to_the_next_week_start" formatted="false">"Les modifications apportées au début de la semaine suivante sont annulées."</string>
+    <string name="weekly_planning_resumed" formatted="false">"La planification hebdomadaire a repris."</string>
+    <string name="weekly_planning_temporarily_paused" formatted="false">"La planification hebdomadaire a été temporairement interrompue."</string>
+    <string name="manual_time_slot_added_to_the" formatted="false">"Plage horaire manuelle ajoutée aux cycles en cours."</string>
+    <string name="the_current_cycle_covers_the_selected" formatted="false">"Le cycle en cours couvre la durée sélectionnée."</string>
+    <string name="manual_start_scheduled_after_the_waiting" formatted="false">"Démarrage manuel programmé après le temps d\'attente."</string>
+    <string name="manual_time_slot_started" formatted="false">"Plage horaire manuelle démarrée."</string>
+    <string name="time_slot_extended_by_15_minutes" formatted="false">"Plage horaire prolongée de 15 minutes."</string>
+    <string name="skipped_2" formatted="false">"Sauté"</string>
+    <string name="paused" formatted="false">"En pause"</string>
+    <string name="moved_paused" formatted="false">"Déplacé · mis en pause"</string>
+    <string name="moved" formatted="false">"Déplacé"</string>
+    <string name="one_off_2" formatted="false">"Unique"</string>
+    <string name="time_slot_skipped" formatted="false">"Plage horaire ignorée · "</string>
+    <string name="now_expected_to" formatted="false">" · on s\'attend maintenant à ce que "</string>
+    <string name="departure_time_moves_up" formatted="false">"L\'heure de départ avance"</string>
+    <string name="manual_start_overlaps_with_the_schedule" formatted="false">"Le démarrage manuel chevauche le calendrier. Périodes additionnées à "</string>
+    <string name="one_off_climate_start_planned" formatted="false">"Démarrage climatique ponctuel prévu."</string>
+    <string name="one_off_climate_start_cancelled" formatted="false">"Démarrage climatique ponctuel annulé."</string>
+    <string name="give_android_permission_for_exact_alarms" formatted="false">"Autorisez Android pour les alarmes exactes."</string>
+    <string name="climate_control_is_already_running_the" formatted="false">"La climatisation est déjà en marche. Le planificateur attend que Kia signale son arrêt."</string>
+    <string name="missed_time_connect_kia_connect_or" formatted="false">"Temps manqué. Connectez Kia Connect ou activez l’accessibilité."</string>
+    <string name="period_ended_without_fresh_kia_status" formatted="false">"Période terminée sans nouveau statut Kia. Cycles restants : "</string>
+    <string name="period_ended_kia_has_not_yet" formatted="false">"Période terminée. Kia n\'a pas encore annoncé le dernier statut de sortie."</string>
+    <string name="your_one_time_period_has_ended" formatted="false">"Votre période unique est terminée."</string>
+    <string name="your_combined_period_has_ended" formatted="false">"Votre période combinée est terminée."</string>
+    <string name="your_manual_time_slot_has_ended" formatted="false">"Votre plage horaire manuelle est terminée."</string>
+    <string name="your_planned_period_has_ended" formatted="false">"Votre période planifiée est terminée."</string>
+    <string name="period_ended" formatted="false">"Période terminée"</string>
+    <string name="climate_control_resumes_for_the_current" formatted="false">"La climatisation reprend pour la période en cours."</string>
+    <string name="climate_control_kia_does_not_provide_2" formatted="false">"Climatisation · Kia ne fournit pas d\'état d\'activation ou de désactivation. Le planificateur attend."</string>
+    <string name="climate_control_still_active_according_to" formatted="false">"Climatisation · Toujours active selon Kia. Le planificateur attend."</string>
+    <string name="climate_control_kia_reports_out_but" formatted="false">"Contrôle climatique · Kia fait rapport, mais n\'a pas encore fourni de mesure active. Le planificateur attend."</string>
+    <string name="climate_control_kia_confirms_out_all" formatted="false">"Climatisation · Kia confirme. Tous les cycles sont terminés."</string>
+    <string name="climate_control_kia_confirms_out_the" formatted="false">"Climatisation · Kia confirme. Le planificateur libère le cycle suivant."</string>
+    <string name="climate_control_kia_confirms_out_there" formatted="false">"Climatisation · Kia confirme. Il n’y aura pas de nouveau cycle."</string>
+    <string name="kia_application_limit_at" formatted="false">"Limite d\'application Kia à "</string>
+    <string name="skipped_climate_start_the_waiting_period" formatted="false">"Démarrage climatique sauté. Le délai d\'attente est toujours en cours."</string>
+    <string name="period_completed_the_car_has_refused" formatted="false">"Période terminée. La voiture a refusé le démarrage climatique."</string>
+    <string name="period_completed_the_car_is_unlocked" formatted="false">"Période terminée. La voiture est déverrouillée ou allumée."</string>
+    <string name="deliberately_skipped" formatted="false">"Délibérément ignoré"</string>
+    <string name="battery_below_limit" formatted="false">"Batterie en dessous de la limite"</string>
+    <string name="mild_weather" formatted="false">"Temps doux"</string>
+    <string name="outside_the_home_zone" formatted="false">"En dehors de la zone d\'accueil"</string>
+    <string name="no_recent_location" formatted="false">"Pas de localisation récente"</string>
+    <string name="car_unlocked_or_in_use" formatted="false">"Voiture déverrouillée ou en cours d\'utilisation"</string>
+    <string name="kia_refused_the_start" formatted="false">"Kia a refusé le départ"</string>
+    <string name="starting_limit_at_kia" formatted="false">"Limite de départ chez Kia"</string>
+    <string name="connection_not_confirmed" formatted="false">"Connexion non confirmée"</string>
+    <string name="climate_start_sent" formatted="false">"Démarrage climatique envoyé."</string>
+    <string name="climate_control_2" formatted="false">"Contrôle climatique"</string>
+    <string name="android_does_not_have_permission_for" formatted="false">"Android n\'a pas l\'autorisation pour la notification finale."</string>
+    <string name="climate_start_not_confirmed" formatted="false">"Démarrage climatique non confirmé"</string>
+    <string name="time_slots_and_starting_limit" formatted="false">"Créneaux horaires et limite de départ"</string>
+    <string name="email_address" formatted="false">"Adresse e-mail"</string>
+    <string name="kia_password" formatted="false">"Mot de passe Kia"</string>
+    <string name="email" formatted="false">"E-mail"</string>
+    <string name="winter" formatted="false">"Hiver"</string>
+    <string name="kia_verification" formatted="false">"Vérification Kia"</string>
+    <string name="location_settings" formatted="false">"Paramètres de localisation"</string>
+    <string name="app_settings" formatted="false">"Paramètres de l’application"</string>
+    <string name="kia_request_limit_2" formatted="false">"Limite de requêtes Kia"</string>
+</resources>

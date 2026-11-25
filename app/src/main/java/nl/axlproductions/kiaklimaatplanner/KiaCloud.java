@@ -1,5 +1,7 @@
 package nl.axlproductions.kiaklimaatplanner;
 
+import static nl.axlproductions.kiaklimaatplanner.AppLanguage.t;
+
 import android.content.Context;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
@@ -23,7 +25,7 @@ final class KiaCloud {
             if (linked(context)) {
                 JSONObject current = new JSONObject(KiaSessionStore.read(context));
                 if (!current.getString("vehicle").equals(session.getString("vehicle"))) {
-                    return new JSONObject().put("error", "Koppel de huidige auto eerst los in Instellingen om van auto te wisselen.");
+                    return new JSONObject().put("error", t(R.string.to_switch_cars_first_disconnect_the));
                 }
             }
             KiaSessionStore.save(context, session.toString());
@@ -115,9 +117,9 @@ final class KiaCloud {
                 int threshold = options.threshold();
                 heating = ClimateProfiles.applySmart(heating, threshold, reading.outdoor());
                 startNote(context, slot, Double.isFinite(reading.outdoor())
-                    ? "Slimme voorruitstand: " + requested(heating, Planner.HEAT_WINDSHIELD) + " bij "
-                        + reading.outdoor() + " °C (grens " + threshold + " °C)."
-                    : "Slimme voorruitstand: uit. Geen recente buitentemperatuur beschikbaar.", false);
+                    ? t(R.string.smart_windshield_position) + requested(heating, Planner.HEAT_WINDSHIELD) + t(R.string.at)
+                        + reading.outdoor() + t(R.string.c_limit) + threshold + " °C)."
+                    : t(R.string.smart_windshield_mode_off_no_recent), false);
             }
             if (slot != null && !Planner.stillCurrent(context, slot)) return;
             submittedAt = System.currentTimeMillis();
@@ -128,9 +130,9 @@ final class KiaCloud {
                     (heating & Planner.HEAT_WINDSHIELD) != 0);
             if (action == null || action.toString().trim().isEmpty()) throw new IllegalStateException("Missing Kia action ID");
             accepted = true;
-            startNote(context, slot, "Klimaatstart verstuurd. Aangevraagd: voorruit " + requested(heating, Planner.HEAT_WINDSHIELD)
-                + ", stuur " + requested(heating, Planner.HEAT_WHEEL)
-                + ", achterruit/spiegels " + requested(heating, Planner.HEAT_MIRRORS) + ".", false);
+            startNote(context, slot, t(R.string.climate_start_sent_requested_windshield) + requested(heating, Planner.HEAT_WINDSHIELD)
+                + t(R.string.send) + requested(heating, Planner.HEAT_WHEEL)
+                + t(R.string.rear_window_mirrors) + requested(heating, Planner.HEAT_MIRRORS) + ".", false);
             String result = api.callAttr("result", prepared, action).toString();
             if ("FAILED".equals(result)) {
                 Planner.stopUnavailable(context, submittedAt);
@@ -145,17 +147,17 @@ final class KiaCloud {
                     prefs.edit().putLong("climateTargetRequest", submittedAt)
                         .putFloat("climateRequestedTarget", (float) temperature).apply();
                     if (!paused) updateClimateIndicator(context, api, prepared);
-                    startNote(context, slot, "Kia bevestigt: klimaatregeling gestart.", true);
+                    startNote(context, slot, t(R.string.kia_confirms_climate_control_started), true);
                 }
             } else {
                 Planner.startFailed(context, slot, submittedAt, true);
-                startProblem(context, slot, submittedAt, "Geen bevestiging van de auto ontvangen.", StartLedger.Cause.NO_REPLY);
+                startProblem(context, slot, submittedAt, t(R.string.no_confirmation_received_from_the_car), StartLedger.Cause.NO_REPLY);
             }
         } catch (Exception error) {
             if (rateLimitingError(error)) {
-                Planner.rateLimitReached(context, submittedAt == 0 ? "status vóór klimaatstart" : "klimaatstart");
+                Planner.rateLimitReached(context, submittedAt == 0 ? t(R.string.status_before_climate_start) : t(R.string.climate_start));
                 Planner.startFailed(context, slot, submittedAt, accepted);
-                saveStartProblem(context, slot, submittedAt, "Kia heeft de klimaatstart tijdelijk geweigerd.",
+                saveStartProblem(context, slot, submittedAt, t(R.string.kia_has_temporarily_refused_the_climate),
                     StartLedger.Cause.LIMIT);
                 return;
             }
@@ -218,15 +220,15 @@ final class KiaCloud {
             if ("SUCCESS".equals(result)) {
                 ClimateEnergy.finish(context, 0, System.currentTimeMillis(), ClimateEnergy.End.MANUAL, null);
                 Planner.confirmStop(context);
-                Planner.note(context, "Kia bevestigt: klimaatregeling gestopt.");
+                Planner.note(context, t(R.string.kia_confirms_climate_control_stopped));
             } else {
-                Planner.note(context, "Kia bevestigt de stop niet. Je kunt opnieuw stoppen.");
+                Planner.note(context, t(R.string.kia_does_not_confirm_the_stop));
             }
         } catch (Exception error) {
             if (rateLimitingError(error)) {
-                Planner.rateLimitReached(context, "klimaatstop");
-                Planner.note(context, "Klimaatstop niet bevestigd. Kia meldt een aanvraaglimiet.");
-            } else Planner.note(context, "Klimaatstop niet bevestigd. " + problem(error));
+                Planner.rateLimitReached(context, t(R.string.climate_stop));
+                Planner.note(context, t(R.string.climate_stop_not_confirmed_kia_reports));
+            } else Planner.note(context, t(R.string.climate_stop_not_confirmed) + problem(error));
         }
     }
 
@@ -234,7 +236,7 @@ final class KiaCloud {
         String detail = error.getMessage();
         if (detail != null) {
             var code = java.util.regex.Pattern.compile("Server returned:\\s*'([0-9-]+)'").matcher(detail);
-            if (code.find()) return "Kia-code " + code.group(1);
+            if (code.find()) return t(R.string.kia_code) + code.group(1);
             var type = java.util.regex.Pattern.compile("^([A-Za-z][A-Za-z0-9_.]*(?:Error|Exception|Timeout)):").matcher(detail);
             if (type.find()) return type.group(1);
         }
@@ -288,18 +290,18 @@ final class KiaCloud {
             consumeMonitoredStatus(context, slot, reading);
         } catch (Exception error) {
             if (rateLimitingError(error)) {
-                Planner.rateLimitReached(context, "klimaatcontrole");
+                Planner.rateLimitReached(context, t(R.string.climate_control));
                 return;
             }
             if (Planner.monitorsClimate(context, slot) && slot.equals(Planner.watchedSlot(context))) {
-                Planner.note(context, "Klimaatcontrole · Ophalen mislukt (" + diagnostic(error)
-                    + "). De planner wacht op een verse status.");
+                Planner.note(context, t(R.string.climate_control_collection_failed) + diagnostic(error)
+                    + t(R.string.the_scheduler_is_waiting_for_a));
             }
         }
     }
 
     private static String requested(int heating, int flag) {
-        return (heating & flag) != 0 ? "aan" : "uit";
+        return (heating & flag) != 0 ? t(R.string.on) : t(R.string.out_2);
     }
 
     private static void logObservedHeating(Context context, PyObject api, PyObject prepared, long sentAt) throws Exception {
@@ -309,16 +311,16 @@ final class KiaCloud {
         long measured = reading.optLong("time", 0);
         if (measured < sentAt / 1_000 * 1_000 || measured > System.currentTimeMillis() + 5_000) return;
         prefs.edit().putLong("heaterStatusLoggedFor", sentAt).apply();
-        Planner.note(context, "Verwarmingsstatus volgens Kia: voorruit " + heaterState(reading, "windshield")
-            + ", stuur " + heaterState(reading, "wheel") + ", achterruit " + heaterState(reading, "rear")
-            + ", spiegels " + heaterState(reading, "mirrors") + ".");
+        Planner.note(context, t(R.string.heating_status_according_to_kia_windshield) + heaterState(reading, "windshield")
+            + t(R.string.send) + heaterState(reading, "wheel") + t(R.string.rear_window) + heaterState(reading, "rear")
+            + t(R.string.mirrors) + heaterState(reading, "mirrors") + ".");
     }
 
     private static String heaterState(JSONObject reading, String key) {
         Object value = reading.opt(key);
-        if (Boolean.TRUE.equals(value) || Integer.valueOf(1).equals(value)) return "aan";
-        if (Boolean.FALSE.equals(value) || Integer.valueOf(0).equals(value)) return "uit";
-        return "onbekend";
+        if (Boolean.TRUE.equals(value) || Integer.valueOf(1).equals(value)) return t(R.string.on);
+        if (Boolean.FALSE.equals(value) || Integer.valueOf(0).equals(value)) return t(R.string.out_2);
+        return t(R.string.unknown_2);
     }
 
     private static JSONObject cachedClimate(PyObject api, PyObject prepared) {
@@ -386,13 +388,13 @@ final class KiaCloud {
             vehicleInUse(api, prepared);
             return ClimateRules.position(climateEnvironment(api, prepared), System.currentTimeMillis());
         } catch (Exception error) {
-            if (rateLimitingError(error)) Planner.rateLimitReached(context, "autolocatie");
+            if (rateLimitingError(error)) Planner.rateLimitReached(context, t(R.string.car_location));
             return null;
         }
     }
 
     static String connectionCheck(Context context) {
-        if (!linked(context) || needsLink(context)) return "Kia-account: opnieuw koppelen.";
+        if (!linked(context) || needsLink(context)) return t(R.string.kia_account_relink);
         if (KiaBackoff.paused(context)) return KiaBackoff.message(KiaBackoff.until(Planner.prefs(context)));
         try {
             var api = module(context);
@@ -401,16 +403,16 @@ final class KiaCloud {
             var reading = new JSONObject(api.callAttr("battery", prepared, false).toString());
             EnergyHistory.captureBattery(context, reading);
             long measured = reading.optLong("time", 0);
-            if (measured <= 0) return "Kia bereikbaar. Geen voertuigstatus ontvangen.";
+            if (measured <= 0) return t(R.string.kia_accessible_no_vehicle_status_received);
             var stamp = java.time.Instant.ofEpochMilli(measured).atZone(java.time.ZoneId.systemDefault())
                 .format(java.time.format.DateTimeFormatter.ofPattern("dd-MM HH:mm"));
-            return "Kia bereikbaar. Voertuigstatus ontvangen (" + stamp + ").";
+            return t(R.string.kia_accessible_receive_vehicle_status) + stamp + ").";
         } catch (Exception error) {
             if (rateLimitingError(error)) {
                 Planner.rateLimitReached(context, "verbindingscheck");
                 return KiaBackoff.message(KiaBackoff.until(Planner.prefs(context)));
             }
-            return "Kia-controle mislukt (" + diagnostic(error) + ").";
+            return t(R.string.kia_check_failed) + diagnostic(error) + ").";
         }
     }
 
@@ -436,18 +438,18 @@ final class KiaCloud {
                 checkVehicleUse(context, slot);
                 return null;
             }
-            if (check.nextTime() == 0) return "De automatische controles voor deze cyclus zijn opgebruikt.";
+            if (check.nextTime() == 0) return t(R.string.the_automatic_checks_for_this_cycle);
             var time = java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")
                 .withZone(java.time.ZoneId.systemDefault()).format(java.time.Instant.ofEpochMilli(check.nextTime()));
-            return "Laatste status getoond. Kia-controle mogelijk vanaf " + time + ".";
+            return t(R.string.last_status_shown_kia_inspection_possible) + time + ".";
         }
         if (Planner.awaitingConfirmation(context, now) || Planner.cycleEnd(context) > now
                 || prefs.getLong("stopVehiclePending", 0) > now) {
-            return requested ? "Laatste status getoond. De planner wacht op Kia." : null;
+            return requested ? t(R.string.last_status_shown_the_planner_is) : null;
         }
         long last = prefs.getLong("lastDashboardKiaRequest", 0);
         if (last > 0 && last <= now && now - last < Schedule.MINUTE) {
-            return requested ? "Laatste status getoond. Je kunt na één minuut opnieuw verversen." : null;
+            return requested ? t(R.string.last_status_shown_you_can_refresh) : null;
         }
         prefs.edit().putLong("lastDashboardKiaRequest", now).apply();
         readBattery(context, requested);
@@ -455,14 +457,14 @@ final class KiaCloud {
     }
 
     private static String refreshWhilePaused(Context context, android.content.SharedPreferences prefs, long now) {
-        if (!linked(context) || needsLink(context)) return "Kia-account: opnieuw koppelen.";
+        if (!linked(context) || needsLink(context)) return t(R.string.kia_account_relink);
         long expectedPause = KiaBackoff.until(prefs);
         long next = KiaBackoff.reserveManualRefresh(prefs, now);
         if (next > now) {
             if (next == KiaBackoff.until(prefs)) return KiaBackoff.message(next);
             var stamp = java.time.format.DateTimeFormatter.ofPattern("HH:mm")
                 .withZone(java.time.ZoneId.systemDefault()).format(java.time.Instant.ofEpochMilli(next));
-            return "Volgende handmatige statuscontrole vanaf " + stamp + ".";
+            return t(R.string.next_manual_status_check_from) + stamp + ".";
         }
         try {
             var api = module(context);
@@ -471,11 +473,11 @@ final class KiaCloud {
             var reading = new JSONObject(api.callAttr("battery", prepared, false).toString());
             long received = System.currentTimeMillis();
             long time = reading.optLong("time", 0);
-            if (time <= 0 || time > received + 5_000) return "Kia heeft geen geldige meettijd doorgegeven.";
+            if (time <= 0 || time > received + 5_000) return t(R.string.kia_has_not_provided_a_valid);
             Boolean active = climateActive(reading);
             double percentage = reading.optDouble("percentage", -1);
             if (active == null && !(percentage >= 0 && percentage <= 100)) {
-                return "Kia heeft geen bruikbare voertuigstatus doorgegeven.";
+                return t(R.string.kia_did_not_provide_usable_vehicle);
             }
             EnergyHistory.captureBattery(context, reading);
             publishBattery(context, reading);
@@ -487,19 +489,19 @@ final class KiaCloud {
             if (linked(context) && !needsLink(context) && KiaBackoff.resumeAfterStatus(prefs, expectedPause, received)) {
                 Planner.schedule(context);
                 VehicleWatch.schedule(context);
-                Planner.note(context, "Kia reageert weer. Pauze opgeheven. Laatste voertuigstatus " + stamp + ".");
-                return "Kia reageert weer. Pauze opgeheven.";
+                Planner.note(context, t(R.string.kia_responds_again_pause_lifted_latest) + stamp + ".");
+                return t(R.string.kia_responds_again_pause_lifted);
             }
-            return "Laatste voertuigstatus bij Kia: " + stamp + ".";
+            return t(R.string.latest_vehicle_status_at_kia) + stamp + ".";
         } catch (Exception error) {
             if (rateLimitingError(error)) {
                 long until = KiaBackoff.manualRefreshLimited(prefs, System.currentTimeMillis());
                 Planner.schedule(context);
                 VehicleWatch.schedule(context);
-                Planner.note(context, "Kia-aanvraaglimiet bij handmatig verversen. " + KiaBackoff.message(until) + ".");
+                Planner.note(context, t(R.string.kia_request_limit_on_manual_refresh) + KiaBackoff.message(until) + ".");
                 return KiaBackoff.message(until);
             }
-            return "Kia-status ophalen mislukt. De laatste meting blijft zichtbaar.";
+            return t(R.string.kia_status_retrieval_failed_the_last);
         }
     }
 
@@ -522,7 +524,7 @@ final class KiaCloud {
             int percentage = reading.optInt("percentage", -1);
             long time = reading.optLong("time", 0);
             if (force && (percentage < 0 || percentage > 100 || time <= previous)) {
-                Planner.note(context, "Kia heeft nog geen nieuwere accumeting doorgegeven.");
+                Planner.note(context, t(R.string.kia_has_not_yet_provided_a));
             }
             var watched = force ? Planner.watchedSlot(context) : null;
             if (watched != null && Planner.monitorsClimate(context, watched)) {
@@ -535,18 +537,18 @@ final class KiaCloud {
                     Planner.rememberExternalClimate(context, time, active);
                 }
                 if (force) {
-                    Planner.note(context, !fresh ? "Klimaatcontrole · Kia geeft geen verse aan- of uitstatus."
-                        : active ? "Klimaatcontrole · Actief volgens Kia." : "Klimaatcontrole · Uit volgens Kia.");
+                    Planner.note(context, !fresh ? t(R.string.climate_control_kia_does_not_provide)
+                        : active ? t(R.string.climate_control_active_according_to_kia) : t(R.string.climate_control_off_according_to_kia));
                 }
             }
         } catch (Exception error) {
             if (rateLimitingError(error)) {
-                Planner.rateLimitReached(context, hourly ? "accu-uurcheck" : "accu verversen");
+                Planner.rateLimitReached(context, hourly ? "accu-uurcheck" : t(R.string.replace_battery));
                 return;
             }
             if (hourly) return;
-            Planner.note(context, "Accupercentage ophalen is mislukt. De laatste meting blijft zichtbaar.");
-            if (force) Planner.note(context, "Klimaatcontrole · Verversen mislukt (" + diagnostic(error) + ").");
+            Planner.note(context, t(R.string.failed_to_get_battery_percentage_the));
+            if (force) Planner.note(context, t(R.string.climate_control_refresh_failed) + diagnostic(error) + ").");
         }
     }
 
@@ -575,19 +577,19 @@ final class KiaCloud {
 
     static String problem(Exception error) {
         if (rateLimitingError(error)) {
-            return "Kia meldt dat de aanvraaglimiet is bereikt.";
+            return t(R.string.kia_reports_that_the_request_limit);
         }
         if (authenticationError(error)) {
-            return "Kia heeft de aanmelding geweigerd. Controleer je gegevens of koppel je account opnieuw.";
+            return t(R.string.kia_has_refused_the_registration_please);
         }
         if (error instanceof java.security.GeneralSecurityException) {
-            return "De opgeslagen Kia-sessie is niet beschikbaar. Koppel je account opnieuw.";
+            return t(R.string.the_saved_kia_session_is_not);
         }
         String cause = diagnostic(error);
         if (cause.contains("Connection") || cause.contains("Timeout") || cause.contains("NameResolution")) {
-            return "De verbinding met Kia Connect is mislukt (" + cause + ").";
+            return t(R.string.the_connection_to_kia_connect_failed) + cause + ").";
         }
-        return "Kia Connect kon de aanvraag niet afronden (" + cause + ").";
+        return t(R.string.kia_connect_could_not_complete_the) + cause + ").";
     }
 }
 

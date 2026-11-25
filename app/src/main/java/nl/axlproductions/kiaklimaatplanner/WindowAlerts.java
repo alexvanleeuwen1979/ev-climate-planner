@@ -1,5 +1,7 @@
 package nl.axlproductions.kiaklimaatplanner;
 
+import static nl.axlproductions.kiaklimaatplanner.AppLanguage.t;
+
 import android.Manifest;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -39,7 +41,7 @@ final class WindowAlerts {
             context.getSystemService(AlarmManager.class)
                 .setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, due, operation);
         } catch (SecurityException ignored) {
-            Planner.note(context, "Android heeft geen toestemming voor de eindmelding.");
+            Planner.note(context, t(R.string.android_does_not_have_permission_for));
         }
     }
 
@@ -54,7 +56,7 @@ final class WindowAlerts {
     }
 
     static void failed(Context context, String message, StartLedger.Cause cause) {
-        show(context, 24, "Klimaatstart niet bevestigd", message, cause);
+        show(context, 24, t(R.string.climate_start_not_confirmed), message, cause);
     }
 
     static void failed(Context context, int id, String title, String message, StartLedger.Cause cause) {
@@ -65,7 +67,7 @@ final class WindowAlerts {
         if (!permitted(context)) return;
         var manager = context.getSystemService(NotificationManager.class);
         manager.createNotificationChannel(new NotificationChannel(
-            CHANNEL, "Tijdvakken en startlimiet", NotificationManager.IMPORTANCE_HIGH));
+            CHANNEL, t(R.string.time_slots_and_starting_limit), NotificationManager.IMPORTANCE_HIGH));
         var open = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class)
             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_IMMUTABLE);
         try {
@@ -77,12 +79,12 @@ final class WindowAlerts {
                 .setContentIntent(open)
                 .setAutoCancel(true);
             if (cause != null) {
-                notification.addAction(new Notification.Action.Builder(null, "Opnieuw proberen",
+                notification.addAction(new Notification.Action.Builder(null, t(R.string.try_again),
                     openAction(context, MainActivity.OPEN_RETRY, 61)).build());
                 String label = switch (cause) {
-                    case AUTH -> "Kia opnieuw koppelen";
-                    case ALARM -> "Alarmen toestaan";
-                    default -> "Verbinding controleren";
+                    case AUTH -> t(R.string.reconnect_kia);
+                    case ALARM -> t(R.string.allow_alarms);
+                    default -> t(R.string.check_connection);
                 };
                 notification.addAction(new Notification.Action.Builder(null, label,
                     openAction(context, MainActivity.OPEN_RECOVERY, 62)).build());

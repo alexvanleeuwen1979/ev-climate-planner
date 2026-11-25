@@ -27,7 +27,7 @@ final class PlanningBackup {
         var profiles = new JSONArray();
         for (int index = 0; index < ClimateProfiles.COUNT; index++) {
             var profile = ClimateProfiles.get(prefs, index);
-            profiles.put(new JSONObject().put("name", profile.name()).put("temperature", profile.temperature())
+            profiles.put(new JSONObject().put("name", ClimateProfiles.backupName(index, profile)).put("temperature", profile.temperature())
                 .put("heat", profile.heat()).put("threshold", profile.threshold()));
         }
         return new JSONObject().put("format", "Kia Climate Control").put("version", 1)

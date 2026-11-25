@@ -1,0 +1,559 @@
+<resources>
+    <string name="shortcut_manual" formatted="false">"Handmatig starten"</string>
+    <string name="access_description" formatted="false">"Herkent de klimaatknoppen in de officiële Kia App en bedient ze op de gekozen momenten."</string>
+    <string name="app_language" formatted="false">"Taal"</string>
+    <string name="choose_language" formatted="false">"Kies de taal van de app"</string>
+    <string name="no_vehicle_linked" formatted="false">"Dit Kia-account heeft geen gekoppelde auto."</string>
+    <string name="login_session_missing" formatted="false">"Kia heeft geen sessie geopend."</string>
+    <string name="selection_expired" formatted="false">"De voertuigkeuze is verlopen. Meld je opnieuw aan."</string>
+    <string name="selection_invalid" formatted="false">"Ongeldige voertuigkeuze. Meld je opnieuw aan."</string>
+    <string name="monday" formatted="false">"Maandag"</string>
+    <string name="tuesday" formatted="false">"Dinsdag"</string>
+    <string name="wednesday" formatted="false">"Woensdag"</string>
+    <string name="thursday" formatted="false">"Donderdag"</string>
+    <string name="friday" formatted="false">"Vrijdag"</string>
+    <string name="saturday" formatted="false">"Zaterdag"</string>
+    <string name="sunday" formatted="false">"Zondag"</string>
+    <string name="climate_profiles" formatted="false">"Klimaatprofielen"</string>
+    <string name="applies_to_starts_without_their_own" formatted="false">"Geldt voor starts zonder een eigen profiel."</string>
+    <string name="manage_profiles" formatted="false">"Profielen beheren"</string>
+    <string name="profiles_per_season" formatted="false">"Profielen per seizoen"</string>
+    <string name="standard_heating" formatted="false">"Standaardverwarming"</string>
+    <string name="steering_wheel_heating" formatted="false">"Stuurverwarming"</string>
+    <string name="mirrors_and_rear_window" formatted="false">"Spiegels en achterruit"</string>
+    <string name="windshield_defrost" formatted="false">"Voorruit ontdooien"</string>
+    <string name="windshield_only_in_the_first_cycle" formatted="false">"Voorruit alleen in de eerste cyclus."</string>
+    <string name="conditions_for_planned_takeoffs" formatted="false">"Voorwaarden voor geplande starts"</string>
+    <string name="battery_limit_and_comfort_range" formatted="false">"Accugrens en comfortbereik"</string>
+    <string name="set_home_location" formatted="false">"Thuislocatie instellen"</string>
+    <string name="manual_operation" formatted="false">"Handmatige bediening"</string>
+    <string name="biometric_confirmation" formatted="false">"Biometrische bevestiging"</string>
+    <string name="first_set_up_biometrics_on_your" formatted="false">"Stel eerst biometrie in op je Samsung."</string>
+    <string name="overview_and_diagnosis" formatted="false">"Overzicht en diagnose"</string>
+    <string name="open_monthly_overview" formatted="false">"Maandoverzicht openen"</string>
+    <string name="export_private_log" formatted="false">"Privélog exporteren"</string>
+    <string name="climate_consumption" formatted="false">"Klimaatverbruik"</string>
+    <string name="charts_and_overview" formatted="false">"Grafieken en overzicht"</string>
+    <string name="open_consumption_log" formatted="false">"Verbruikslog openen"</string>
+    <string name="update_battery_every_hour" formatted="false">"Accu elk uur bijwerken"</string>
+    <string name="backup_weekly_planning" formatted="false">"Back-up weekplanning"</string>
+    <string name="export_schedule" formatted="false">"Planning exporteren"</string>
+    <string name="reset_planning" formatted="false">"Planning terugzetten"</string>
+    <string name="weekly_schedule" formatted="false">"Weekplanning"</string>
+    <string name="weekly_schedule_enabled" formatted="false">"Weekplanning actief"</string>
+    <string name="pause_weekly_planning" formatted="false">"Weekplanning pauzeren"</string>
+    <string name="next_seven_days" formatted="false">"Komende zeven dagen"</string>
+    <string name="check_next_start" formatted="false">"Volgende start controleren"</string>
+    <string name="notifications" formatted="false">"Meldingen"</string>
+    <string name="recent_notifications" formatted="false">"Laatste meldingen"</string>
+    <string name="cycle_remaining" formatted="false">"Cyclus resterend"</string>
+    <string name="start_manually" formatted="false">"Handmatig starten"</string>
+    <string name="stop" formatted="false">"Stoppen"</string>
+    <string name="stop_climate" formatted="false">"Klimaat stoppen"</string>
+    <string name="plan_once" formatted="false">"Eenmalig plannen"</string>
+    <string name="extend_by_15_minutes" formatted="false">"Verleng met 15 min"</string>
+    <string name="extend_period" formatted="false">"Tijdvak verlengen"</string>
+    <string name="this_time_period_is_no_longer" formatted="false">"Dit tijdvak is niet meer actief."</string>
+    <string name="repeat_previous_start" formatted="false">"Vorige start herhalen"</string>
+    <string name="traction_battery" formatted="false">"Tractieaccu"</string>
+    <string name="next_start" formatted="false">"Volgende start"</string>
+    <string name="change" formatted="false">"Wijzigen"</string>
+    <string name="change_next_start" formatted="false">"Volgende start wijzigen"</string>
+    <string name="undo" formatted="false">"Ongedaan maken"</string>
+    <string name="settings" formatted="false">"Instellingen"</string>
+    <string name="active" formatted="false">" actief"</string>
+    <string name="period" formatted="false">", tijdvak "</string>
+    <string name="copy_day" formatted="false">"Kopieer dag"</string>
+    <string name="ready_by" formatted="false">"Klaar om "</string>
+    <string name="not_set" formatted="false">"Niet ingesteld"</string>
+    <string name="own_heating" formatted="false">" · Eigen verwarming"</string>
+    <string name="home_alone" formatted="false">" · Alleen thuis"</string>
+    <string name="time_slot" formatted="false">"Tijdvak "</string>
+    <string name="add" formatted="false">" toevoegen"</string>
+    <string name="not_active" formatted="false">"Niet actief"</string>
+    <string name="no_active_time_slots" formatted="false">"Geen actieve tijdvakken"</string>
+    <string name="active_period" formatted="false">" actief tijdvak"</string>
+    <string name="active_time_slots" formatted="false">" actieve tijdvakken"</string>
+    <string name="expanded" formatted="false">"Uitgeklapt"</string>
+    <string name="collapsed" formatted="false">"Ingeklapt"</string>
+    <string name="replaces_existing_time_slots" formatted="false">" · vervangt bestaande tijdvakken"</string>
+    <string name="copy_to" formatted="false">" kopiëren naar"</string>
+    <string name="cancel" formatted="false">"Annuleren"</string>
+    <string name="replace_time_slots" formatted="false">"Tijdvakken vervangen"</string>
+    <string name="time_slots_copied" formatted="false">"Tijdvakken gekopieerd."</string>
+    <string name="ready_at_the_chosen_time" formatted="false">"Klaar om de gekozen tijd"</string>
+    <string name="hour" formatted="false">"Uur"</string>
+    <string name="start_minute" formatted="false">"Startminuut"</string>
+    <string name="duration_in_minutes" formatted="false">"Duur in minuten"</string>
+    <string name="minute" formatted="false">"Minuut"</string>
+    <string name="duration_min" formatted="false">"Duur (min)"</string>
+    <string name="start_at" formatted="false">"Start om "</string>
+    <string name="previous_day" formatted="false">" (vorige dag)"</string>
+    <string name="end" formatted="false">"\nEinde "</string>
+    <string name="only_start_when_the_car_is" formatted="false">"Alleen starten als de auto thuis staat"</string>
+    <string name="first_set_the_home_location_under" formatted="false">"Stel de thuislocatie eerst in onder Instellingen."</string>
+    <string name="own_heating_options" formatted="false">"Eigen verwarmingsopties"</string>
+    <string name="used" formatted="false">"Gebruikt "</string>
+    <string name="from_settings" formatted="false">" uit Instellingen."</string>
+    <string name="mirror_and_rear_window_heating" formatted="false">"Spiegel- en achterruitverwarming"</string>
+    <string name="slim_uses_the_limit_from_standard" formatted="false">"Slim gebruikt de grens uit Standaardverwarming."</string>
+    <string name="period_2" formatted="false">" · Tijdvak "</string>
+    <string name="save" formatted="false">"Opslaan"</string>
+    <string name="clear_time_slot" formatted="false">"Tijdvak wissen"</string>
+    <string name="delete_time_slot" formatted="false">"Tijdvak wissen?"</string>
+    <string name="the_saved_time_and_heating_options" formatted="false">"\nDe opgeslagen tijd en verwarmingsopties worden gewist."</string>
+    <string name="clear" formatted="false">"Wissen"</string>
+    <string name="time_slot_deleted" formatted="false">"Tijdvak gewist."</string>
+    <string name="time_slot_saved" formatted="false">"Tijdvak opgeslagen."</string>
+    <string name="text_1_day" formatted="false">" (+1 dag)"</string>
+    <string name="time_slots_overlap_adjust_the_start" formatted="false">"Tijdvakken overlappen. Pas de starttijd of duur aan, of zet een overlappend tijdvak uit."</string>
+    <string name="adjust_temperature_before_this_start" formatted="false">"Temperatuur voor deze start aanpassen"</string>
+    <string name="expensive" formatted="false">"Duur"</string>
+    <string name="target_temperature" formatted="false">"Doeltemperatuur "</string>
+    <string name="overlaps_with" formatted="false">"Overlapt met "</string>
+    <string name="together_until" formatted="false">" · samen tot "</string>
+    <string name="expected_ending" formatted="false">"Verwacht einde "</string>
+    <string name="min" formatted="false">" min"</string>
+    <string name="choose_a_different_duration" formatted="false">"Andere duur kiezen"</string>
+    <string name="select_a_different_climate_duration" formatted="false">"Andere klimaatduur kiezen"</string>
+    <string name="try_again" formatted="false">"Opnieuw proberen"</string>
+    <string name="start" formatted="false">"Starten"</string>
+    <string name="start_climate" formatted="false">"Klimaat starten"</string>
+    <string name="check_kia_connect_and_exact_alarms" formatted="false">"Controleer Kia Connect en exacte alarmen."</string>
+    <string name="ready_by_2" formatted="false">"Klaar om"</string>
+    <string name="start_time" formatted="false">"Starttijd"</string>
+    <string name="go" formatted="false">"Start "</string>
+    <string name="eee_d_mmm_at_hh_mm" formatted="false">"EEE d MMM \'om\' HH:mm"</string>
+    <string name="departure_time_from_agenda" formatted="false">"Vertrektijd uit agenda"</string>
+    <string name="close" formatted="false">"Sluiten"</string>
+    <string name="schedule" formatted="false">"Inplannen"</string>
+    <string name="clear_schedule" formatted="false">"Planning wissen"</string>
+    <string name="choose_a_date_and_time_in" formatted="false">"Kies een datum en tijd in de toekomst."</string>
+    <string name="scheduling_was_not_possible_check_the" formatted="false">"Inplannen lukte niet. Controleer de Kia-koppeling en de toestemming voor exacte alarmen."</string>
+    <string name="link_kia_account" formatted="false">"Kia-account koppelen"</string>
+    <string name="disconnect_account" formatted="false">"Account loskoppelen"</string>
+    <string name="disconnect_kia_account" formatted="false">"Kia-account loskoppelen?"</string>
+    <string name="the_schedule_is_disabled_and_the" formatted="false">"De planning wordt uitgezet en de opgeslagen aanmeldgegevens worden gewist."</string>
+    <string name="disconnect" formatted="false">"Loskoppelen"</string>
+    <string name="end_of_period" formatted="false">"Einde tijdvak"</string>
+    <string name="kia_request_limit" formatted="false">"Startlimiet Kia"</string>
+    <string name="delay_at_ready_at" formatted="false">"Vertraging bij Klaar om"</string>
+    <string name="scheduled_start_failed" formatted="false">"Geplande start mislukt"</string>
+    <string name="silent_notification_mode" formatted="false">"Stille meldingsstand"</string>
+    <string name="only_pop_ups_in_case_of" formatted="false">"Alleen pop-ups bij problemen. Tijdvakken blijven in het log."</string>
+    <string name="connection_check" formatted="false">"Verbindingscheck"</string>
+    <string name="allow_android_notifications" formatted="false">"Android-meldingen toestaan"</string>
+    <string name="allow_exact_alarms" formatted="false">"Exacte alarmen toestaan"</string>
+    <string name="open_accessibility" formatted="false">"Toegankelijkheid openen"</string>
+    <string name="check_kia_button" formatted="false">"Kia-knop controleren"</string>
+    <string name="first_enable_accessibility" formatted="false">"Schakel eerst toegankelijkheid in."</string>
+    <string name="use_weather_for_climate_icon" formatted="false">"Weer gebruiken voor klimaaticoontje"</string>
+    <string name="open_meteo_uses_the_last_known" formatted="false">"Open-Meteo gebruikt de laatst bekende autolocatie voor deze schatting."</string>
+    <string name="temperature" formatted="false">"Temperatuur"</string>
+    <string name="temperature_2" formatted="false">"Temperatuur, "</string>
+    <string name="change_2" formatted="false">", wijzigen"</string>
+    <string name="temperature_in_degrees_celsius" formatted="false">"Temperatuur in graden Celsius"</string>
+    <string name="desired_temperature" formatted="false">"Gewenste temperatuur"</string>
+    <string name="general" formatted="false">"Algemeen · "</string>
+    <string name="climate_profile" formatted="false">"Klimaatprofiel"</string>
+    <string name="off" formatted="false">"Uit"</string>
+    <string name="always_on_first_cycle" formatted="false">"Altijd bij eerste cyclus"</string>
+    <string name="smart_in_the_cold" formatted="false">"Slim bij kou"</string>
+    <string name="smart" formatted="false">"Slim ≤ "</string>
+    <string name="text_1_cycle_planned" formatted="false">"1 cyclus gepland"</string>
+    <string name="cycles_planned" formatted="false">" cyclussen gepland"</string>
+    <string name="enable_at_or_below" formatted="false">"Inschakelen bij of onder"</string>
+    <string name="windshield_position_saved" formatted="false">"Voorruitstand opgeslagen."</string>
+    <string name="general_climate_profile" formatted="false">"Algemeen klimaatprofiel"</string>
+    <string name="profile_name" formatted="false">"Profielnaam"</string>
+    <string name="target_temperature_2" formatted="false">"Doeltemperatuur"</string>
+    <string name="edit_profile" formatted="false">"Profiel bewerken"</string>
+    <string name="enter_a_profile_name" formatted="false">"Vul een profielnaam in"</string>
+    <string name="one_time_start" formatted="false">"Eenmalige start"</string>
+    <string name="skip_this_start" formatted="false">"Deze start overslaan"</string>
+    <string name="this_starts_moving" formatted="false">"Deze start verplaatsen"</string>
+    <string name="new_start_time" formatted="false">"Nieuwe starttijd"</string>
+    <string name="choose_a_free_future_start_time" formatted="false">"Kies een vrije toekomstige starttijd of open Volgende start opnieuw."</string>
+    <string name="start_skipped" formatted="false">"Start overgeslagen"</string>
+    <string name="start_moved_to" formatted="false">"Start verplaatst naar "</string>
+    <string name="this_change_cannot_be_undone" formatted="false">"Deze wijziging kan niet meer ongedaan worden gemaakt."</string>
+    <string name="resume_now" formatted="false">"Nu hervatten"</string>
+    <string name="take_a_break_until_tomorrow" formatted="false">"Pauzeren tot morgen"</string>
+    <string name="select_date_and_time" formatted="false">"Datum en tijd kiezen"</string>
+    <string name="see_you_tomorrow" formatted="false">"Tot morgen"</string>
+    <string name="resume_at" formatted="false">"Hervatten om"</string>
+    <string name="choose_a_time_in_the_future" formatted="false">"Kies een tijd in de toekomst."</string>
+    <string name="checking_kia_and_android" formatted="false">"Kia en Android controleren…"</string>
+    <string name="exact_alarms" formatted="false">"\nExacte alarmen: "</string>
+    <string name="allowed" formatted="false">"toegestaan"</string>
+    <string name="permission_required" formatted="false">"toestemming nodig"</string>
+    <string name="android_notifications" formatted="false">"\nAndroid-meldingen: "</string>
+    <string name="disabled" formatted="false">"uitgeschakeld"</string>
+    <string name="day" formatted="false">"Dag"</string>
+    <string name="week" formatted="false">"Week"</string>
+    <string name="month" formatted="false">"Maand"</string>
+    <string name="previous_period" formatted="false">"Vorige periode"</string>
+    <string name="next_period" formatted="false">"Volgende periode"</string>
+    <string name="battery_and_climate_consumption" formatted="false">"Accu en klimaatverbruik"</string>
+    <string name="loading_overview" formatted="false">"Overzicht laden…"</string>
+    <string name="usage_data_could_not_be_opened" formatted="false">"Verbruiksgegevens konden niet worden geopend."</string>
+    <string name="estimated_climate_consumption" formatted="false">"Geschat klimaatverbruik  "</string>
+    <string name="traction_battery_2" formatted="false">"Tractieaccu (%)"</string>
+    <string name="no_kia_battery_measurement_on_this" formatted="false">"Geen Kia-accumeting op deze dag."</string>
+    <string name="om" formatted="false">" om "</string>
+    <string name="one_measurement" formatted="false">" · één meting"</string>
+    <string name="measuring_points_for_kia_status_updates" formatted="false">"Meetpunten bij Kia-statusupdates, met een automatische uurcheck."</string>
+    <string name="measuring_points_for_a_kia_status" formatted="false">"Meetpunten bij een Kia-statusupdate."</string>
+    <string name="cumulative_climate_consumption_kwh" formatted="false">"Cumulatief klimaatverbruik (kWh)"</string>
+    <string name="no_recorded_climate_cycles" formatted="false">"Geen geregistreerde klimaatcyclussen."</string>
+    <string name="average_from_your_measurements" formatted="false">"Gemiddelde uit je metingen"</string>
+    <string name="provisional_calculation_value" formatted="false">"Voorlopige rekenwaarde"</string>
+    <string name="text_1_suitable_cycle" formatted="false">"1 geschikte cyclus"</string>
+    <string name="suitable_cycles" formatted="false">" geschikte cyclussen"</string>
+    <string name="calibration_uses_recent_kia_measurements_fro" formatted="false">"Kalibratie gebruikt recente Kia-metingen van geparkeerde, niet-aangesloten cyclussen."</string>
+    <string name="with_an_uncertain_end_time_running" formatted="false">" Bij een onzekere eindtijd blijven looptijd en verbruik schattingen."</string>
+    <string name="received_off_status_from_kia" formatted="false">"Uitstatus van Kia ontvangen"</string>
+    <string name="stop_confirmed_by_kia" formatted="false">"Stop bevestigd door Kia"</string>
+    <string name="terminated_after_unlocking" formatted="false">"Beëindigd na ontgrendelen"</string>
+    <string name="end_time_estimated" formatted="false">"Eindtijd geschat"</string>
+    <string name="estimated" formatted="false">"\nGeschat "</string>
+    <string name="kwh_approx" formatted="false">" kWh · circa "</string>
+    <string name="of_64_kwh" formatted="false">"% van 64 kWh\n"</string>
+    <string name="own_average" formatted="false">"eigen gemiddelde"</string>
+    <string name="calculation_value" formatted="false">"rekenwaarde"</string>
+    <string name="counts_towards_calibration" formatted="false">" · telt mee voor kalibratie"</string>
+    <string name="battery" formatted="false">"\nAccu "</string>
+    <string name="your_first_confirmed_climate_cycle_appears" formatted="false">"Je eerste bevestigde klimaatcyclus verschijnt hier."</string>
+    <string name="consumption_log" formatted="false">"Verbruikslog"</string>
+    <string name="minimum_battery_when_disconnected" formatted="false">"Minimale accu wanneer losgekoppeld"</string>
+    <string name="skip_in_mild_weather" formatted="false">"Overslaan bij mild weer"</string>
+    <string name="from" formatted="false">"Vanaf"</string>
+    <string name="until" formatted="false">"Tot en met"</string>
+    <string name="the_first_temperature_must_be_the" formatted="false">"De eerste temperatuur moet gelijk of lager zijn."</string>
+    <string name="no_home_location_has_been_saved" formatted="false">"Er is nog geen thuislocatie opgeslagen."</string>
+    <string name="home_location_saved" formatted="false">"Thuislocatie opgeslagen"</string>
+    <string name="via_your_phone" formatted="false">" via je telefoon."</string>
+    <string name="through_kia" formatted="false">" via Kia."</string>
+    <string name="stand_at_home_when_you_save" formatted="false">"Sta thuis als je de locatie van je telefoon opslaat. De thuiszone heeft een straal van 150 meter."</string>
+    <string name="for_scheduled_starts_the_app_compares" formatted="false">" Bij geplande starts vergelijkt de app dit punt met de autolocatie van Kia."</string>
+    <string name="use_phone_location" formatted="false">"Telefoonlocatie gebruiken"</string>
+    <string name="use_kia_car_location" formatted="false">"Kia-autolocatie gebruiken"</string>
+    <string name="clear_home_location" formatted="false">"Thuislocatie wissen"</string>
+    <string name="delete_home_location" formatted="false">"Thuislocatie wissen?"</string>
+    <string name="home_only_time_slots_will_be" formatted="false">"Alleen-thuis-tijdvakken worden overgeslagen totdat er weer een thuislocatie is."</string>
+    <string name="location_is_off" formatted="false">"Locatie staat uit"</string>
+    <string name="turn_on_location_on_your_samsung" formatted="false">"Zet locatie aan op je Samsung om je thuispunt op te halen."</string>
+    <string name="find_phone_location" formatted="false">"Telefoonlocatie zoeken"</string>
+    <string name="wait_for_an_accurate_location" formatted="false">"Wacht op een nauwkeurige locatie…"</string>
+    <string name="location_not_yet_accurate_enough" formatted="false">"Locatie nog niet nauwkeurig genoeg"</string>
+    <string name="try_near_a_window_or_outside" formatted="false">"Probeer bij een raam of buiten. Je kunt ook de Kia-autolocatie kiezen."</string>
+    <string name="search_again" formatted="false">"Opnieuw zoeken"</string>
+    <string name="phone_location_found_accurate_to_approx" formatted="false">"Telefoonlocatie gevonden, nauwkeurig tot circa "</string>
+    <string name="meters" formatted="false">" meter."</string>
+    <string name="home_location" formatted="false">"Thuislocatie"</string>
+    <string name="pick_up_car_location" formatted="false">"Autolocatie ophalen…"</string>
+    <string name="no_recent_kia_car_location" formatted="false">"Geen recente Kia-autolocatie"</string>
+    <string name="you_can_save_your_home_location" formatted="false">"Je kunt je thuislocatie met je telefoon opslaan. De geplande thuiscontrole heeft wel een Kia-autolocatie nodig."</string>
+    <string name="kia_has_returned_a_recent_car" formatted="false">"Kia heeft een recente autolocatie teruggegeven."</string>
+    <string name="save_as_home_location" formatted="false">"Opslaan als thuislocatie?"</string>
+    <string name="the_home_location_is_stored_on" formatted="false">"\nDe thuislocatie wordt op dit toestel bewaard."</string>
+    <string name="home_location_saved_2" formatted="false">"Thuislocatie opgeslagen."</string>
+    <string name="automatically_switch_by_date" formatted="false">"Wissel automatisch op datum"</string>
+    <string name="profile_from_the_first_date" formatted="false">"Profiel vanaf de eerste datum"</string>
+    <string name="profile_from_the_second_date" formatted="false">"Profiel vanaf de tweede datum"</string>
+    <string name="starts_with_their_own_profile_retain" formatted="false">"Starts met een eigen profiel behouden die keuze."</string>
+    <string name="choose_two_different_changeover_dates" formatted="false">"Kies twee verschillende wisseldatums."</string>
+    <string name="biometrics_are_not_available_check_your" formatted="false">"Biometrie is niet beschikbaar. Controleer je Samsung-instellingen."</string>
+    <string name="pick_up_appointments" formatted="false">"Afspraken ophalen…"</string>
+    <string name="appointment" formatted="false">"Afspraak"</string>
+    <string name="no_visible_appointments_with_a_start" formatted="false">"Geen zichtbare afspraken met een begintijd in de komende drie weken."</string>
+    <string name="choose_an_appointment" formatted="false">"Kies een afspraak"</string>
+    <string name="accurate_location_needed" formatted="false">"Nauwkeurige locatie nodig"</string>
+    <string name="choose_precise_location_access_to_save" formatted="false">"Kies nauwkeurige locatietoegang om het middelpunt van de thuiszone op te slaan."</string>
+    <string name="calendar_access_is_required_to_choose" formatted="false">"Agenda-toegang is nodig om een afspraak te kiezen."</string>
+    <string name="wash" formatted="false">" · was "</string>
+    <string name="no_scheduled_starts_during_this_period" formatted="false">"Geen geplande starts in deze periode."</string>
+    <string name="planned" formatted="false">"Gepland "</string>
+    <string name="kia_connect_connected" formatted="false">"Kia Connect gekoppeld"</string>
+    <string name="connect_kia_connect" formatted="false">"Kia Connect koppelen"</string>
+    <string name="exact_alarms_allowed" formatted="false">"\nExacte alarmen toegestaan"</string>
+    <string name="exact_alarms_are_disabled" formatted="false">"\nExacte alarmen zijn uitgeschakeld"</string>
+    <string name="latest_car_status" formatted="false">"\nLaatste autostatus "</string>
+    <string name="no_car_status_known_yet" formatted="false">"\nNog geen autostatus bekend"</string>
+    <string name="home_zone_is_checked_at_the" formatted="false">"\nThuiszone wordt bij de start gecontroleerd"</string>
+    <string name="first_set_your_home_location" formatted="false">"\nStel eerst je thuislocatie in"</string>
+    <string name="check_connection" formatted="false">"Verbinding controleren"</string>
+    <string name="reconnect_kia" formatted="false">"Kia opnieuw koppelen"</string>
+    <string name="allow_alarms" formatted="false">"Alarmen toestaan"</string>
+    <string name="what_do_you_want_to_do" formatted="false">"Wat wil je doen?"</string>
+    <string name="confirmed" formatted="false">"Bevestigd  "</string>
+    <string name="skipped" formatted="false">"\nOvergeslagen  "</string>
+    <string name="failed" formatted="false">"\nMislukt  "</string>
+    <string name="most_common_cause" formatted="false">"\n\nMeest voorkomende oorzaak: "</string>
+    <string name="estimated_climate_consumption_2" formatted="false">"\n\nGeschat klimaatverbruik  "</string>
+    <string name="last_month" formatted="false">"Vorige maand"</string>
+    <string name="next_month" formatted="false">"Volgende maand"</string>
+    <string name="there_are_no_time_slots_for" formatted="false">"Er zijn nog geen tijdvakken om te exporteren."</string>
+    <string name="private_log_choose_a_time_period" formatted="false">"Privélog · kies een tijdvak"</string>
+    <string name="failed_to_create_private_log" formatted="false">"Privélog maken is mislukt."</string>
+    <string name="no_readable_notification_log_available" formatted="false">"Geen leesbaar meldingenlog beschikbaar."</string>
+    <string name="private_log_saved" formatted="false">"Privélog opgeslagen."</string>
+    <string name="private_log_save_failed" formatted="false">"Privélog opslaan is mislukt."</string>
+    <string name="weekly_schedule_exported" formatted="false">"Weekplanning geëxporteerd."</string>
+    <string name="save_backup_failed" formatted="false">"Back-up opslaan is mislukt."</string>
+    <string name="reset_weekly_schedule" formatted="false">"Weekplanning terugzetten?"</string>
+    <string name="restore" formatted="false">"Terugzetten"</string>
+    <string name="backup_restore_failed" formatted="false">"Back-up terugzetten is mislukt."</string>
+    <string name="this_is_not_a_valid_kia" formatted="false">"Dit is geen geldige back-up van Kia Climate Control."</string>
+    <string name="done" formatted="false">"klaar "</string>
+    <string name="out" formatted="false">", uit"</string>
+    <string name="empty" formatted="false">"leeg"</string>
+    <string name="time_slot_options_changed" formatted="false">" (tijdvakopties gewijzigd)"</string>
+    <string name="day_becomes_active" formatted="false">" (dag wordt actief)"</string>
+    <string name="day_is_plotted" formatted="false">" (dag wordt uitgezet)"</string>
+    <string name="no_differences_in_time_periods" formatted="false">"Geen verschillen in tijdvakken.\n"</string>
+    <string name="profiles_to_recover" formatted="false">"\nTe herstellen profielen\n"</string>
+    <string name="temporary_weekly_deviations_are_canceled" formatted="false">"\nTijdelijke weekafwijkingen vervallen."</string>
+    <string name="stopping_climate" formatted="false">"Klimaat stoppen…"</string>
+    <string name="stop_not_attached" formatted="false">"Stop niet bevestigd"</string>
+    <string name="climate_active" formatted="false">"Klimaat actief"</string>
+    <string name="wait_for_kia" formatted="false">"Wacht op Kia"</string>
+    <string name="climate_control_already_active" formatted="false">"Klimaatregeling al actief"</string>
+    <string name="climate_status_unknown" formatted="false">"Klimaatstatus onbekend"</string>
+    <string name="period_active" formatted="false">"Tijdvak actief"</string>
+    <string name="climate_off" formatted="false">"Klimaat uit"</string>
+    <string name="outside" formatted="false">"Buiten "</string>
+    <string name="weather" formatted="false">"Weer "</string>
+    <string name="obsolete" formatted="false">"Verouderd · "</string>
+    <string name="again" formatted="false">"weer "</string>
+    <string name="windshield_defrost_2" formatted="false">"Voorruit ontdooien\n"</string>
+    <string name="season" formatted="false">" · seizoen"</string>
+    <string name="general_climate_profile_2" formatted="false">"Algemeen klimaatprofiel\n"</string>
+    <string name="set" formatted="false">"Ingesteld "</string>
+    <string name="remaining_time_unknown" formatted="false">"Resterende tijd onbekend"</string>
+    <string name="combined_period" formatted="false">"Gecombineerd tijdvak"</string>
+    <string name="one_time_period" formatted="false">"Eenmalig tijdvak"</string>
+    <string name="time_slot_remaining" formatted="false">"Tijdvak resterend"</string>
+    <string name="kia_automatic_control_paused_until" formatted="false">"Automatische Kia-controle gepauzeerd tot "</string>
+    <string name="you_can_start_it_manually_immediately" formatted="false">"Handmatig starten kan direct"</string>
+    <string name="new_start_in_at_least" formatted="false">"Nieuwe start over minimaal "</string>
+    <string name="new_order_possible" formatted="false">"Nieuwe opdracht mogelijk om "</string>
+    <string name="paused_until" formatted="false">"Gepauzeerd tot "</string>
+    <string name="next_cycle" formatted="false">"Volgende cyclus"</string>
+    <string name="link_kia_connect" formatted="false">"Koppel Kia Connect"</string>
+    <string name="exact_alarms_needed" formatted="false">"Exacte alarmen nodig"</string>
+    <string name="wait_for_the_end_of_the" formatted="false">"Wacht op einde Kia-pauze"</string>
+    <string name="next_cycle_awaits_kia" formatted="false">"Volgende cyclus wacht op Kia"</string>
+    <string name="weekly_planning_paused" formatted="false">"Weekplanning gepauzeerd"</string>
+    <string name="no_start_planned" formatted="false">"Geen start gepland"</string>
+    <string name="weekly_planning_is_turned_off" formatted="false">"Weekplanning staat uit"</string>
+    <string name="wait_for_confirmation_from_kia" formatted="false">"Wacht op bevestiging van Kia"</string>
+    <string name="wait_for_stop_confirmation_from_kia" formatted="false">"Wacht op stopbevestiging van Kia"</string>
+    <string name="stop_not_confirmed_by_kia" formatted="false">"Stop niet bevestigd door Kia"</string>
+    <string name="climate_control_temporarily_paused" formatted="false">"Klimaatcontrole tijdelijk gepauzeerd"</string>
+    <string name="the_planner_checks_kia_around_the" formatted="false">"De planner controleert Kia rond het einde van de cyclus"</string>
+    <string name="last_cycle_the_scheduler_checks_the" formatted="false">"Laatste cyclus. De planner controleert de uitstatus rond het einde."</string>
+    <string name="kia_has_not_yet_confirmed_the" formatted="false">"Kia heeft de start nog niet bevestigd"</string>
+    <string name="completed_after_unlocking_or_switching_on" formatted="false">"Afgerond na ontgrendelen of inschakelen"</string>
+    <string name="to_settings" formatted="false">"Naar instellingen"</string>
+    <string name="one_time_period_is_running" formatted="false">"Eenmalig tijdvak loopt"</string>
+    <string name="one_off" formatted="false">"Eenmalig · "</string>
+    <string name="unknown" formatted="false">"Onbekend"</string>
+    <string name="collect_battery" formatted="false">"Accu ophalen…"</string>
+    <string name="measured" formatted="false">"Gemeten "</string>
+    <string name="no_measurement" formatted="false">"Geen meting"</string>
+    <string name="traction_battery_3" formatted="false">"Tractieaccu, "</string>
+    <string name="unknown_2" formatted="false">"onbekend"</string>
+    <string name="percent" formatted="false">" procent"</string>
+    <string name="refresh_battery_status" formatted="false">", accustatus verversen"</string>
+    <string name="re_pairing_required" formatted="false">"Opnieuw koppelen vereist"</string>
+    <string name="linked" formatted="false">"Gekoppeld · "</string>
+    <string name="kia_connect_not_yet_linked" formatted="false">"Kia Connect nog niet gekoppeld"</string>
+    <string name="relink_kia_account" formatted="false">"Kia-account opnieuw koppelen"</string>
+    <string name="exact_alarms_are_allowed" formatted="false">"Exacte alarmen zijn toegestaan."</string>
+    <string name="exact_alarms_require_permission" formatted="false">"Exacte alarmen hebben toestemming nodig."</string>
+    <string name="standard" formatted="false">"Standaard"</string>
+    <string name="windshield" formatted="false">"Voorruit "</string>
+    <string name="decision_at_start" formatted="false">" · beslissing bij start"</string>
+    <string name="probably_heating" formatted="false">"Waarschijnlijk verwarmen"</string>
+    <string name="probably_refrigerate" formatted="false">"Waarschijnlijk koelen"</string>
+    <string name="heating_or_cooling_unknown" formatted="false">"Verwarmen of koelen onbekend"</string>
+    <string name="no_notifications_yet" formatted="false">"Nog geen meldingen"</string>
+    <string name="completed_after_unlocking" formatted="false">"Afgerond na ontgrendelen"</string>
+    <string name="current_period_cancelled" formatted="false">"Lopend tijdvak geannuleerd."</string>
+    <string name="terminated_manually" formatted="false">"Handmatig beëindigd"</string>
+    <string name="start_denied_by_kia" formatted="false">"Start geweigerd door Kia"</string>
+    <string name="no_confirmation_received_from_the_car" formatted="false">"Geen bevestiging van de auto ontvangen."</string>
+    <string name="no_confirmation_from_kia" formatted="false">"Geen bevestiging van Kia"</string>
+    <string name="text_1_of_1_cycle_confirmed" formatted="false">"1 van 1 cyclus bevestigd"</string>
+    <string name="of" formatted="false">" van "</string>
+    <string name="cycles_confirmed" formatted="false">" cyclussen bevestigd"</string>
+    <string name="kia_account_disconnected" formatted="false">"Kia-account losgekoppeld."</string>
+    <string name="the_saved_kia_session_could_not" formatted="false">"De opgeslagen Kia-sessie kon niet worden gewist."</string>
+    <string name="summer" formatted="false">"Zomer"</string>
+    <string name="own_profile" formatted="false">"Eigen profiel"</string>
+    <string name="battery_below_the_set_limit" formatted="false">"Accu onder de ingestelde grens"</string>
+    <string name="outside_temperature_within_the_comfort_range" formatted="false">"Buitentemperatuur binnen het comfortbereik"</string>
+    <string name="car_is_outside_the_home_zone" formatted="false">"Auto staat buiten de thuiszone"</string>
+    <string name="no_recent_kia_location_for_the" formatted="false">"Geen recente Kia-locatie voor de thuiszone"</string>
+    <string name="timeline_of" formatted="false">"Tijdlijn van "</string>
+    <string name="until_2" formatted="false">" tot "</string>
+    <string name="with_targets_every_15_minutes" formatted="false">", met richtpunten om de 15 minuten"</string>
+    <string name="end_2" formatted="false">"Einde "</string>
+    <string name="remaining_s" formatted="false">"Resterend %s"</string>
+    <string name="planning_awaits" formatted="false">"Planning wacht"</string>
+    <string name="end_3" formatted="false">" · einde "</string>
+    <string name="log_in_with_your_kia_account" formatted="false">"Meld je aan met je Kia-account voor geplande starts met je Samsung vergrendeld. "</string>
+    <string name="the_app_stores_the_connection_and" formatted="false">"De app bewaart de verbinding en je aanmeldgegevens versleuteld op dit toestel."</string>
+    <string name="kia_connect_pin_optional" formatted="false">"Kia Connect-PIN (optioneel)"</string>
+    <string name="pairing" formatted="false">"Koppelen"</string>
+    <string name="enter_your_email_address_and_password" formatted="false">"Vul je e-mailadres en wachtwoord in."</string>
+    <string name="log_in_to_kia_connect" formatted="false">"Aanmelden bij Kia Connect…"</string>
+    <string name="sign_up" formatted="false">"aanmelden"</string>
+    <string name="kia_connect_connected_automatic_starts_can" formatted="false">"Kia Connect gekoppeld. Automatische starts kunnen via de internetverbinding."</string>
+    <string name="choose_a_kia" formatted="false">"Kies een Kia"</string>
+    <string name="connect_car" formatted="false">"Auto koppelen…"</string>
+    <string name="kia_did_not_offer_a_supported" formatted="false">"Kia bood geen ondersteunde verificatiemethode aan."</string>
+    <string name="request_verification_code" formatted="false">"Verificatiecode aanvragen…"</string>
+    <string name="kia_has_asked_for_a_verification" formatted="false">"Kia heeft om een verificatiecode gevraagd."</string>
+    <string name="verification_code" formatted="false">"Verificatiecode"</string>
+    <string name="enter_the_kia_code" formatted="false">"Vul de code van Kia in"</string>
+    <string name="check" formatted="false">"Controleren"</string>
+    <string name="check_verification_code" formatted="false">"Verificatiecode controleren…"</string>
+    <string name="kia_connect_paused_until" formatted="false">"Kia Connect gepauzeerd tot "</string>
+    <string name="to_switch_cars_first_disconnect_the" formatted="false">"Koppel de huidige auto eerst los in Instellingen om van auto te wisselen."</string>
+    <string name="smart_windshield_position" formatted="false">"Slimme voorruitstand: "</string>
+    <string name="at" formatted="false">" bij "</string>
+    <string name="c_limit" formatted="false">" °C (grens "</string>
+    <string name="smart_windshield_mode_off_no_recent" formatted="false">"Slimme voorruitstand: uit. Geen recente buitentemperatuur beschikbaar."</string>
+    <string name="climate_start_sent_requested_windshield" formatted="false">"Klimaatstart verstuurd. Aangevraagd: voorruit "</string>
+    <string name="send" formatted="false">", stuur "</string>
+    <string name="rear_window_mirrors" formatted="false">", achterruit/spiegels "</string>
+    <string name="kia_confirms_climate_control_started" formatted="false">"Kia bevestigt: klimaatregeling gestart."</string>
+    <string name="status_before_climate_start" formatted="false">"status vóór klimaatstart"</string>
+    <string name="climate_start" formatted="false">"klimaatstart"</string>
+    <string name="kia_has_temporarily_refused_the_climate" formatted="false">"Kia heeft de klimaatstart tijdelijk geweigerd."</string>
+    <string name="kia_confirms_climate_control_stopped" formatted="false">"Kia bevestigt: klimaatregeling gestopt."</string>
+    <string name="kia_does_not_confirm_the_stop" formatted="false">"Kia bevestigt de stop niet. Je kunt opnieuw stoppen."</string>
+    <string name="climate_stop" formatted="false">"klimaatstop"</string>
+    <string name="climate_stop_not_confirmed_kia_reports" formatted="false">"Klimaatstop niet bevestigd. Kia meldt een aanvraaglimiet."</string>
+    <string name="climate_stop_not_confirmed" formatted="false">"Klimaatstop niet bevestigd. "</string>
+    <string name="kia_code" formatted="false">"Kia-code "</string>
+    <string name="climate_control" formatted="false">"klimaatcontrole"</string>
+    <string name="climate_control_collection_failed" formatted="false">"Klimaatcontrole · Ophalen mislukt ("</string>
+    <string name="the_scheduler_is_waiting_for_a" formatted="false">"). De planner wacht op een verse status."</string>
+    <string name="on" formatted="false">"aan"</string>
+    <string name="out_2" formatted="false">"uit"</string>
+    <string name="heating_status_according_to_kia_windshield" formatted="false">"Verwarmingsstatus volgens Kia: voorruit "</string>
+    <string name="rear_window" formatted="false">", achterruit "</string>
+    <string name="mirrors" formatted="false">", spiegels "</string>
+    <string name="car_location" formatted="false">"autolocatie"</string>
+    <string name="kia_account_relink" formatted="false">"Kia-account: opnieuw koppelen."</string>
+    <string name="kia_accessible_no_vehicle_status_received" formatted="false">"Kia bereikbaar. Geen voertuigstatus ontvangen."</string>
+    <string name="kia_accessible_receive_vehicle_status" formatted="false">"Kia bereikbaar. Voertuigstatus ontvangen ("</string>
+    <string name="kia_check_failed" formatted="false">"Kia-controle mislukt ("</string>
+    <string name="the_automatic_checks_for_this_cycle" formatted="false">"De automatische controles voor deze cyclus zijn opgebruikt."</string>
+    <string name="last_status_shown_kia_inspection_possible" formatted="false">"Laatste status getoond. Kia-controle mogelijk vanaf "</string>
+    <string name="last_status_shown_the_planner_is" formatted="false">"Laatste status getoond. De planner wacht op Kia."</string>
+    <string name="last_status_shown_you_can_refresh" formatted="false">"Laatste status getoond. Je kunt na één minuut opnieuw verversen."</string>
+    <string name="next_manual_status_check_from" formatted="false">"Volgende handmatige statuscontrole vanaf "</string>
+    <string name="kia_has_not_provided_a_valid" formatted="false">"Kia heeft geen geldige meettijd doorgegeven."</string>
+    <string name="kia_did_not_provide_usable_vehicle" formatted="false">"Kia heeft geen bruikbare voertuigstatus doorgegeven."</string>
+    <string name="kia_responds_again_pause_lifted_latest" formatted="false">"Kia reageert weer. Pauze opgeheven. Laatste voertuigstatus "</string>
+    <string name="kia_responds_again_pause_lifted" formatted="false">"Kia reageert weer. Pauze opgeheven."</string>
+    <string name="latest_vehicle_status_at_kia" formatted="false">"Laatste voertuigstatus bij Kia: "</string>
+    <string name="kia_request_limit_on_manual_refresh" formatted="false">"Kia-aanvraaglimiet bij handmatig verversen. "</string>
+    <string name="kia_status_retrieval_failed_the_last" formatted="false">"Kia-status ophalen mislukt. De laatste meting blijft zichtbaar."</string>
+    <string name="kia_has_not_yet_provided_a" formatted="false">"Kia heeft nog geen nieuwere accumeting doorgegeven."</string>
+    <string name="climate_control_kia_does_not_provide" formatted="false">"Klimaatcontrole · Kia geeft geen verse aan- of uitstatus."</string>
+    <string name="climate_control_active_according_to_kia" formatted="false">"Klimaatcontrole · Actief volgens Kia."</string>
+    <string name="climate_control_off_according_to_kia" formatted="false">"Klimaatcontrole · Uit volgens Kia."</string>
+    <string name="replace_battery" formatted="false">"accu verversen"</string>
+    <string name="failed_to_get_battery_percentage_the" formatted="false">"Accupercentage ophalen is mislukt. De laatste meting blijft zichtbaar."</string>
+    <string name="climate_control_refresh_failed" formatted="false">"Klimaatcontrole · Verversen mislukt ("</string>
+    <string name="kia_reports_that_the_request_limit" formatted="false">"Kia meldt dat de aanvraaglimiet is bereikt."</string>
+    <string name="kia_has_refused_the_registration_please" formatted="false">"Kia heeft de aanmelding geweigerd. Controleer je gegevens of koppel je account opnieuw."</string>
+    <string name="the_saved_kia_session_is_not" formatted="false">"De opgeslagen Kia-sessie is niet beschikbaar. Koppel je account opnieuw."</string>
+    <string name="the_connection_to_kia_connect_failed" formatted="false">"De verbinding met Kia Connect is mislukt ("</string>
+    <string name="kia_connect_could_not_complete_the" formatted="false">"Kia Connect kon de aanvraag niet afronden ("</string>
+    <string name="kia_reports_climate_control_started" formatted="false">"Kia meldt: klimaatregeling gestart."</string>
+    <string name="start_skipped_another_kia_order_is" formatted="false">"Start overgeslagen. Een andere Kia-opdracht loopt nog."</string>
+    <string name="missed_time_the_phone_screen_was" formatted="false">"Tijdstip gemist. Het telefoonscherm stond uit of was vergrendeld."</string>
+    <string name="the_planned_period_is_over" formatted="false">"De geplande periode is voorbij."</string>
+    <string name="the_official_european_kia_app_could" formatted="false">"De officiële Europese Kia App is niet gevonden."</string>
+    <string name="android_could_not_open_the_kia" formatted="false">"Android kon de Kia App niet openen."</string>
+    <string name="screen_locked_or_disabled_during_kia" formatted="false">"Scherm vergrendeld of uitgeschakeld tijdens de Kia-opdracht."</string>
+    <string name="test_passed_the_fan_button_on" formatted="false">"Test geslaagd. De ventilatorknop ‘Aan’ is gevonden. Er is niets naar de auto gestuurd."</string>
+    <string name="on_was_found_but_android_was" formatted="false">"‘Aan’ is gevonden, maar Android kon de knop niet bedienen."</string>
+    <string name="the_kia_app_shows_off_no" formatted="false">"De Kia App toont ‘Uit’. Er is geen startcommando gestuurd."</string>
+    <string name="the_kia_app_does_not_show" formatted="false">"De Kia App toont de ventilatorknop ‘Aan’ niet herkenbaar. Open Kia en controleer het Home-scherm."</string>
+    <string name="android_has_blocked_the_scheduled_background" formatted="false">"Android heeft de geplande achtergrondstart geblokkeerd."</string>
+    <string name="android_has_blocked_the_climate_command" formatted="false">"Android heeft de klimaatopdracht geblokkeerd."</string>
+    <string name="climate_start_2" formatted="false">"Klimaatstart"</string>
+    <string name="connection_to_kia_connect" formatted="false">"Verbinding met Kia Connect"</string>
+    <string name="manual_start" formatted="false">"Handmatige start"</string>
+    <string name="next_start_skipped_from_the_weekly" formatted="false">"Volgende start uit de weekplanning overgeslagen."</string>
+    <string name="start_moved_once_from_the_weekly" formatted="false">"Start uit de weekplanning eenmalig verplaatst."</string>
+    <string name="changes_to_the_next_week_start" formatted="false">"Wijziging aan de volgende weekstart ongedaan gemaakt."</string>
+    <string name="weekly_planning_resumed" formatted="false">"Weekplanning hervat."</string>
+    <string name="weekly_planning_temporarily_paused" formatted="false">"Weekplanning tijdelijk gepauzeerd."</string>
+    <string name="manual_time_slot_added_to_the" formatted="false">"Handmatig tijdvak toegevoegd aan de lopende cyclussen."</string>
+    <string name="the_current_cycle_covers_the_selected" formatted="false">"De lopende cyclus dekt de gekozen duur."</string>
+    <string name="manual_start_scheduled_after_the_waiting" formatted="false">"Handmatige start ingepland na de wachttijd."</string>
+    <string name="manual_time_slot_started" formatted="false">"Handmatig tijdvak gestart."</string>
+    <string name="time_slot_extended_by_15_minutes" formatted="false">"Tijdvak met 15 minuten verlengd."</string>
+    <string name="skipped_2" formatted="false">"Overgeslagen"</string>
+    <string name="paused" formatted="false">"Gepauzeerd"</string>
+    <string name="moved_paused" formatted="false">"Verplaatst · gepauzeerd"</string>
+    <string name="moved" formatted="false">"Verplaatst"</string>
+    <string name="one_off_2" formatted="false">"Eenmalig"</string>
+    <string name="time_slot_skipped" formatted="false">"Tijdvak overgeslagen · "</string>
+    <string name="now_expected_to" formatted="false">" · nu verwacht om "</string>
+    <string name="departure_time_moves_up" formatted="false">"Vertrektijd schuift op"</string>
+    <string name="manual_start_overlaps_with_the_schedule" formatted="false">"Handmatige start overlapt met de planning. Tijdvakken opgeteld tot "</string>
+    <string name="one_off_climate_start_planned" formatted="false">"Eenmalige klimaatstart ingepland."</string>
+    <string name="one_off_climate_start_cancelled" formatted="false">"Eenmalige klimaatstart geannuleerd."</string>
+    <string name="give_android_permission_for_exact_alarms" formatted="false">"Geef Android toestemming voor exacte alarmen."</string>
+    <string name="climate_control_is_already_running_the" formatted="false">"Klimaatregeling draait al. De planner wacht tot Kia meldt dat die is gestopt."</string>
+    <string name="missed_time_connect_kia_connect_or" formatted="false">"Tijdstip gemist. Koppel Kia Connect of schakel toegankelijkheid in."</string>
+    <string name="period_ended_without_fresh_kia_status" formatted="false">"Tijdvak beëindigd zonder verse Kia-status. Resterende cyclussen: "</string>
+    <string name="period_ended_kia_has_not_yet" formatted="false">"Tijdvak beëindigd. Kia heeft de laatste uitstatus nog niet gemeld."</string>
+    <string name="your_one_time_period_has_ended" formatted="false">"Je eenmalige tijdvak is afgelopen."</string>
+    <string name="your_combined_period_has_ended" formatted="false">"Je gecombineerde tijdvak is afgelopen."</string>
+    <string name="your_manual_time_slot_has_ended" formatted="false">"Je handmatige tijdvak is afgelopen."</string>
+    <string name="your_planned_period_has_ended" formatted="false">"Je geplande tijdvak is afgelopen."</string>
+    <string name="period_ended" formatted="false">"Tijdvak afgelopen"</string>
+    <string name="climate_control_resumes_for_the_current" formatted="false">"Klimaatcontrole hervat voor het lopende tijdvak."</string>
+    <string name="climate_control_kia_does_not_provide_2" formatted="false">"Klimaatcontrole · Kia geeft geen verse aan- of uitstatus. De planner wacht."</string>
+    <string name="climate_control_still_active_according_to" formatted="false">"Klimaatcontrole · Nog actief volgens Kia. De planner wacht."</string>
+    <string name="climate_control_kia_reports_out_but" formatted="false">"Klimaatcontrole · Kia meldt uit, maar heeft nog geen actieve meting gegeven. De planner wacht."</string>
+    <string name="climate_control_kia_confirms_out_all" formatted="false">"Klimaatcontrole · Kia bevestigt uit. Alle cyclussen zijn uitgevoerd."</string>
+    <string name="climate_control_kia_confirms_out_the" formatted="false">"Klimaatcontrole · Kia bevestigt uit. De planner geeft de volgende cyclus vrij."</string>
+    <string name="climate_control_kia_confirms_out_there" formatted="false">"Klimaatcontrole · Kia bevestigt uit. Er volgt geen nieuwe cyclus."</string>
+    <string name="kia_application_limit_at" formatted="false">"Kia-aanvraaglimiet bij "</string>
+    <string name="skipped_climate_start_the_waiting_period" formatted="false">"Klimaatstart overgeslagen. De wachttijd loopt nog."</string>
+    <string name="period_completed_the_car_has_refused" formatted="false">"Tijdvak afgerond. De auto heeft de klimaatstart geweigerd."</string>
+    <string name="period_completed_the_car_is_unlocked" formatted="false">"Tijdvak afgerond. De auto is ontgrendeld of ingeschakeld."</string>
+    <string name="deliberately_skipped" formatted="false">"Bewust overgeslagen"</string>
+    <string name="battery_below_limit" formatted="false">"Accu onder de grens"</string>
+    <string name="mild_weather" formatted="false">"Mild weer"</string>
+    <string name="outside_the_home_zone" formatted="false">"Buiten de thuiszone"</string>
+    <string name="no_recent_location" formatted="false">"Geen recente locatie"</string>
+    <string name="car_unlocked_or_in_use" formatted="false">"Auto ontgrendeld of in gebruik"</string>
+    <string name="kia_refused_the_start" formatted="false">"Kia weigerde de start"</string>
+    <string name="starting_limit_at_kia" formatted="false">"Startlimiet bij Kia"</string>
+    <string name="connection_not_confirmed" formatted="false">"Verbinding niet bevestigd"</string>
+    <string name="climate_start_sent" formatted="false">"Klimaatstart verstuurd."</string>
+    <string name="climate_control_2" formatted="false">"Klimaatcontrole"</string>
+    <string name="android_does_not_have_permission_for" formatted="false">"Android heeft geen toestemming voor de eindmelding."</string>
+    <string name="climate_start_not_confirmed" formatted="false">"Klimaatstart niet bevestigd"</string>
+    <string name="time_slots_and_starting_limit" formatted="false">"Tijdvakken en startlimiet"</string>
+    <string name="email_address" formatted="false">"E-mailadres"</string>
+    <string name="kia_password" formatted="false">"Kia-wachtwoord"</string>
+    <string name="email" formatted="false">"E-mail"</string>
+    <string name="winter" formatted="false">"Winter"</string>
+    <string name="kia_verification" formatted="false">"Kia-verificatie"</string>
+    <string name="location_settings" formatted="false">"Locatie-instellingen"</string>
+    <string name="app_settings" formatted="false">"App-instellingen"</string>
+    <string name="kia_request_limit_2" formatted="false">"Kia-aanvraaglimiet"</string>
+</resources>

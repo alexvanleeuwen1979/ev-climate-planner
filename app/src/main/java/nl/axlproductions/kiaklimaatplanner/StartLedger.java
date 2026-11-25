@@ -1,5 +1,7 @@
 package nl.axlproductions.kiaklimaatplanner;
 
+import static nl.axlproductions.kiaklimaatplanner.AppLanguage.t;
+
 import android.content.Context;
 import java.time.Instant;
 import java.time.YearMonth;
@@ -13,13 +15,14 @@ import org.json.JSONObject;
 final class StartLedger {
     enum Kind { CONFIRMED, SKIPPED, FAILED }
     enum Cause {
-        USER("Bewust overgeslagen"), BATTERY("Accu onder de grens"), MILD("Mild weer"),
-        AWAY("Buiten de thuiszone"), LOCATION("Geen recente locatie"), IN_USE("Auto ontgrendeld of in gebruik"),
-        REFUSED("Kia weigerde de start"), LIMIT("Startlimiet bij Kia"), AUTH("Kia opnieuw koppelen"),
-        ALARM("Exacte alarmen nodig"), NETWORK("Verbinding niet bevestigd"), NO_REPLY("Geen bevestiging van Kia");
+        USER(R.string.deliberately_skipped), BATTERY(R.string.battery_below_limit), MILD(R.string.mild_weather),
+        AWAY(R.string.outside_the_home_zone), LOCATION(R.string.no_recent_location), IN_USE(R.string.car_unlocked_or_in_use),
+        REFUSED(R.string.kia_refused_the_start), LIMIT(R.string.starting_limit_at_kia), AUTH(R.string.reconnect_kia),
+        ALARM(R.string.exact_alarms_needed), NETWORK(R.string.connection_not_confirmed), NO_REPLY(R.string.no_confirmation_from_kia);
 
-        final String label;
-        Cause(String label) { this.label = label; }
+        private final int label;
+        Cause(int label) { this.label = label; }
+        String label() { return t(label); }
     }
 
     record Summary(int confirmed, int skipped, int failed, String common, int commonCount) {}
@@ -70,7 +73,7 @@ final class StartLedger {
         } catch (JSONException ignored) {}
         var most = causes.entrySet().stream().max(Map.Entry.<String, Integer>comparingByValue()
             .thenComparing(Map.Entry.comparingByKey())).orElse(null);
-        return new Summary(confirmed, skipped, failed, most == null ? "" : Cause.valueOf(most.getKey()).label,
+        return new Summary(confirmed, skipped, failed, most == null ? "" : Cause.valueOf(most.getKey()).label(),
             most == null ? 0 : most.getValue());
     }
 
@@ -78,7 +81,7 @@ final class StartLedger {
         return YearMonth.from(Instant.ofEpochMilli(epoch).atZone(ZoneId.systemDefault()));
     }
 
-    static String safeExport(JSONArray history, long session) throws JSONException {
+    static String safeExport(Context context, JSONArray history, long session) throws JSONException {
         var rows = new JSONArray();
         for (int i = history.length() - 1; i >= 0; i--) {
             var item = history.optJSONObject(i);
@@ -87,8 +90,8 @@ final class StartLedger {
             if (code.isEmpty()) {
                 if (item.optBoolean("confirmed")) code = "CONFIRMED_START";
                 else if (!knownOutcome(item.optString("outcome")).isEmpty()) code = knownOutcome(item.optString("outcome"));
-                else if (item.optString("message").startsWith("Klimaatstart verstuurd.")) code = "START_SENT";
-                else if (item.optString("message").startsWith("Klimaatcontrole")) code = "STATUS_CHECK";
+                else if (AppLanguage.messageStartsWith(context, item.optString("message"), R.string.climate_start_sent)) code = "START_SENT";
+                else if (AppLanguage.messageStartsWith(context, item.optString("message"), R.string.climate_control_2)) code = "STATUS_CHECK";
                 else code = "WINDOW_EVENT";
             }
             rows.put(new JSONObject().put("time", item.optLong("time")).put("statusCode", code));

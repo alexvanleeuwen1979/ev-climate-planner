@@ -1,5 +1,7 @@
 package nl.axlproductions.kiaklimaatplanner;
 
+import static nl.axlproductions.kiaklimaatplanner.AppLanguage.t;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import java.time.Instant;
@@ -80,11 +82,11 @@ final class KiaBackoff {
     }
 
     static String message(long end) {
-        return "Kia Connect gepauzeerd tot " + resumeLabel(end);
+        return t(R.string.kia_connect_paused_until) + resumeLabel(end);
     }
 
     static String resumeLabel(long end) {
-        var format = DateTimeFormatter.ofPattern("EEE HH:mm", Locale.forLanguageTag("nl-NL")).withZone(ZoneId.systemDefault());
+        var format = DateTimeFormatter.ofPattern("EEE HH:mm", AppLanguage.locale()).withZone(ZoneId.systemDefault());
         return format.format(Instant.ofEpochMilli(end));
     }
 }

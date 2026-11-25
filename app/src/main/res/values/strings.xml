@@ -1,7 +1,5 @@
 <resources>
-    <string name="shortcut_manual">Handmatig starten</string>
     <string name="app_name">Kia Climate Control</string>
-    <string name="access_description">Herkent de klimaatknoppen in de officiële Kia App en bedient ze op de gekozen momenten.</string>
     <style name="AppTheme" parent="@android:style/Theme.Material.NoActionBar">
         <item name="android:fontFamily">sans</item>
         <item name="android:colorAccent">#E6E8EC</item>

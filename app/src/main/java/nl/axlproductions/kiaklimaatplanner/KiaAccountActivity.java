@@ -1,5 +1,7 @@
 package nl.axlproductions.kiaklimaatplanner;
 
+import static nl.axlproductions.kiaklimaatplanner.AppLanguage.t;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -22,6 +24,10 @@ public final class KiaAccountActivity extends Activity {
     private Button submit;
     private TextView state;
 
+    @Override protected void attachBaseContext(android.content.Context base) {
+        super.attachBaseContext(AppLanguage.localized(base));
+    }
+
     @Override public void onCreate(Bundle saved) {
         super.onCreate(saved);
         ScrollView scroll = new ScrollView(this);
@@ -43,24 +49,24 @@ public final class KiaAccountActivity extends Activity {
         setContentView(scroll);
 
         TextView heading = new TextView(this);
-        heading.setText("Kia Connect koppelen");
+        heading.setText(t(R.string.connect_kia_connect));
         heading.setTextSize(26);
         page.addView(heading);
         TextView hint = new TextView(this);
-        hint.setText("Meld je aan met je Kia-account voor geplande starts met je Samsung vergrendeld. "
-            + "De app bewaart de verbinding en je aanmeldgegevens versleuteld op dit toestel.");
+        hint.setText(t(R.string.log_in_with_your_kia_account)
+            + t(R.string.the_app_stores_the_connection_and));
         page.addView(hint);
 
-        email = field("E-mailadres", InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        password = field("Kia-wachtwoord", InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        pin = field("Kia Connect-PIN (optioneel)", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        email = field(t(R.string.email_address), InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        password = field(t(R.string.kia_password), InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        pin = field(t(R.string.kia_connect_pin_optional), InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         page.addView(email);
         page.addView(password);
         page.addView(pin);
 
         submit = new Button(this);
         submit.setAllCaps(false);
-        submit.setText("Koppelen");
+        submit.setText(t(R.string.pairing));
         submit.setOnClickListener(view -> login());
         page.addView(submit);
         state = new TextView(this);
@@ -82,12 +88,12 @@ public final class KiaAccountActivity extends Activity {
         String secret = password.getText().toString();
         String vehiclePin = pin.getText().toString().trim();
         if (address.isEmpty() || secret.isEmpty()) {
-            state.setText("Vul je e-mailadres en wachtwoord in.");
+            state.setText(t(R.string.enter_your_email_address_and_password));
             return;
         }
         password.setText("");
         pin.setText("");
-        run("Aanmelden bij Kia Connect…", () -> KiaCloud.linkResponse(this,
+        run(t(R.string.log_in_to_kia_connect), () -> KiaCloud.linkResponse(this,
             KiaCloud.module(this).callAttr("login", address, secret, vehiclePin)));
     }
 
@@ -100,7 +106,7 @@ public final class KiaAccountActivity extends Activity {
                 if (KiaBackoff.paused(this)) throw new IllegalStateException("Local Kia pause");
                 response = operation.call();
             } catch (Exception error) {
-                if (KiaCloud.rateLimitingError(error)) Planner.rateLimitReached(this, "aanmelden");
+                if (KiaCloud.rateLimitingError(error)) Planner.rateLimitReached(this, t(R.string.sign_up));
                 runOnUiThread(() -> {
                     if (isFinishing() || isDestroyed()) return;
                     submit.setEnabled(true);
@@ -117,30 +123,37 @@ public final class KiaAccountActivity extends Activity {
         if (isFinishing() || isDestroyed()) return;
         submit.setEnabled(true);
         if (response.has("model")) {
-            Planner.note(this, "Kia Connect gekoppeld. Automatische starts kunnen via de internetverbinding.");
+            Planner.note(this, t(R.string.kia_connect_connected_automatic_starts_can));
             setResult(RESULT_OK);
             finish();
             return;
         }
         if (response.has("error")) {
-            state.setText(response.optString("error"));
+            String error = response.optString("error");
+            state.setText(switch (error) {
+                case "no_vehicle_linked" -> t(R.string.no_vehicle_linked);
+                case "login_session_missing" -> t(R.string.login_session_missing);
+                case "selection_expired" -> t(R.string.selection_expired);
+                case "selection_invalid" -> t(R.string.selection_invalid);
+                default -> error;
+            });
             return;
         }
         var vehicles = response.optJSONArray("vehicles");
         if (vehicles != null) {
             String[] labels = new String[vehicles.length()];
             for (int i = 0; i < labels.length; i++) labels[i] = vehicles.optString(i);
-            new AlertDialog.Builder(this).setTitle("Kies een Kia")
-                .setItems(labels, (dialog, position) -> run("Auto koppelen…", () -> KiaCloud.linkResponse(this,
+            new AlertDialog.Builder(this).setTitle(t(R.string.choose_a_kia))
+                .setItems(labels, (dialog, position) -> run(t(R.string.connect_car), () -> KiaCloud.linkResponse(this,
                     KiaCloud.module(this).callAttr("select_vehicle", position))))
-                .setNegativeButton("Annuleren", null)
+                .setNegativeButton(t(R.string.cancel), null)
                 .show();
             return;
         }
         ArrayList<String> labels = new ArrayList<>();
         ArrayList<String> channels = new ArrayList<>();
         if (response.optBoolean("email")) {
-            labels.add("E-mail");
+            labels.add(t(R.string.email));
             channels.add("EMAIL");
         }
         if (response.optBoolean("sms")) {
@@ -148,17 +161,17 @@ public final class KiaAccountActivity extends Activity {
             channels.add("SMS");
         }
         if (channels.isEmpty()) {
-            state.setText("Kia bood geen ondersteunde verificatiemethode aan.");
+            state.setText(t(R.string.kia_did_not_offer_a_supported));
             return;
         }
-        new AlertDialog.Builder(this).setTitle("Kia-verificatie")
+        new AlertDialog.Builder(this).setTitle(t(R.string.kia_verification))
             .setItems(labels.toArray(new String[0]), (dialog, position) -> sendCode(channels.get(position)))
-            .setNegativeButton("Annuleren", null)
+            .setNegativeButton(t(R.string.cancel), null)
             .show();
     }
 
     private void sendCode(String channel) {
-        state.setText("Verificatiecode aanvragen…");
+        state.setText(t(R.string.request_verification_code));
         submit.setEnabled(false);
         KiaCloud.WORKER.execute(() -> {
             try {
@@ -166,7 +179,7 @@ public final class KiaAccountActivity extends Activity {
                 KiaCloud.module(this).callAttr("send_code", channel);
                 runOnUiThread(this::askCode);
             } catch (Exception error) {
-                if (KiaCloud.rateLimitingError(error)) Planner.rateLimitReached(this, "aanmelden");
+                if (KiaCloud.rateLimitingError(error)) Planner.rateLimitReached(this, t(R.string.sign_up));
                 runOnUiThread(() -> {
                     if (isFinishing() || isDestroyed()) return;
                     submit.setEnabled(true);
@@ -180,15 +193,15 @@ public final class KiaAccountActivity extends Activity {
     private void askCode() {
         if (isFinishing() || isDestroyed()) return;
         submit.setEnabled(true);
-        state.setText("Kia heeft om een verificatiecode gevraagd.");
-        EditText input = field("Verificatiecode", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        new AlertDialog.Builder(this).setTitle("Vul de code van Kia in").setView(input)
-            .setPositiveButton("Controleren", (dialog, which) -> {
+        state.setText(t(R.string.kia_has_asked_for_a_verification));
+        EditText input = field(t(R.string.verification_code), InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        new AlertDialog.Builder(this).setTitle(t(R.string.enter_the_kia_code)).setView(input)
+            .setPositiveButton(t(R.string.check), (dialog, which) -> {
                 String code = input.getText().toString().trim();
-                if (!code.isEmpty()) run("Verificatiecode controleren…", () -> KiaCloud.linkResponse(this,
+                if (!code.isEmpty()) run(t(R.string.check_verification_code), () -> KiaCloud.linkResponse(this,
                     KiaCloud.module(this).callAttr("verify_code", code)));
             })
-            .setNegativeButton("Annuleren", null)
+            .setNegativeButton(t(R.string.cancel), null)
             .show();
     }
 

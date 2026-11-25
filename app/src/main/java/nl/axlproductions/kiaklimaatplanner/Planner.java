@@ -1,5 +1,7 @@
 package nl.axlproductions.kiaklimaatplanner;
 
+import static nl.axlproductions.kiaklimaatplanner.AppLanguage.t;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -327,9 +329,9 @@ public final class Planner extends BroadcastReceiver {
 
     static String startType(SharedPreferences prefs, Schedule.Slot slot) {
         if (slot == null) return "";
-        if (slot.time() > slot.session()) return "Volgende cyclus";
-        if (isOnce(prefs, slot)) return "Eenmalige start";
-        return isManual(prefs, slot) ? "Handmatige start" : "Weekplanning";
+        if (slot.time() > slot.session()) return t(R.string.next_cycle);
+        if (isOnce(prefs, slot)) return t(R.string.one_time_start);
+        return isManual(prefs, slot) ? t(R.string.manual_start) : t(R.string.weekly_schedule);
     }
 
     static synchronized WeeklyChange adjustWeekly(Context context, Schedule.Slot selected, long start) {
@@ -370,8 +372,8 @@ public final class Planner extends BroadcastReceiver {
         if (!WeeklyAdjustment.replace(prefs, original, applied, now)) return null;
         if (start == 0) StartLedger.record(context, original, StartLedger.Kind.SKIPPED, StartLedger.Cause.USER);
         schedule(context);
-        note(context, start == 0 ? "Volgende start uit de weekplanning overgeslagen."
-            : "Start uit de weekplanning eenmalig verplaatst.");
+        note(context, start == 0 ? t(R.string.next_start_skipped_from_the_weekly)
+            : t(R.string.start_moved_once_from_the_weekly));
         return new WeeklyChange(previous, applied);
     }
 
@@ -388,7 +390,7 @@ public final class Planner extends BroadcastReceiver {
                 || !WeeklyAdjustment.replace(prefs, applied.original(), previous, now)) return false;
         schedule(context);
         if (applied.start() == 0) StartLedger.removeUserSkip(context, applied.original());
-        note(context, "Wijziging aan de volgende weekstart ongedaan gemaakt.");
+        note(context, t(R.string.changes_to_the_next_week_start));
         return true;
     }
 
@@ -404,7 +406,7 @@ public final class Planner extends BroadcastReceiver {
         }
         edit.commit();
         schedule(context);
-        note(context, until == 0 ? "Weekplanning hervat." : "Weekplanning tijdelijk gepauzeerd.");
+        note(context, until == 0 ? t(R.string.weekly_planning_resumed) : t(R.string.weekly_planning_temporarily_paused));
     }
 
     static boolean manual(Context context, int minutes) {
@@ -433,7 +435,7 @@ public final class Planner extends BroadcastReceiver {
                 .putStringSet(MERGED_WEEKLY, merged);
             if (isOnce(prefs, new Schedule.Slot(session, session, nominalEnd))) update.remove("onceStart").remove("onceEnd");
             update.commit();
-            note(context, "Handmatig tijdvak toegevoegd aan de lopende cyclussen.");
+            note(context, t(R.string.manual_time_slot_added_to_the));
             scheduleMonitoredEnd(context, session, extended, runDeadline(prefs));
             schedule(context);
             VehicleWatch.schedule(context);
@@ -449,8 +451,8 @@ public final class Planner extends BroadcastReceiver {
         edit.putLong("lastManualRequest", first).putLong("manualEnd", end)
             .putLong("manualStart", now).putLong("manualFirst", first)
             .remove(MANUAL_PARTS).commit();
-        note(context, first >= end ? "De lopende cyclus dekt de gekozen duur."
-            : first > now ? "Handmatige start ingepland na de wachttijd." : "Handmatig tijdvak gestart.");
+        note(context, first >= end ? t(R.string.the_current_cycle_covers_the_selected)
+            : first > now ? t(R.string.manual_start_scheduled_after_the_waiting) : t(R.string.manual_time_slot_started));
         schedule(context);
         long combinedEnd = prefs.getLong("manualEnd", end);
         long combinedFirst = prefs.getLong("manualFirst", first);
@@ -484,7 +486,7 @@ public final class Planner extends BroadcastReceiver {
                 .remove("manualTemperature").remove("manualProfile");
         }
         if (!update.commit()) return false;
-        note(context, "Tijdvak met 15 minuten verlengd.", session, newEnd, false);
+        note(context, t(R.string.time_slot_extended_by_15_minutes), session, newEnd, false);
         scheduleMonitoredEnd(context, session, newEnd, runDeadline(prefs));
         schedule(context);
         VehicleWatch.schedule(context);
@@ -522,10 +524,10 @@ public final class Planner extends BroadcastReceiver {
             long session = slot.session();
             var change = changes.stream().filter(item -> item.original() == session).findFirst().orElse(null);
             if (change != null) {
-                if (change.start() == 0) result.add(new AgendaRow(slot.session(), slot.end(), "Overgeslagen", 0));
+                if (change.start() == 0) result.add(new AgendaRow(slot.session(), slot.end(), t(R.string.skipped_2), 0));
             } else {
                 boolean paused = WeeklyAdjustment.excludes(prefs, slot.session(), 0);
-                result.add(new AgendaRow(slot.session(), slot.end(), paused ? "Gepauzeerd" : "Weekplanning", 0));
+                result.add(new AgendaRow(slot.session(), slot.end(), paused ? t(R.string.paused) : t(R.string.weekly_schedule), 0));
             }
         }
         for (var change : changes) {
@@ -534,11 +536,11 @@ public final class Planner extends BroadcastReceiver {
             var window = matchingWindow(prefs, original, zone);
             if (!prefs.getBoolean("enabled", false) || window == null || !dayEnabled(prefs, window[0])) continue;
             boolean paused = WeeklyAdjustment.excludes(prefs, change.start(), 0);
-            result.add(new AgendaRow(change.start(), change.end(), paused ? "Verplaatst · gepauzeerd" : "Verplaatst",
+            result.add(new AgendaRow(change.start(), change.end(), paused ? t(R.string.moved_paused) : t(R.string.moved),
                 change.original()));
         }
         long once = prefs.getLong("onceStart", 0);
-        if (once >= from && once < until) result.add(new AgendaRow(once, prefs.getLong("onceEnd", 0), "Eenmalig", 0));
+        if (once >= from && once < until) result.add(new AgendaRow(once, prefs.getLong("onceEnd", 0), t(R.string.one_off_2), 0));
         result.sort(java.util.Comparator.comparingLong(AgendaRow::start));
         return result;
     }
@@ -565,7 +567,7 @@ public final class Planner extends BroadcastReceiver {
         };
         completeWindow(context, slot.session(), slot.end());
         StartLedger.record(context, slot.time(), StartLedger.Kind.SKIPPED, cause);
-        note(context, "Tijdvak overgeslagen · " + reason.label + ".", slot.session(), slot.end(), false, Outcome.RULE, cause);
+        note(context, t(R.string.time_slot_skipped) + reason.label() + ".", slot.session(), slot.end(), false, Outcome.RULE, cause);
     }
 
     private static void warnDepartureDelay(Context context, long forecast) {
@@ -583,10 +585,10 @@ public final class Planner extends BroadcastReceiver {
         }
         prefs.edit().putLong("reportedDepartureDelay", session).apply();
         var clock = java.time.format.DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneId.systemDefault());
-        String message = "Klaar om " + clock.format(java.time.Instant.ofEpochMilli(end)) + " · nu verwacht om "
+        String message = t(R.string.ready_by) + clock.format(java.time.Instant.ofEpochMilli(end)) + t(R.string.now_expected_to)
             + clock.format(java.time.Instant.ofEpochMilli(forecast));
         note(context, message, session, end, false);
-        WindowAlerts.show(context, 25, "Vertrektijd schuift op", message);
+        WindowAlerts.show(context, 25, t(R.string.departure_time_moves_up), message);
     }
 
     static boolean isCombined(SharedPreferences prefs, long now) {
@@ -659,7 +661,7 @@ public final class Planner extends BroadcastReceiver {
         VehicleWatch.schedule(context);
         String endTime = java.time.Instant.ofEpochMilli(end).atZone(ZoneId.systemDefault())
             .format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
-        note(context, "Handmatige start overlapt met de planning. Tijdvakken opgeteld tot " + endTime + ".");
+        note(context, t(R.string.manual_start_overlaps_with_the_schedule) + endTime + ".");
     }
 
     static boolean planOnce(Context context, long start, int minutes) {
@@ -678,7 +680,7 @@ public final class Planner extends BroadcastReceiver {
         long end = start + minutes * Schedule.MINUTE;
         if (!prefs.edit().putLong("onceStart", start).putLong("onceEnd", end)
                 .putInt("onceProfile", profile).putBoolean("onceReady", ready).putBoolean("onceHomeOnly", homeOnly).commit()) return false;
-        note(context, "Eenmalige klimaatstart ingepland.");
+        note(context, t(R.string.one_off_climate_start_planned));
         WindowAlerts.scheduleOnce(context, start, end);
         schedule(context);
         return true;
@@ -693,7 +695,7 @@ public final class Planner extends BroadcastReceiver {
         if (prefs.getLong("onceStart", 0) <= System.currentTimeMillis()) return;
         prefs.edit().remove("onceStart").remove("onceEnd").commit();
         schedule(context);
-        note(context, "Eenmalige klimaatstart geannuleerd.");
+        note(context, t(R.string.one_off_climate_start_cancelled));
     }
 
     private static PendingIntent alarm(Context context, Schedule.Slot slot, long due, int flags) {
@@ -720,7 +722,7 @@ public final class Planner extends BroadcastReceiver {
             manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, due,
                 alarm(context, slot, due, PendingIntent.FLAG_UPDATE_CURRENT));
         } catch (SecurityException ignored) {
-            note(context, "Geef Android toestemming voor exacte alarmen.");
+            note(context, t(R.string.give_android_permission_for_exact_alarms));
         }
     }
 
@@ -852,7 +854,7 @@ public final class Planner extends BroadcastReceiver {
                 context.getSystemService(AlarmManager.class)
                     .setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, due, request);
             } catch (SecurityException ignored) {
-                note(context, "Geef Android toestemming voor exacte alarmen.");
+                note(context, t(R.string.give_android_permission_for_exact_alarms));
             }
         }
     }
@@ -873,7 +875,7 @@ public final class Planner extends BroadcastReceiver {
             if (waiting) prefs.edit().remove("externalRecheckTime").apply();
             return false;
         }
-        if (!waiting) note(context, "Klimaatregeling draait al. De planner wacht tot Kia meldt dat die is gestopt.");
+        if (!waiting) note(context, t(R.string.climate_control_is_already_running_the));
         prefs.edit().putLong("externalRecheckTime", slot.time())
             .putLong("handled", Math.max(slot.time(), prefs.getLong("handled", 0))).commit();
         long due = now + Schedule.MINUTE;
@@ -885,7 +887,7 @@ public final class Planner extends BroadcastReceiver {
             try {
                 context.getSystemService(AlarmManager.class).setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, due, callback);
             } catch (SecurityException ignored) {
-                note(context, "Geef Android toestemming voor exacte alarmen.");
+                note(context, t(R.string.give_android_permission_for_exact_alarms));
             }
         }
         return true;
@@ -909,7 +911,7 @@ public final class Planner extends BroadcastReceiver {
         } else if (KiaControls.active != null) {
             KiaControls.active.runSlot(slot, wait);
         } else {
-            note(context, "Tijdstip gemist. Koppel Kia Connect of schakel toegankelijkheid in.");
+            note(context, t(R.string.missed_time_connect_kia_connect_or));
         }
     }
 
@@ -961,8 +963,8 @@ public final class Planner extends BroadcastReceiver {
             ClimateEnergy.finish(context, prefs.getLong("lastStart", 0), System.currentTimeMillis(),
                 ClimateEnergy.End.UNKNOWN, null);
             note(context, remaining > 0
-                ? "Tijdvak beëindigd zonder verse Kia-status. Resterende cyclussen: " + remaining + "."
-                : "Tijdvak beëindigd. Kia heeft de laatste uitstatus nog niet gemeld.");
+                ? t(R.string.period_ended_without_fresh_kia_status) + remaining + "."
+                : t(R.string.period_ended_kia_has_not_yet));
         }
         prefs.edit().putLong(once ? "lastOnceEndNotice" : manual ? "lastManualEndNotice" : "lastWeeklyEndNotice", end).commit();
         completeWindow(context, session, end);
@@ -970,12 +972,12 @@ public final class Planner extends BroadcastReceiver {
 
     private static void notifyWindowFinished(Context context, SharedPreferences prefs, boolean manual, boolean once,
             long session, long end) {
-        String message = once ? "Je eenmalige tijdvak is afgelopen."
-            : manual && prefs.contains(MANUAL_PARTS) ? "Je gecombineerde tijdvak is afgelopen."
-            : manual ? "Je handmatige tijdvak is afgelopen." : "Je geplande tijdvak is afgelopen.";
+        String message = once ? t(R.string.your_one_time_period_has_ended)
+            : manual && prefs.contains(MANUAL_PARTS) ? t(R.string.your_combined_period_has_ended)
+            : manual ? t(R.string.your_manual_time_slot_has_ended) : t(R.string.your_planned_period_has_ended);
         note(context, message, session, end, false);
         if (prefs.getBoolean("notifyWindowEnd", true) && !prefs.getBoolean("quietAlerts", false)) {
-            WindowAlerts.show(context, once ? 23 : manual ? 21 : 20, "Tijdvak afgelopen", message);
+            WindowAlerts.show(context, once ? 23 : manual ? 21 : 20, t(R.string.period_ended), message);
         }
     }
 
@@ -1084,14 +1086,14 @@ public final class Planner extends BroadcastReceiver {
             for (int index = 0; index < history.length(); index++) {
                 var item = history.optJSONObject(index);
                 if (item != null && item.optLong("time", 0) >= session
-                        && "Kia bevestigt: klimaatregeling gestart.".equals(item.optString("message"))) started++;
+                        && (item.optBoolean("confirmed") || "Kia bevestigt: klimaatregeling gestart.".equals(item.optString("message")))) started++;
             }
         } catch (org.json.JSONException ignored) {}
         int completed = Math.max(1, Math.min(target, started));
         prefs.edit().putLong("monitoringStart", sentAt).putInt("activeConfirmedCycles", completed)
             .putLong("activeRunEnd", expectedEnd + (target - completed) * Schedule.INTERVAL)
             .remove("lastClimateSample").remove("observedClimateOn").commit();
-        note(context, "Klimaatcontrole hervat voor het lopende tijdvak.");
+        note(context, t(R.string.climate_control_resumes_for_the_current));
         scheduleMonitoredEnd(context, session, end, runDeadline(prefs));
         VehicleWatch.schedule(context);
     }
@@ -1112,7 +1114,7 @@ public final class Planner extends BroadcastReceiver {
         if (active == null || measured <= prefs.getLong("confirmedStart", 0)
                 || measured <= prefs.getLong("lastClimateSample", 0)
                 || measured < now - 2 * Schedule.MINUTE || measured > now + 5_000) {
-            note(context, "Klimaatcontrole · Kia geeft geen verse aan- of uitstatus. De planner wacht.", slot.session(), slot.end(), false);
+            note(context, t(R.string.climate_control_kia_does_not_provide_2), slot.session(), slot.end(), false);
             return null;
         }
         var update = prefs.edit().putLong("lastClimateSample", measured);
@@ -1122,12 +1124,12 @@ public final class Planner extends BroadcastReceiver {
             if (countedRun(prefs, slot.session(), slot.end()) && now > cycleEnd(context)) {
                 warnDepartureDelay(context, now + remainingCycles(prefs) * Schedule.INTERVAL);
             }
-            note(context, "Klimaatcontrole · Nog actief volgens Kia. De planner wacht.", slot.session(), slot.end(), false);
+            note(context, t(R.string.climate_control_still_active_according_to), slot.session(), slot.end(), false);
             return null;
         }
         if (!prefs.getBoolean("observedClimateOn", false) && measured < cycleEnd(context)) {
             update.apply();
-            note(context, "Klimaatcontrole · Kia meldt uit, maar heeft nog geen actieve meting gegeven. De planner wacht.", slot.session(), slot.end(), false);
+            note(context, t(R.string.climate_control_kia_reports_out_but), slot.session(), slot.end(), false);
             return null;
         }
         ClimateEnergy.finish(context, slot.time(), measured, ClimateEnergy.End.STATUS_OFF, reading);
@@ -1141,14 +1143,14 @@ public final class Planner extends BroadcastReceiver {
         update.commit();
         if (counted && remaining > 0) warnDepartureDelay(context, forecastEnd(prefs));
         if (counted && remaining <= 0) {
-            note(context, "Klimaatcontrole · Kia bevestigt uit. Alle cyclussen zijn uitgevoerd.", slot.session(), slot.end(), false);
+            note(context, t(R.string.climate_control_kia_confirms_out_all), slot.session(), slot.end(), false);
             completeMonitoredRun(context, slot.session(), slot.end(), true);
             return null;
         }
         var continuation = pendingContinuation(prefs, now);
         note(context, continuation != null
-            ? "Klimaatcontrole · Kia bevestigt uit. De planner geeft de volgende cyclus vrij."
-            : "Klimaatcontrole · Kia bevestigt uit. Er volgt geen nieuwe cyclus.", slot.session(), slot.end(), false);
+            ? t(R.string.climate_control_kia_confirms_out_the)
+            : t(R.string.climate_control_kia_confirms_out_there), slot.session(), slot.end(), false);
         schedule(context);
         VehicleWatch.schedule(context);
         return continuation;
@@ -1231,7 +1233,7 @@ public final class Planner extends BroadcastReceiver {
     }
 
     static void rateLimitReached(Context context) {
-        rateLimitReached(context, "klimaatstart");
+        rateLimitReached(context, t(R.string.climate_start));
     }
 
     static void rateLimitReached(Context context, String operation) {
@@ -1242,9 +1244,9 @@ public final class Planner extends BroadcastReceiver {
         schedule(context);
         VehicleWatch.schedule(context);
         String message = KiaBackoff.message(until);
-        if (first) note(context, "Kia-aanvraaglimiet bij " + operation + ". " + message + ".");
+        if (first) note(context, t(R.string.kia_application_limit_at) + operation + ". " + message + ".");
         if (first && prefs.getBoolean("notifyStartLimit", true)) {
-            WindowAlerts.failed(context, 22, "Kia-aanvraaglimiet", message, StartLedger.Cause.LIMIT);
+            WindowAlerts.failed(context, 22, t(R.string.kia_request_limit_2), message, StartLedger.Cause.LIMIT);
         }
     }
 
@@ -1259,7 +1261,7 @@ public final class Planner extends BroadcastReceiver {
             && slot.end() == prefs.getLong("manualEnd", 0) && manualRestartAvailable(prefs, now)
             && (manual || !KiaBackoff.paused(context));
         if (nextAllowedStart(context, manual) > now && !restartAfterStop) {
-            note(context, "Klimaatstart overgeslagen. De wachttijd loopt nog.");
+            note(context, t(R.string.skipped_climate_start_the_waiting_period));
             return false;
         }
 
@@ -1287,7 +1289,7 @@ public final class Planner extends BroadcastReceiver {
         long end = prefs.getLong("activeEnd", 0);
         completeWindow(context, session, end);
         StartLedger.record(context, sentAt, StartLedger.Kind.FAILED, StartLedger.Cause.REFUSED);
-        note(context, "Tijdvak afgerond. De auto heeft de klimaatstart geweigerd.", session, end, false, Outcome.REFUSED,
+        note(context, t(R.string.period_completed_the_car_has_refused), session, end, false, Outcome.REFUSED,
             StartLedger.Cause.REFUSED);
     }
 
@@ -1307,7 +1309,7 @@ public final class Planner extends BroadcastReceiver {
 
     private static void recordInUse(Context context, Schedule.Slot slot) {
         prefs(context).edit().putLong("finishedOnUnlock", System.currentTimeMillis()).apply();
-        note(context, "Tijdvak afgerond. De auto is ontgrendeld of ingeschakeld.", slot.session(), slot.end(), false, Outcome.UNLOCKED);
+        note(context, t(R.string.period_completed_the_car_is_unlocked), slot.session(), slot.end(), false, Outcome.UNLOCKED);
     }
 
     private static void completeWindow(Context context, long session, long end) {
@@ -1382,7 +1384,7 @@ public final class Planner extends BroadcastReceiver {
                 .putLong("stopVehiclePending", Math.max(cycle, now + CONFIRMATION_GRACE)).commit();
         }
         schedule(context);
-        if (end > now) note(context, "Lopend tijdvak geannuleerd.", session, end, false, Outcome.STOPPED);
+        if (end > now) note(context, t(R.string.current_period_cancelled), session, end, false, Outcome.STOPPED);
         return sendStop;
     }
 

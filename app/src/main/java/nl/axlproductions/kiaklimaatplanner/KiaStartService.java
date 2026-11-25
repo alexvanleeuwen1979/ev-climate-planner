@@ -1,5 +1,7 @@
 package nl.axlproductions.kiaklimaatplanner;
 
+import static nl.axlproductions.kiaklimaatplanner.AppLanguage.t;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -33,7 +35,7 @@ public final class KiaStartService extends Service {
         try {
             context.startForegroundService(intent);
         } catch (IllegalStateException | SecurityException error) {
-            KiaCloud.startProblem(context, slot, 0, "Android heeft de geplande achtergrondstart geblokkeerd.",
+            KiaCloud.startProblem(context, slot, 0, t(R.string.android_has_blocked_the_scheduled_background),
                 StartLedger.Cause.ALARM);
         }
     }
@@ -55,18 +57,18 @@ public final class KiaStartService extends Service {
             context.startForegroundService(new Intent(context, KiaStartService.class).setAction("STOP"));
         } catch (IllegalStateException | SecurityException error) {
             stopping = false;
-            Planner.note(context, "Android heeft de klimaatopdracht geblokkeerd.");
+            Planner.note(context, t(R.string.android_has_blocked_the_climate_command));
         }
     }
     @Override public IBinder onBind(Intent intent) { return null; }
 
     @Override public int onStartCommand(Intent intent, int flags, int startId) {
         getSystemService(NotificationManager.class).createNotificationChannel(
-            new NotificationChannel(CHANNEL, "Klimaatstart", NotificationManager.IMPORTANCE_LOW));
+            new NotificationChannel(CHANNEL, t(R.string.climate_start_2), NotificationManager.IMPORTANCE_LOW));
         startForeground(1, new Notification.Builder(this, CHANNEL)
             .setSmallIcon(android.R.drawable.ic_menu_recent_history)
             .setContentTitle(getString(R.string.app_name))
-            .setContentText("Verbinding met Kia Connect")
+            .setContentText(t(R.string.connection_to_kia_connect))
             .setOngoing(true)
             .build());
         if (intent == null) {

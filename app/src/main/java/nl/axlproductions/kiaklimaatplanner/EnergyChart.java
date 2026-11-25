@@ -87,7 +87,7 @@ final class EnergyChart extends View {
     }
 
     static String format(double value) {
-        return String.format(Locale.forLanguageTag("nl-NL"), value == Math.rint(value) ? "%.0f" : "%.2f", value);
+        return String.format(AppLanguage.locale(), value == Math.rint(value) ? "%.0f" : "%.2f", value);
     }
 
     private float dp(float value) {

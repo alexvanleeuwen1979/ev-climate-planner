@@ -1,5 +1,7 @@
 package nl.axlproductions.kiaklimaatplanner;
 
+import static nl.axlproductions.kiaklimaatplanner.AppLanguage.t;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -33,8 +35,8 @@ final class ClimateTimeline extends View {
         if (this.start != start || this.end != end) {
             startLabel = time(start);
             endLabel = time(end);
-            setContentDescription("Tijdlijn van " + startLabel + " tot " + endLabel
-                + ", met richtpunten om de 15 minuten");
+            setContentDescription(t(R.string.timeline_of) + startLabel + t(R.string.until_2) + endLabel
+                + t(R.string.with_targets_every_15_minutes));
         }
         this.start = start;
         this.end = end;

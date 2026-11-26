@@ -1,6 +1,18 @@
 # Kia Climate Control
 
+**[Download the latest Android APK](https://github.com/alexvanleeuwen1979/ev-climate-planner/releases/latest/download/EV-Climate-Planner.apk)** · [Release archive](https://github.com/alexvanleeuwen1979/ev-climate-planner/releases)
+
+Open the downloaded APK on Android 8.0 or later. Each version remains available under its own release tag.
+
 An independent Android app for scheduling remote cabin climate on compatible European Kia vehicles. Live vehicle testing so far has been on a European Kia e-Niro. The app can link other Kia models exposed by the European Kia Connect service and lets you choose a vehicle if your account contains more than one. It controls one selected vehicle at a time. Model, model year, trim, country and Kia Connect capabilities can affect what works. This project is unaffiliated with Kia. Choose Dutch, English, German, French or Spanish in Settings. The app follows a supported phone language initially and otherwise uses English.
+
+## Screenshots
+
+<a href="docs/screenshots/dashboard-active.png"><img src="docs/screenshots/dashboard-active.png" alt="Dashboard with climate running and two countdowns" width="180"></a>
+<a href="docs/screenshots/dashboard-idle.png"><img src="docs/screenshots/dashboard-idle.png" alt="Dashboard with climate off and the next scheduled start" width="180"></a>
+<a href="docs/screenshots/weekly-schedule.png"><img src="docs/screenshots/weekly-schedule.png" alt="Weekly schedule with two active time slots" width="180"></a>
+<a href="docs/screenshots/schedule-once.png"><img src="docs/screenshots/schedule-once.png" alt="One-time scheduling dialog with departure and location options" width="180"></a>
+<a href="docs/screenshots/settings.png"><img src="docs/screenshots/settings.png" alt="Language, profile, and heating settings" width="180"></a>
 
 ## Features
 
@@ -41,3 +53,13 @@ The debug APK is written to `app/build/outputs/apk/debug/`. The project includes
 ## Credits
 
 Thanks to **Fuat Akgun** and the **Hyundai-Kia-Connect contributors** for the MIT-licensed [hyundai_kia_connect_api Python wrapper](https://github.com/Hyundai-Kia-Connect/hyundai_kia_connect_api). This Android app uses their library to communicate with Kia Connect.
+
+## Publish an Android release
+
+Build and sign the release APK with the same private signing key used for previous releases. Update the version in `app/build.gradle` and push its source commit before publishing. Authenticate the GitHub CLI and run the publisher with your signed APK and release notes.
+
+```powershell
+.\scripts\Publish-AndroidRelease.ps1 -Version 0.5.9 -ApkPath .\path\to\signed.apk -NotesPath .\path\to\release-notes.md
+```
+
+The publisher uploads `EV-Climate-Planner.apk` to a new version tag and marks that release as latest. The download at the top of this page then serves the new APK. Past releases retain their own downloadable APKs and notes. The publisher does not contain or upload a signing key.

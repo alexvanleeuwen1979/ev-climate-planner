@@ -2,6 +2,10 @@
 
 **[Download the latest Android APK](https://github.com/alexvanleeuwen1979/ev-climate-planner/releases/latest/download/EV-Climate-Planner.apk)** · [Release archive](https://github.com/alexvanleeuwen1979/ev-climate-planner/releases)
 
+[![APK download count](https://img.shields.io/github/downloads/alexvanleeuwen1979/ev-climate-planner/total?label=APK%20downloads&color=0e7490)](https://github.com/alexvanleeuwen1979/ev-climate-planner/releases)
+
+The download count includes repeat and test downloads. It may take a little time to update.
+
 Open the downloaded APK on Android 8.0 or later. Each version remains available under its own release tag.
 
 An independent Android app for scheduling remote cabin climate on compatible European Kia vehicles. Live vehicle testing so far has been on a European Kia e-Niro. The app can link other Kia models exposed by the European Kia Connect service and lets you choose a vehicle if your account contains more than one. It controls one selected vehicle at a time. Model, model year, trim, country and Kia Connect capabilities can affect what works. This project is unaffiliated with Kia. Choose Dutch, English, German, French or Spanish in Settings. The app follows a supported phone language initially and otherwise uses English.

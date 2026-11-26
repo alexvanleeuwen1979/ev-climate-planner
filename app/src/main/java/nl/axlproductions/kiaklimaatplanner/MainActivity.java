@@ -106,7 +106,6 @@ public final class MainActivity extends Activity {
     private View batteryTile;
     private LinearLayout accountDetails;
     private boolean accountExpanded;
-    private LinearLayout screenControls;
     private Switch enabled;
     private String shownHistory;
     private final java.util.Set<Long> expandedHistory = new java.util.HashSet<>();
@@ -1262,14 +1261,6 @@ public final class MainActivity extends Activity {
         alarmPermission = addButton(accountDetails, t(R.string.allow_exact_alarms), false, () -> {
             if (Build.VERSION.SDK_INT >= 31) openFromPlanner(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
                 Uri.parse("package:" + getPackageName())));
-        });
-        screenControls = column();
-        accountDetails.addView(screenControls);
-        addButton(screenControls, t(R.string.open_accessibility), false,
-            () -> openFromPlanner(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)));
-        addButton(screenControls, t(R.string.check_kia_button), false, () -> {
-            if (KiaControls.active != null) KiaControls.active.preview();
-            else Toast.makeText(this, t(R.string.first_enable_accessibility), Toast.LENGTH_LONG).show();
         });
     }
 
@@ -2608,7 +2599,6 @@ public final class MainActivity extends Activity {
         }
         set(accountButton, linked ? t(R.string.relink_kia_account) : t(R.string.link_kia_account));
         unlink.setVisibility(linked ? View.VISIBLE : View.GONE);
-        screenControls.setVisibility(linked ? View.GONE : View.VISIBLE);
         alarmPermission.setVisibility(alarms ? View.GONE : View.VISIBLE);
         boolean alertsWanted = prefs.getBoolean("notifyDepartureDelay", false) || prefs.getBoolean("notifyWindowEnd", true)
             || prefs.getBoolean("notifyStartLimit", true) || prefs.getBoolean("notifyStartFailure", true);

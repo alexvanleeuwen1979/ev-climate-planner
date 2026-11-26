@@ -515,7 +515,7 @@
     <string name="one_off_climate_start_cancelled" formatted="false">"Eenmalige klimaatstart geannuleerd."</string>
     <string name="give_android_permission_for_exact_alarms" formatted="false">"Geef Android toestemming voor exacte alarmen."</string>
     <string name="climate_control_is_already_running_the" formatted="false">"Klimaatregeling draait al. De planner wacht tot Kia meldt dat die is gestopt."</string>
-    <string name="missed_time_connect_kia_connect_or" formatted="false">"Tijdstip gemist. Koppel Kia Connect of schakel toegankelijkheid in."</string>
+    <string name="missed_time_connect_kia_connect_or" formatted="false">"Start gemist. Koppel je Kia Connect-account."</string>
     <string name="period_ended_without_fresh_kia_status" formatted="false">"Tijdvak beëindigd zonder verse Kia-status. Resterende cyclussen: "</string>
     <string name="period_ended_kia_has_not_yet" formatted="false">"Tijdvak beëindigd. Kia heeft de laatste uitstatus nog niet gemeld."</string>
     <string name="your_one_time_period_has_ended" formatted="false">"Je eenmalige tijdvak is afgelopen."</string>

@@ -515,7 +515,7 @@
     <string name="one_off_climate_start_cancelled" formatted="false">"One-off climate start cancelled."</string>
     <string name="give_android_permission_for_exact_alarms" formatted="false">"Give Android permission for exact alarms."</string>
     <string name="climate_control_is_already_running_the" formatted="false">"Climate control is already running. The planner is waiting until Kia reports that it has stopped."</string>
-    <string name="missed_time_connect_kia_connect_or" formatted="false">"Missed time. Connect Kia Connect or enable accessibility."</string>
+    <string name="missed_time_connect_kia_connect_or" formatted="false">"Start missed. Link your Kia Connect account."</string>
     <string name="period_ended_without_fresh_kia_status" formatted="false">"Period ended without fresh Kia status. Remaining cycles: "</string>
     <string name="period_ended_kia_has_not_yet" formatted="false">"Period ended. Kia has not yet reported the latest out status."</string>
     <string name="your_one_time_period_has_ended" formatted="false">"Your one-time period has ended."</string>

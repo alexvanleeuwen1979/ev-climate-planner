@@ -515,7 +515,7 @@
     <string name="one_off_climate_start_cancelled" formatted="false">"Einmaliger Klimastart abgesagt."</string>
     <string name="give_android_permission_for_exact_alarms" formatted="false">"Erteilen Sie Android die Erlaubnis für genaue Alarme."</string>
     <string name="climate_control_is_already_running_the" formatted="false">"Die Klimatisierung läuft bereits. Der Planer wartet, bis Kia meldet, dass er angehalten hat."</string>
-    <string name="missed_time_connect_kia_connect_or" formatted="false">"Verpasste Zeit. Verbinden Sie Kia Connect oder aktivieren Sie die Barrierefreiheit."</string>
+    <string name="missed_time_connect_kia_connect_or" formatted="false">"Start verpasst. Verknüpfen Sie Ihr Kia-Connect-Konto."</string>
     <string name="period_ended_without_fresh_kia_status" formatted="false">"Der Zeitraum endete ohne neuen Kia-Status. Verbleibende Zyklen: "</string>
     <string name="period_ended_kia_has_not_yet" formatted="false">"Zeitraum abgelaufen. Kia hat den neuesten Out-Status noch nicht gemeldet."</string>
     <string name="your_one_time_period_has_ended" formatted="false">"Ihr einmaliger Zeitraum ist abgelaufen."</string>

@@ -908,8 +908,6 @@ public final class Planner extends BroadcastReceiver {
     private static void launch(Context context, Schedule.Slot slot, long wait) {
         if (KiaCloud.linked(context)) {
             KiaStartService.enqueue(context, slot, wait);
-        } else if (KiaControls.active != null) {
-            KiaControls.active.runSlot(slot, wait);
         } else {
             note(context, t(R.string.missed_time_connect_kia_connect_or));
         }

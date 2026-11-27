@@ -1249,6 +1249,7 @@ public final class MainActivity extends Activity {
         access = text("", 14, MUTED, false);
         accountDetails.addView(access);
         alertToggle(notifications, t(R.string.end_of_period), "notifyWindowEnd");
+        alertToggle(notifications, t(R.string.extension_reminder_setting), "notifyExtension");
         alertToggle(notifications, t(R.string.kia_request_limit), "notifyStartLimit");
         var late = heatingChoice(notifications, t(R.string.delay_at_ready_at), prefs.getBoolean("notifyDepartureDelay", false));
         late.setOnCheckedChangeListener((view, checked) -> prefs.edit().putBoolean("notifyDepartureDelay", checked).apply());
@@ -1382,6 +1383,7 @@ public final class MainActivity extends Activity {
         divider(settings);
         toggle.setOnCheckedChangeListener((view, checked) -> {
             prefs.edit().putBoolean(key, checked).apply();
+            ExtensionReminder.schedule(this);
             refresh();
         });
     }

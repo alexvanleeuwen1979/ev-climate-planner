@@ -1,0 +1,6 @@
+<resources>
+    <string name="extension_reminder_setting">Herinnering 5 minuten voor het einde</string>
+    <string name="extension_reminder_title">Klimaat stopt over 5 minuten</string>
+    <string name="extension_reminder_body">Dit tijdvak verlengen?</string>
+    <string name="extended_minutes">Tijdvak verlengd met %d minuten.</string>
+</resources>

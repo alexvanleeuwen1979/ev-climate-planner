@@ -50,6 +50,47 @@ public final class RuntimeCheck extends Instrumentation {
             } else if ("paused-start".equals(phase)) {
                 verifyPausedManualStart(context);
                 results.putString("stream", "\nManual start and stop reach Kia during a status pause. Automatic requests stay paused, and an API rejection does not start the timer.\n");
+            } else if ("extension-reminder".equals(phase)) {
+                long start = System.currentTimeMillis() - 40 * Schedule.MINUTE;
+                long end = start + 45 * Schedule.MINUTE;
+                long cycleEnd = System.currentTimeMillis() + 5 * Schedule.MINUTE;
+                long now = System.currentTimeMillis();
+                if (ExtensionReminder.eligible(start, end, cycleEnd, now, 2, false, now))
+                    throw new AssertionError("Reminder before final cycle");
+                if (!ExtensionReminder.eligible(start, end, cycleEnd, now, 3, false, now))
+                    throw new AssertionError("Missing final-cycle reminder");
+                if (ExtensionReminder.eligible(start, end, cycleEnd, 0, 3, false, now))
+                    throw new AssertionError("Unconfirmed start accepted");
+                if (ExtensionReminder.eligible(start, end, cycleEnd, now, 3, true, now))
+                    throw new AssertionError("Stopped period accepted");
+                if (ExtensionReminder.eligible(start, end, now, now, 3, false, now))
+                    throw new AssertionError("Expired period accepted");
+                if (ExtensionReminder.eligible(start, end + 30 * Schedule.MINUTE, cycleEnd, now, 3, false, now))
+                    throw new AssertionError("Reminder remained active after extension");
+                var prefs = Planner.prefs(context);
+                for (int minutes : new int[]{15, 30, 45}) {
+                    prefs.edit().clear().putLong("activeSession", start).putLong("activeEnd", end)
+                        .putLong("activeRunEnd", cycleEnd).putLong("cycleEnd", cycleEnd)
+                        .putLong("confirmedStart", now).putLong("lastStart", now)
+                        .putInt("activeConfirmedCycles", 3).putLong("manualFirst", start)
+                        .putLong("manualEnd", end).commit();
+                    String token = start + "/" + end + "/" + cycleEnd;
+                    var action = new android.content.Intent()
+                        .setAction("nl.axlproductions.kiaklimaatplanner.EXTEND_WINDOW")
+                        .putExtra("token", token).putExtra("minutes", minutes);
+                    ExtensionReminder.receive(context, action);
+                    long expected = end + minutes * Schedule.MINUTE;
+                    if (prefs.getLong("activeEnd", 0) != expected || prefs.getLong("manualEnd", 0) != expected)
+                        throw new AssertionError("Extension failed: " + minutes);
+                    if (prefs.getLong("activeRunEnd", 0) != Math.max(end, cycleEnd) + minutes * Schedule.MINUTE)
+                        throw new AssertionError("Countdown did not extend");
+                    ExtensionReminder.receive(context, action);
+                    if (prefs.getLong("activeEnd", 0) != expected)
+                        throw new AssertionError("Duplicate action extended twice");
+                }
+                prefs.edit().clear().commit();
+                Planner.schedule(context);
+                results.putString("stream", "\nFinal-cycle eligibility, 15/30/45-minute actions, timers and duplicate rejection passed.\n");
             } else if ("features".equals(phase)) {
                 verifyPlanningOptions(context);
                 verifyEnergyMeter(context);

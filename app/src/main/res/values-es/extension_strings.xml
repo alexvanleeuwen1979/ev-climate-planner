@@ -1,0 +1,6 @@
+<resources>
+    <string name="extension_reminder_setting">Aviso 5 minutos antes del final</string>
+    <string name="extension_reminder_title">La climatización termina en 5 minutos</string>
+    <string name="extension_reminder_body">¿Ampliar este período?</string>
+    <string name="extended_minutes">Período ampliado en %d minutos.</string>
+</resources>

@@ -462,16 +462,21 @@ public final class Planner extends BroadcastReceiver {
     }
 
     static synchronized boolean extend(Context context) {
+        return extend(context, 15);
+    }
+
+    static synchronized boolean extend(Context context, int minutes) {
+        if (minutes != 15 && minutes != 30 && minutes != 45) return false;
         var prefs = prefs(context);
         long now = System.currentTimeMillis();
         long session = prefs.getLong("activeSession", 0);
         long end = prefs.getLong("activeEnd", 0);
         if (!hasAlarmAccess(context) || !countedRun(prefs, session, end) || runDeadline(prefs) <= now
                 || manuallyStopped(prefs)) return false;
-        long newEnd = end + Schedule.INTERVAL;
+        long newEnd = end + minutes * Schedule.MINUTE;
         var slot = new Schedule.Slot(now, session, end);
         var update = prefs.edit().putLong("activeEnd", newEnd)
-            .putLong("activeRunEnd", Math.max(now, forecastEnd(prefs)) + Schedule.INTERVAL);
+            .putLong("activeRunEnd", Math.max(now, forecastEnd(prefs)) + minutes * Schedule.MINUTE);
         if (isOnce(prefs, slot)) {
             update.putLong("onceEnd", newEnd);
         } else if (isManual(prefs, slot)) {
@@ -486,7 +491,7 @@ public final class Planner extends BroadcastReceiver {
                 .remove("manualTemperature").remove("manualProfile");
         }
         if (!update.commit()) return false;
-        note(context, t(R.string.time_slot_extended_by_15_minutes), session, newEnd, false);
+        note(context, String.format(t(R.string.extended_minutes), minutes), session, newEnd, false);
         scheduleMonitoredEnd(context, session, newEnd, runDeadline(prefs));
         schedule(context);
         VehicleWatch.schedule(context);
@@ -707,6 +712,7 @@ public final class Planner extends BroadcastReceiver {
     }
 
     static void schedule(Context context) {
+        ExtensionReminder.schedule(context);
         mergeManualPlan(context);
         ClimateWidget.refresh(context);
         AlarmManager manager = context.getSystemService(AlarmManager.class);
@@ -780,6 +786,7 @@ public final class Planner extends BroadcastReceiver {
         long now = System.currentTimeMillis();
         long time = intent.getLongExtra("time", 0);
         long due = intent.getLongExtra("due", time);
+        if (ExtensionReminder.receive(context, intent)) return;
         if (VehicleWatch.ACTION.equals(intent.getAction())) {
             VehicleWatch.receive(context, intent);
             return;

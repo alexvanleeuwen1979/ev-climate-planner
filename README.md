@@ -10,6 +10,16 @@ Open the downloaded APK on Android 8.0 or later. Each version remains available 
 
 An independent Android app for scheduling remote cabin climate on compatible European Kia vehicles. Live vehicle testing so far has been on a European Kia e-Niro. The app can link other Kia models exposed by the European Kia Connect service and lets you choose a vehicle if your account contains more than one. It controls one selected vehicle at a time. Model, model year, trim, country and Kia Connect capabilities can affect what works. This project is unaffiliated with Kia. Choose Dutch, English, German, French or Spanish in Settings. The app follows a supported phone language initially and otherwise uses English.
 
+## Latest release — 0.5.10
+
+Five minutes before the final confirmed climate cycle ends, a notification offers **+15, +30 or +45 minutes**. Enable notifications for this app in Galaxy Wearable or your watch companion app to receive the actions on a compatible watch. The reminder is enabled by default and can be disabled under **Settings → Notifications → Reminder 5 minutes before the end**.
+
+Timing follows Kia's start confirmation. Extensions update the countdown and the next reminder. Emulator checks passed for all three actions and duplicate-action protection. Delivery and controls on a physical watch still need verification.
+
+[Download 0.5.10 and read the release notes](https://github.com/alexvanleeuwen1979/ev-climate-planner/releases/tag/v0.5.10).
+
+The GitHub APK uses the public release signing certificate. An earlier developer/debug installation may require exporting the planning, uninstalling that build, and signing in again after installing this release. Existing public 0.5.8 and 0.5.9 installations can update with the same release certificate.
+
 ## Screenshots
 
 <a href="docs/screenshots/dashboard-active.png"><img src="docs/screenshots/dashboard-active.png" alt="Dashboard with climate running and two countdowns" width="180"></a>
